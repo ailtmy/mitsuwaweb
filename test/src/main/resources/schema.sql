@@ -4,3 +4,11 @@ CREATE TABLE IF NOT EXISTS users (
 	mail VARCHAR(256),
 	PRIMARY KEY(id)
 );
+
+CREATE TABLE IF NOT EXISTS tel (
+	id SERIAL,
+	kind VARCHAR(128),
+	number VARCHAR(256),
+	users_id INTEGER REFERENCES users(id),
+	PRIMARY KEY(id)
+);

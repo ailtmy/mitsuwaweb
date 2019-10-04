@@ -1,12 +1,21 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <meta charset="UTF-8">
-<title th:text="|${title}－みつわ合同事務所|"></title>
+<title th:text="|${title}－みつわ|"></title>
 </head>
 <body>
+<div th:fragment="user_contents">
 <h1 th:text="${title}"></h1>
-<table>
+<form action="/user" method="post" th:object="${formModel}">
+<div class="form-group">
+	<label for="name">名前</label>
+	<input type="text" name="name" class="form-control"/>
+</div>
+</form>
+<hr/>
+<table class="table table-bordered">
 <tr>
 	<th>ID</th>
 	<th>名前</th>
@@ -18,5 +27,6 @@
 	<td th:text="${user.mail}"></td>
 </tr>
 </table>
+</div>
 </body>
 </html>

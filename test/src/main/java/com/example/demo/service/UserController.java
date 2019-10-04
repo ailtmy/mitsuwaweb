@@ -17,10 +17,11 @@ public class UserController {
 
 	@GetMapping("/users")
 	public ModelAndView index(ModelAndView mav) {
-		mav.setViewName("user/index");
+		mav.setViewName("layout");
+		mav.addObject("contents", "user/index::user_contents");
+		mav.addObject("title", "ユーザー一覧");
 		List<User> list = service.getAll();
 		mav.addObject("list", list);
-		mav.addObject("title", "ユーザー一覧");
 		return mav;
 	}
 }

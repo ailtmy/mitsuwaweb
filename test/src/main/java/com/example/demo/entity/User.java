@@ -25,4 +25,6 @@ public class User {
 	@Column
 	@Email
 	private String mail;
+
+
 }
