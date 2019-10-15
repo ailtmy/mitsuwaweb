@@ -1,10 +1,16 @@
 package com.example.demo.entity;
 
-import javax.persistence.Column;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,15 +22,17 @@ import lombok.Setter;
 public class User {
 
 	@Id
-	@Column
-	private int id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-	@Column
+	@NotEmpty
 	private String name;
 
-	@Column
 	@Email
 	private String mail;
+
+	@ManyToMany(cascade = CascadeType.ALL)
+	private List<Telephone> telephoneList;
 
 
 }
