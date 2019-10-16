@@ -21,4 +21,9 @@ public class UserService {
 	public User saveUser(User user) {
 		return repository.save(user);
 	}
+
+	public User find(Integer id) {
+		return repository.findById(id).orElse(new User());
+
+	}
 }

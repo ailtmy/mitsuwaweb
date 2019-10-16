@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,6 +27,7 @@ public class UserController {
 	TelephoneService telephoneService;
 
 
+//	<<------- ユーザー一覧 ------------->>
 	@GetMapping("/users")
 	public ModelAndView index(ModelAndView mav) {
 		mav.setViewName("layout");
@@ -36,6 +38,7 @@ public class UserController {
 		return mav;
 	}
 
+//  <<------------ユーザー新規作成画面表示----------------->>
 	@GetMapping("/users/new")
 	public ModelAndView usernew(ModelAndView mav) {
 		mav.setViewName("layout");
@@ -44,6 +47,7 @@ public class UserController {
 		return mav;
 	}
 
+//  <<------------ユーザー新規作成画面表示----------------->>
 	@PostMapping("users/new")
 	public ModelAndView save(
 			@RequestParam("phoneKind") String phoneKind,
@@ -66,9 +70,20 @@ public class UserController {
 		mav.setViewName("layout");
 		mav.addObject("msg", "sorry, error is occured...");
 		mav.addObject("contents", "user/new::user_contents");
-		Iterable<User> list = userService.getAll();
+		mav.addObject("title", "ユーザー新規作成");
 		res = mav;
 	}
 		return res;
+	}
+
+// <<------------ユーザー詳細---------------->>
+	@GetMapping("/users/{id}")
+	public ModelAndView show(@PathVariable Integer id,
+			ModelAndView mav) {
+		mav.setViewName("layout");
+		mav.addObject("contents", "user/show::user_contents");
+		mav.addObject("user", userService.find(id));
+		mav.addObject("title", "ユーザー詳細");
+		return mav;
 	}
 }
