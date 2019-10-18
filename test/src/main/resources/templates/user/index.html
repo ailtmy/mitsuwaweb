@@ -7,23 +7,40 @@
 </head>
 <body >
 <div th:fragment="user_contents">
-<h1 th:text="${title}"></h1>
-<table class="table table-bordered">
+<h4 th:text="${title}"></h4>
+<table class="table table-bordered text-center">
 <tr>
+	<th class="m-1 p-1"><a class="btn btn-info btn-sm text-white ml-1 p-1" th:href="@{/users/new}">新規作成</a></th>
 	<th>ID</th>
 	<th>名前</th>
 	<th>メールアドレス</th>
-	<th colspan="3">連絡先</th>
+	<th colspan="2">連絡先</th>
 </tr>
-<tr  th:each="user :${list}">
-	<td><a th:href="@{/users/{id}(id=${user.id})}" th:text="${user.id}"></a></td>
-	<td th:text="${user.name}"></td>
-	<td><a th:href="'mailto:' + ${user.mail}" th:text="${user.mail}"></a></td>
-	<td th:each="tl : ${user.telephoneList}">
-		<span th:text="${tl.phoneKind}"></span>
-		<span> : </span>
-		<span th:text="${tl.phoneNumber}"></span>
+
+<tr th:each="user :${list}">
+	<td class="m-1 p-1">
+	<form th:action="@{/users/{id}/delete(id=${user.id})}" method="post">
+		<a class="btn btn-primary btn-sm text-white ml-1 p-1" th:href="@{/users/{id}/edit(id=${user.id})}">編集</a>
+		<input class="btn btn-danger btn-sm text-white m-1 p-1" type="submit" value="削除"
+		onclick="return confirm('削除します。よろしいですか？')"/>
+	</form>
 	</td>
+	<td th:text="${user.id}"></td>
+	<td><a th:href="@{/users/{id}(id=${user.id})}" th:text="${user.name}"></a></td>
+	<td><a th:href="'mailto:' + ${user.mail}" th:text="${user.mail}"></a></td>
+	<td class="m-0 p-0">
+		<ul class="list-group list-group-flush m-1 p-1">
+			<li th:each="tl : ${user.telephoneList}" class="list-group-item m-0 p-0">
+				<span th:text="${tl.phoneKind}"></span>
+				<span> : </span>
+				<span th:text="${tl.phoneNumber}"></span>
+			</li>
+		</ul>
+	</td>
+	<td>
+		<a class="btn btn-info btn-sm text-white m-1 p-1" th:href="@{/users/{id}/telnew(id=${user.id})}">電話新規</a>
+	</td>
+
 </tr>
 </table>
 </div>

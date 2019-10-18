@@ -15,15 +15,20 @@ public class UserService {
 	UserRepository repository;
 
 	public List<User> getAll(){
-		return repository.findAll();
+		return repository.findAllByOrderById();
 	}
 
 	public User saveUser(User user) {
-		return repository.save(user);
+		return repository.saveAndFlush(user);
 	}
 
 	public User find(Integer id) {
 		return repository.findById(id).orElse(new User());
 
 	}
+
+	public void delete(Integer id) {
+		repository.deleteById(id);
+	}
+
 }
