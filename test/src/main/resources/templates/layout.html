@@ -31,7 +31,7 @@
           ユーザー管理
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="/users">ユーザー一覧</a>
+          <a class="dropdown-item" href="/users?size=5&page=0">ユーザー一覧</a>
           <a class="dropdown-item" href="/users/new">ユーザー新規作成</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#">ホーム</a>
@@ -49,10 +49,10 @@
 		<div class="bg-light col-md-2 col-sm-2 sidebar">
 			<ul class="nav nav-pills nav-stacked list-group">
 				<li role="presentation" class="list-group-action">
-					<a th:href="@{'/users'}">ユーザー管理</a>
+					<a th:href="@{/users?size=5&page=0}">ユーザー管理</a>
 				</li>
 				<li role="presentaion" class="list-group-action">
-					<a th:href="@{'/admin'}">アドミン用画面</a>
+					<a href="#">アドミン用画面</a>
 				</li>
 			</ul>
 		</div>

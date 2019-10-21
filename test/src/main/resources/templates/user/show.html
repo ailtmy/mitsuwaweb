@@ -10,7 +10,7 @@
 <h4 th:text="${title}"></h4>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light mt-2 mb-4">
-	<a class="btn btn-primary mr-4" th:href="@{{id}/edit(id=${user.id})}">編集</a>
+	<a class="btn btn-primary mr-4" th:href="@{/users/{id}/edit(id=${user.id})}">編集</a>
 	<a class="btn btn-info mr-4" th:href="@{/users/{id}/telnew(id=${user.id})}">電話新規登録</a>
 	<form th:action="@{/users/{id}/delete(id=${user.id})}" method="post">
 		<input class="btn btn-danger text-white mr-4" type="submit" value="削除"
