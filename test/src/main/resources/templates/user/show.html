@@ -6,8 +6,19 @@
 <title th:text="|${title}|"></title>
 </head>
 <body >
-<div th:fragment="user_contents">
+<div class="container-fluid" th:fragment="user_contents">
 <h4 th:text="${title}"></h4>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light mt-2 mb-4">
+	<a class="btn btn-primary mr-4" th:href="@{{id}/edit(id=${user.id})}">編集</a>
+	<a class="btn btn-info mr-4" th:href="@{/users/{id}/telnew(id=${user.id})}">電話新規登録</a>
+	<form th:action="@{/users/{id}/delete(id=${user.id})}" method="post">
+		<input class="btn btn-danger text-white mr-4" type="submit" value="削除"
+		onclick="return confirm('削除します。よろしいですか？')"/>
+	</form>
+	<a class="btn btn-primary mr-4" href="/users">戻る</a>
+</nav>
+
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-sm-4">
@@ -15,22 +26,37 @@
 		</div>
 		<div class="col-sm-8">
 			<div class="row">
-				<label class="col-sm-4">ユーザーＩＤ</label>
-				<label class="colo-sm-8" th:text="${user.id}">data</label>
-			</div>
-			<div class="row">
-				<label class="col-sm-4">名前</label>
-				<label class="colo-sm-8" th:text="${user.name}">data</label>
-			</div>
-			<div class="row">
-				<label class="col-sm-4">メールアドレス</label>
-				<label class="colo-sm-8">
-					<a th:href="'mailto:' + ${user.mail}" th:text="${user.mail}"></a>
-				</label>
-			</div>
-			<div class="row" th:each = "tel : ${user.telephoneList}">
-				<label class="col-sm-4" th:text="${tel.phoneKind}">label</label>
-				<label class="colo-sm-8" th:text="${tel.phoneNumber}">data</label>
+				<table class="table table-bordered table-hover" th:object="${user}">
+					<tr>
+						<th scope="row" style="width:25%">ＩＤ</th>
+						<td th:text="*{id}" style="width:65%"></td>
+						<td style="width:10%"></td>
+					</tr>
+					<tr>
+						<th scope="row">名前</th>
+						<td th:text="*{name}"></td>
+						<td></td>
+					</tr>
+					<tr>
+						<th scope="row">メールアドレス</th>
+						<td><a th:href="'mailto:' + *{mail}" th:text="*{mail}"></a></td>
+						<td></td>
+					</tr>
+					<tr th:each="tel : ${user.telephoneList}">
+						<th scope="row">電話番号</th>
+						<td>
+							<span th:text="${tel.phoneKind}"></span>
+							：<span th:text="${tel.phoneNumber}"></span>
+						</td>
+						<td>
+							<form th:action="@{/users/{uid}/teldelete/{tid}(uid=${user.id},tid=${tel.id})}" method="post">
+								<input class="btn btn-danger text-white mr-4" type="submit" value="電話削除"
+									onclick="return confirm('削除します。よろしいですか？')"/>
+							</form>
+						</td>
+					</tr>
+
+				</table>
 			</div>
 		</div>
 	</div>

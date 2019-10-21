@@ -15,4 +15,14 @@ public class TelephoneService {
 	public Telephone saveTelephone(Telephone telephone) {
 		return repository.save(telephone);
 	}
+
+	public Telephone find(Integer id) {
+		return repository.findById(id).orElse(new Telephone());
+
+	}
+
+	public void delete(Integer id) {
+		repository.deleteById(id);
+	}
+
 }

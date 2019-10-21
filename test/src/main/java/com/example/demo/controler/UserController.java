@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -32,11 +34,11 @@ public class UserController {
 
 //	<<------- ユーザー一覧 ------------->>
 	@GetMapping("/users")
-	public ModelAndView index(ModelAndView mav) {
+	public ModelAndView index(ModelAndView mav, Pageable pageable) {
 		mav.setViewName("layout");
 		mav.addObject("contents", "user/index::user_contents");
 		mav.addObject("title", "ユーザー一覧");
-		List<User> list = userService.getAll();
+		Page<User> list = userService.getAll(pageable);
 		mav.addObject("list", list);
 		return mav;
 	}
@@ -164,5 +166,22 @@ public class UserController {
 			mav.addObject("title", "ユーザー連絡先新規登録");
 			mav.addObject("user", user);
 			return new ModelAndView("redirect:/users/{id}");
-		}
+	}
+
+// <<-------------------ユーザー電話削除---------------->>
+	@PostMapping("/users/{uid}/teldelete/{tid}")
+	public ModelAndView usertelephonedeleted(
+			@PathVariable Integer uid,
+			@PathVariable int tid,
+			ModelAndView mav) {
+		User user = userService.find(uid);
+		List<Telephone> tels = user.getTelephoneList();
+		Telephone tel = telephoneService.find(tid);
+		tels.remove(tel);
+		user.setTelephoneList(tels);
+		userService.saveUser(user);
+		telephoneService.delete(tid);
+		return new ModelAndView("redirect:/users/{uid}");
+	}
+
 }
