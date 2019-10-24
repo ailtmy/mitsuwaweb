@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -31,10 +32,11 @@ public class UserController {
 	@Autowired
 	TelephoneService telephoneService;
 
-
 //	<<------- ユーザー一覧 ------------->>
 	@GetMapping("/users")
-	public ModelAndView index(ModelAndView mav, Pageable pageable) {
+	public ModelAndView index(ModelAndView mav,
+			@PageableDefault(page=0, size=5)
+			Pageable pageable) {
 		mav.setViewName("layout");
 		mav.addObject("contents", "user/index::user_contents");
 		mav.addObject("title", "ユーザー一覧");
@@ -136,6 +138,21 @@ public class UserController {
 		return new ModelAndView("redirect:/users");
 	}
 
+
+//	<<------- ユーザー検索 ------------->>
+	@GetMapping("/users/search")
+	public ModelAndView fsearch(
+			@RequestParam("name") String name,
+			@PageableDefault(page=0, size=5) Pageable pageable) {
+		Page<User> list = userService.search(name, name, name,  pageable);
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("layout");
+		mav.addObject("contents", "user/index::user_contents");
+		mav.addObject("title", "ユーザー検索");
+		mav.addObject("list", list);
+		return mav;
+	}
+
 // <<-----------ユーザー電話新規画面------------->>
 	@GetMapping("users/{id}/telnew")
 	public ModelAndView usertelephonenew(@PathVariable Integer id,
@@ -168,7 +185,7 @@ public class UserController {
 			return new ModelAndView("redirect:/users/{id}");
 	}
 
-// <<-------------------ユーザー電話削除---------------->>
+// <<------------ユーザー電話削除---------------->>
 	@PostMapping("/users/{uid}/teldelete/{tid}")
 	public ModelAndView usertelephonedeleted(
 			@PathVariable Integer uid,

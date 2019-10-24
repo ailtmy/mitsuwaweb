@@ -31,4 +31,9 @@ public class UserService {
 		repository.deleteById(id);
 	}
 
+	public Page<User> search(String name, String mail, String phoneNumber, Pageable pageable){
+		return repository.findDistinctByNameContainingOrMailContainingOrTelephoneList_PhoneNumberContainingOrderById(name, mail, phoneNumber, pageable);
+	}
+
+
 }
