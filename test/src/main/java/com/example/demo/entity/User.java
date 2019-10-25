@@ -42,7 +42,7 @@ public class User {
 			)
 	private List<Telephone> telephoneList;
 
-//	private byte[] file;
+	private byte[] file;
 
 	@Override
 	public String toString() {

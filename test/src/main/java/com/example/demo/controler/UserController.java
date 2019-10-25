@@ -1,5 +1,7 @@
 package com.example.demo.controler;
 
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -87,9 +89,15 @@ public class UserController {
 	@GetMapping("/users/{id}")
 	public ModelAndView show(@PathVariable Integer id,
 			ModelAndView mav) throws IOException {
+		User user = userService.find(id);
+		byte[] bytes = user.getFile();
+		try(BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream("./usercard.jpeg"))){
+			out.write(bytes);
+			mav.addObject("file", out);
+		}
 		mav.setViewName("layout");
 		mav.addObject("contents", "user/show::user_contents");
-		mav.addObject("user", userService.find(id));
+		mav.addObject("user", user);
 		mav.addObject("title", "ユーザー詳細");
 		return mav;
 	}
