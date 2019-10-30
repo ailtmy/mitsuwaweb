@@ -1,6 +1,5 @@
 package com.example.demo.controler;
 
-import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.entity.Telephone;
@@ -59,14 +59,18 @@ public class UserController {
 //  <<------------ユーザー新規作成----------------->>
 	@PostMapping("users/new")
 	public ModelAndView save(
+			MultipartFile file,
 			@RequestParam("phoneKind") String phoneKind,
 			@RequestParam("phoneNumber") String phoneNumber,
-			@ModelAttribute("formModel")
+			@ModelAttribute("user")
 			@Validated User user,
 			BindingResult result,
-			ModelAndView mav) {
+			ModelAndView mav) throws IOException {
 	ModelAndView res = null;
+
 	if(!result.hasErrors()) {
+		byte[] bytefile = file.getBytes();
+		user.setImage(bytefile);
 		List<Telephone> list = new ArrayList<Telephone>();
 		Telephone telephone = new Telephone();
 		telephone.setPhoneKind(phoneKind);
@@ -90,15 +94,17 @@ public class UserController {
 	public ModelAndView show(@PathVariable Integer id,
 			ModelAndView mav) throws IOException {
 		User user = userService.find(id);
-		byte[] bytes = user.getFile();
-		try(BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream("./usercard.jpeg"))){
-			out.write(bytes);
-			mav.addObject("file", out);
+		if(user.getImage() != null) {
+			try (FileOutputStream fos = new FileOutputStream("./file/" + user.getId() + user.getName() + ".jpg")) {
+				fos.write(user.getImage());
+				mav.addObject("file", fos);
+			}
 		}
 		mav.setViewName("layout");
 		mav.addObject("contents", "user/show::user_contents");
 		mav.addObject("user", user);
 		mav.addObject("title", "ユーザー詳細");
+
 		return mav;
 	}
 

@@ -15,9 +15,11 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+@Data
 @Entity
 @Table(name="users")
 @Setter
@@ -42,7 +44,7 @@ public class User {
 			)
 	private List<Telephone> telephoneList;
 
-	private byte[] file;
+	private byte[] image;
 
 	@Override
 	public String toString() {
