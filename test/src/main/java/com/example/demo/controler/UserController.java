@@ -1,11 +1,12 @@
 package com.example.demo.controler;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -33,6 +34,9 @@ public class UserController {
 
 	@Autowired
 	TelephoneService telephoneService;
+
+	 @Autowired
+	 ResourceLoader resourceLoader;
 
 //	<<------- ユーザー一覧 ------------->>
 	@GetMapping("/users")
@@ -95,10 +99,16 @@ public class UserController {
 			ModelAndView mav) throws IOException {
 		User user = userService.find(id);
 		if(user.getImage() != null) {
-			try (FileOutputStream fos = new FileOutputStream("./file/" + user.getId() + user.getName() + ".jpg")) {
-				fos.write(user.getImage());
-				mav.addObject("file", fos);
-			}
+//			Resource resource = resourceLoader.getResource("classpath:file/8テスト太郎.jpg");
+//			byte[] image = FileUtils.readFileToByteArray(resource.getFile());
+			byte[] image = user.getImage();
+			String encodedImage = Base64.getEncoder().encodeToString(image);
+			System.out.println(encodedImage);
+			mav.addObject("image", encodedImage);
+//			try (FileOutputStream fos = new FileOutputStream("./file/" + user.getId() + user.getName() + ".jpg")) {
+//				fos.write(user.getImage());
+//				mav.addObject("file", fos);
+////			}
 		}
 		mav.setViewName("layout");
 		mav.addObject("contents", "user/show::user_contents");
