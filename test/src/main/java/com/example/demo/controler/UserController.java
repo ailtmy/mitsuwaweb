@@ -1,9 +1,12 @@
 package com.example.demo.controler;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
@@ -35,8 +38,9 @@ public class UserController {
 	@Autowired
 	TelephoneService telephoneService;
 
-	 @Autowired
-	 ResourceLoader resourceLoader;
+	@Autowired
+    ResourceLoader resourceLoader;
+
 
 //	<<------- ユーザー一覧 ------------->>
 	@GetMapping("/users")
@@ -74,6 +78,7 @@ public class UserController {
 
 	if(!result.hasErrors()) {
 		byte[] bytefile = file.getBytes();
+		user.setFilename(file.getOriginalFilename());
 		user.setImage(bytefile);
 		List<Telephone> list = new ArrayList<Telephone>();
 		Telephone telephone = new Telephone();
@@ -99,16 +104,9 @@ public class UserController {
 			ModelAndView mav) throws IOException {
 		User user = userService.find(id);
 		if(user.getImage() != null) {
-//			Resource resource = resourceLoader.getResource("classpath:file/8テスト太郎.jpg");
-//			byte[] image = FileUtils.readFileToByteArray(resource.getFile());
 			byte[] image = user.getImage();
 			String encodedImage = Base64.getEncoder().encodeToString(image);
-			System.out.println(encodedImage);
 			mav.addObject("image", encodedImage);
-//			try (FileOutputStream fos = new FileOutputStream("./file/" + user.getId() + user.getName() + ".jpg")) {
-//				fos.write(user.getImage());
-//				mav.addObject("file", fos);
-////			}
 		}
 		mav.setViewName("layout");
 		mav.addObject("contents", "user/show::user_contents");
@@ -129,6 +127,25 @@ public class UserController {
 		return mav;
 	}
 
+// <<----------ユーザー画像ダウンロード----------->>
+	@GetMapping("/users/{id}/download")
+    public void imageDownload(@PathVariable Integer id,
+    		HttpServletResponse response, ModelAndView mav) {
+
+        try (OutputStream os = response.getOutputStream();) {
+
+            byte[] bytefile = userService.find(id).getImage();
+            String filename = userService.find(id).getFilename();
+            response.setContentType("application/octet-stream");
+            response.setHeader("Content-Disposition", "attachment; filename=" + filename);
+            response.setContentLength(bytefile.length);
+            os.write(bytefile);
+            os.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 // <<----------ユーザー編集--------------------->>
 	@PostMapping("/users/{id}/edit")
 	public ModelAndView edited(@PathVariable Integer id,
@@ -136,7 +153,7 @@ public class UserController {
 			@RequestParam("mail") String mail,
 			@RequestParam(name = "phoneKind", required = false) String[] phoneKinds,
 			@RequestParam(name = "phoneNumber", required = false) String[] phoneNumbers,
-			ModelAndView mav) {
+			ModelAndView mav) throws IOException {
 		User user = userService.find(id);
 		user.setId(id);
 		user.setName(name);
@@ -153,6 +170,33 @@ public class UserController {
 		return new ModelAndView("redirect:./");
 	}
 
+// <<-----------ユーザー編集画面表示------------->>
+	@GetMapping("/users/{id}/imgedit")
+	public ModelAndView imgedit(@PathVariable Integer id,
+			ModelAndView mav) {
+		mav.setViewName("layout");
+		mav.addObject("contents", "user/imgedit::user_contents");
+		mav.addObject("title", "ユーザー編集");
+		mav.addObject("user", userService.find(id));
+		return mav;
+	}
+
+// <<----------ユーザーイメージ編集--------------------->>
+	@PostMapping("/users/{id}/imgedit")
+	public ModelAndView imgedited(@PathVariable Integer id,
+			@RequestParam("file") MultipartFile file,
+			ModelAndView mav) throws IOException {
+		User user = userService.find(id);
+		user.setId(id);
+		if(!file.isEmpty()) {
+			byte[] bytefile = file.getBytes();
+			user.setImage(bytefile);
+			user.setFilename(file.getOriginalFilename());
+		}
+		userService.saveUser(user);
+
+		return new ModelAndView("redirect:./");
+	}
 
 //	<<--------------ユーザー削除------------------>>
 	@PostMapping("/users/{id}/delete")

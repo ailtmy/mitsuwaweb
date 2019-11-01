@@ -12,6 +12,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light mt-2 mb-4">
 	<a class="btn btn-sm btn-primary mr-4" th:href="@{/users?size=5&page=0}">一覧</a>
 	<a class="btn btn-sm btn-primary mr-4" th:href="@{/users/{id}/edit(id=${user.id})}">編集</a>
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/users/{id}/imgedit(id=${user.id})}">ファイル編集</a>
 	<a class="btn btn-sm btn-info mr-4" th:href="@{/users/{id}/telnew(id=${user.id})}">電話新規登録</a>
 	<form th:action="@{/users/{id}/delete(id=${user.id})}" method="post">
 		<input class="btn btn-sm btn-danger text-white mr-4" type="submit" value="削除"
@@ -22,9 +23,9 @@
 
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-sm-4">
-			<img th:src="${user.image}? ${'data:image/*;base64,' + image} : ''" width="100%" height="100%" alt="名刺"/>
-
+		<div th:if="${user.image}" class="col-sm-4">
+			<img th:src="${'data:image/*;base64,' + image}" width="100%" height="100%" alt="ファイル"/>
+			<a th:href="@{/users/{id}/download(id=${user.id})}" th:text="${user.filename} + ダウンロード"></a>
 		</div>
 		<div class="col-sm-8">
 			<div class="row">
@@ -52,7 +53,7 @@
 						</td>
 						<td>
 							<form th:action="@{/users/{uid}/teldelete/{tid}(uid=${user.id},tid=${tel.id})}" method="post">
-								<input class="btn btn-danger text-white mr-4" type="submit" value="電話削除"
+								<input class="btn btn-sm btn-danger text-white mr-4" type="submit" value="電話削除"
 									onclick="return confirm('削除します。よろしいですか？')"/>
 							</form>
 						</td>
