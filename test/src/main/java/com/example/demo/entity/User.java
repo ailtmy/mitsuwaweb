@@ -16,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 import lombok.Getter;
@@ -54,7 +55,7 @@ public class User {
 
 	private String filename;
 
-	@NotEmpty
+	@NotNull
 	private String password;
 
 	@Enumerated(EnumType.STRING)

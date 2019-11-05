@@ -58,7 +58,8 @@ public class UserController {
 
 //  <<------------ユーザー新規作成画面表示----------------->>
 	@GetMapping("/users/new")
-	public ModelAndView usernew(ModelAndView mav) {
+	public ModelAndView usernew(@ModelAttribute User user,
+			ModelAndView mav) {
 		mav.setViewName("layout");
 		mav.addObject("contents", "user/new::user_contents");
 		mav.addObject("title", "ユーザー新規作成");
@@ -78,9 +79,11 @@ public class UserController {
 	ModelAndView res = null;
 
 	if(!result.hasErrors()) {
-		byte[] bytefile = file.getBytes();
-		user.setFilename(file.getOriginalFilename());
-		user.setImage(bytefile);
+		if(!file.isEmpty()) {
+			byte[] bytefile = file.getBytes();
+			user.setFilename(file.getOriginalFilename());
+			user.setImage(bytefile);
+		}
 		List<Telephone> list = new ArrayList<Telephone>();
 		Telephone telephone = new Telephone();
 		telephone.setPhoneKind(phoneKind);
@@ -207,6 +210,9 @@ public class UserController {
 			byte[] bytefile = file.getBytes();
 			user.setImage(bytefile);
 			user.setFilename(file.getOriginalFilename());
+		} else {
+			user.setImage(null);
+			user.setFilename(null);
 		}
 		userService.saveUserImage(user);
 
