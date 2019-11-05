@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,6 +27,10 @@ import lombok.Setter;
 @Setter
 @Getter
 public class User {
+
+	public static enum Role {
+		ROLE_ADMIN, ROLE_GENERAL
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,8 +54,10 @@ public class User {
 
 	private String filename;
 
+	@NotEmpty
 	private String password;
 
-	private String role;
+	@Enumerated(EnumType.STRING)
+	private Role role;
 
 }

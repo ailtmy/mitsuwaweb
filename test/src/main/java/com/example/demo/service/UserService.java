@@ -28,6 +28,10 @@ public class UserService {
 		return repository.saveAndFlush(user);
 	}
 
+	public User saveUserImage(User user) {
+		return repository.saveAndFlush(user);
+	}
+
 	public User find(Integer id) {
 		return repository.findById(id).orElse(new User());
 

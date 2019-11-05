@@ -26,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.entity.Telephone;
 import com.example.demo.entity.User;
+import com.example.demo.entity.User.Role;
 import com.example.demo.service.TelephoneService;
 import com.example.demo.service.UserService;
 
@@ -149,23 +150,35 @@ public class UserController {
 // <<----------ユーザー編集--------------------->>
 	@PostMapping("/users/{id}/edit")
 	public ModelAndView edited(@PathVariable Integer id,
+			@RequestParam("role") Role role,
 			@RequestParam("name") String name,
 			@RequestParam("mail") String mail,
 			@RequestParam("password") String password,
 			@RequestParam(name = "phoneKind", required = false) String[] phoneKinds,
 			@RequestParam(name = "phoneNumber", required = false) String[] phoneNumbers,
+			@Validated User user,
+			BindingResult result,
 			ModelAndView mav) throws IOException {
-		User user = userService.find(id);
-		user.setId(id);
-		user.setName(name);
-		user.setMail(mail);
-		user.setPassword(password);
-		if(!user.getTelephoneList().isEmpty()) {
-			List<Telephone> tels = user.getTelephoneList();
-			for(int i = 0; i < tels.size(); i++) {
-				tels.get(i).setPhoneKind(phoneKinds[i]);
-				tels.get(i).setPhoneNumber(phoneNumbers[i]);
+		if(!result.hasErrors()) {
+			user = userService.find(id);
+			user.setId(id);
+			user.setRole(role);
+			user.setName(name);
+			user.setMail(mail);
+			user.setPassword(password);
+			if(!user.getTelephoneList().isEmpty()) {
+				List<Telephone> tels = user.getTelephoneList();
+				for(int i = 0; i < tels.size(); i++) {
+					tels.get(i).setPhoneKind(phoneKinds[i]);
+					tels.get(i).setPhoneNumber(phoneNumbers[i]);
+				}
 			}
+		} else {
+			mav.setViewName("layout");
+			mav.addObject("contents", "user/edit::user_contents");
+			mav.addObject("title", "ユーザー編集");
+			mav.addObject("user", userService.find(id));
+			return mav;
 		}
 		userService.saveUser(user);
 
@@ -195,7 +208,7 @@ public class UserController {
 			user.setImage(bytefile);
 			user.setFilename(file.getOriginalFilename());
 		}
-		userService.saveUser(user);
+		userService.saveUserImage(user);
 
 		return new ModelAndView("redirect:./");
 	}
@@ -247,7 +260,7 @@ public class UserController {
 			tel.setPhoneNumber(phoneNumber);
 			tels.add(tel);
 			user.setTelephoneList(tels);
-			userService.saveUser(user);
+			userService.saveUserImage(user);
 			mav.setViewName("layout");
 			mav.addObject("contents", "telephone/usertelephonenew::telephone_contents");
 			mav.addObject("title", "ユーザー連絡先新規登録");
@@ -266,7 +279,7 @@ public class UserController {
 		Telephone tel = telephoneService.find(tid);
 		tels.remove(tel);
 		user.setTelephoneList(tels);
-		userService.saveUser(user);
+		userService.saveUserImage(user);
 		telephoneService.delete(tid);
 		return new ModelAndView("redirect:/users/{uid}");
 	}

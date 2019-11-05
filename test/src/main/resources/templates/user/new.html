@@ -14,12 +14,24 @@
 	<input type="file" name="file" class="form-control"/>
 </div>
 <div class="form-group">
+	<label for="role">権限</label>
+	<select id="role" name="role" class="form-control">
+		<option th:selected="${''}"/>
+		<option th:each="role : ${T(com.example.demo.entity.User.Role).values()}"
+			th:text="${role}"/>
+	</select>
+</div>
+<div class="form-group">
 	<label for="name">名前</label>
 	<input type="text" name="name" class="form-control"/>
 </div>
 <div class="form-group">
 	<label for="mail">メールアドレス</label>
 	<input type="text" name="mail" class="form-control"/>
+</div>
+<div class="form-group">
+	<label for="password">パスワード</label>
+	<input type="password" name="password" class="form-control"/>
 </div>
 <div class="form-group">
 	<label for="phoneKind">電話種類</label>
