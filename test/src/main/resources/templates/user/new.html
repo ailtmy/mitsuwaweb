@@ -8,7 +8,7 @@
 <body >
 <div th:fragment="user_contents">
 <h4 th:text="${title}"></h4>
-<form action="/users/new" method="post" enctype="multipart/form-data">
+<form th:action="@{/users/new}" method="post" enctype="multipart/form-data">
 <div class="form-group">
 	<label for="file">ファイル</label>
 	<input type="file" name="file" class="form-control"/>

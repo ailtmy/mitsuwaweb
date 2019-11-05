@@ -9,7 +9,7 @@
 
 <div th:fragment="user_contents">
 <h4 th:text="${title}"></h4>
-<form action="/users/search" method="get">
+<form th:action="@{/users/search}" method="get">
 <div th:fragment="search_contents">
 	<div class="form-group form-row">
 		<label for="name" class="col-sm-2 text-center">キーワード</label>

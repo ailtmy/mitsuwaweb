@@ -8,7 +8,7 @@
 <body >
 <div th:fragment="user_contents">
 <h4 th:text="${title}"></h4>
-<form action="imgedit" method="post" th:object="${user}" enctype="multipart/form-data">
+<form th:action="@{imgedit}" method="post" th:object="${user}" enctype="multipart/form-data">
 	<input type="hidden" name="id" th:value="*{id}"/>
 <div class="form-group row">
 	<label for="file" class="col-sm-2 text-right">ファイル</label>

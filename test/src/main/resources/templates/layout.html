@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
 	>
 <head>
 <meta charset="UTF-8">
@@ -51,8 +52,8 @@
 				<li role="presentation" class="list-group-action">
 					<a th:href="@{/users?page=0}">ユーザー管理</a>
 				</li>
-				<li role="presentaion" class="list-group-action">
-					<a href="#">アドミン用画面</a>
+				<li role="presentaion" class="list-group-action" sec:authorize="hasRole('ADMIN')">
+					<a th:href="@{/admin}">アドミン用画面</a>
 				</li>
 			</ul>
 		</div>

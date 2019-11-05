@@ -48,6 +48,8 @@ public class User {
 
 	private String filename;
 
+	private String password;
 
+	private String role;
 
 }

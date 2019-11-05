@@ -151,6 +151,7 @@ public class UserController {
 	public ModelAndView edited(@PathVariable Integer id,
 			@RequestParam("name") String name,
 			@RequestParam("mail") String mail,
+			@RequestParam("password") String password,
 			@RequestParam(name = "phoneKind", required = false) String[] phoneKinds,
 			@RequestParam(name = "phoneNumber", required = false) String[] phoneNumbers,
 			ModelAndView mav) throws IOException {
@@ -158,6 +159,7 @@ public class UserController {
 		user.setId(id);
 		user.setName(name);
 		user.setMail(mail);
+		user.setPassword(password);
 		if(!user.getTelephoneList().isEmpty()) {
 			List<Telephone> tels = user.getTelephoneList();
 			for(int i = 0; i < tels.size(); i++) {
@@ -170,7 +172,7 @@ public class UserController {
 		return new ModelAndView("redirect:./");
 	}
 
-// <<-----------ユーザー編集画面表示------------->>
+// <<-----------ユーザーイメージ編集画面表示------------->>
 	@GetMapping("/users/{id}/imgedit")
 	public ModelAndView imgedit(@PathVariable Integer id,
 			ModelAndView mav) {
