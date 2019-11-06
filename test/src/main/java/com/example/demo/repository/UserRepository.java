@@ -12,7 +12,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
 	public Page<User> findAllByOrderById(Pageable pageable);
 
-	Page<User> findDistinctByNameContainingOrMailContainingOrTelephoneList_PhoneNumberContainingOrderById(
-			String name, String mail, String phoneNumber, Pageable pageable);
+	Page<User> findDistinctByNameContainingOrMailList_MailAddrContainingOrTelephoneList_PhoneNumberContainingOrderById(
+			String name, String mailAddr, String phoneNumber, Pageable pageable);
 
 }

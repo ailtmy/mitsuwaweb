@@ -13,8 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 import lombok.Data;
@@ -39,8 +39,8 @@ public class User {
 	@NotEmpty
 	private String name;
 
-	@Email
-	private String mail;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<Mailaddress> mailList;
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(

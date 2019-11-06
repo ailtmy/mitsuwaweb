@@ -24,9 +24,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.demo.entity.Mailaddress;
 import com.example.demo.entity.Telephone;
 import com.example.demo.entity.User;
 import com.example.demo.entity.User.Role;
+import com.example.demo.service.MailaddressService;
 import com.example.demo.service.TelephoneService;
 import com.example.demo.service.UserService;
 
@@ -38,6 +40,9 @@ public class UserController {
 
 	@Autowired
 	TelephoneService telephoneService;
+
+	@Autowired
+	MailaddressService mailaddressService;
 
 	@Autowired
     ResourceLoader resourceLoader;
@@ -70,6 +75,8 @@ public class UserController {
 	@PostMapping("users/new")
 	public ModelAndView save(
 			MultipartFile file,
+			@RequestParam("mailKind") String mailKind,
+			@RequestParam("mailAddr") String mailAddr,
 			@RequestParam("phoneKind") String phoneKind,
 			@RequestParam("phoneNumber") String phoneNumber,
 			@ModelAttribute("user")
@@ -91,6 +98,14 @@ public class UserController {
 		list.add(telephone);
 		user.setTelephoneList(list);
 		userService.saveUser(user);
+		List<Mailaddress> maillist = new ArrayList<Mailaddress>();
+		Mailaddress mailAddress = new Mailaddress();
+		mailAddress.setMailKind(mailKind);
+		mailAddress.setMailAddr(mailAddr);
+		mailAddress.setUser(user);
+		mailaddressService.saveMailaddress(mailAddress);
+		maillist.add(mailAddress);
+		user.setMailList(maillist);
 		res = new ModelAndView("redirect:/users");
 	} else {
 		mav.setViewName("layout");
@@ -155,8 +170,9 @@ public class UserController {
 	public ModelAndView edited(@PathVariable Integer id,
 			@RequestParam("role") Role role,
 			@RequestParam("name") String name,
-			@RequestParam("mail") String mail,
 			@RequestParam("password") String password,
+			@RequestParam(name = "mailKind", required = false) String[] mailKinds,
+			@RequestParam(name = "mailAddr", required = false) String[] mailAddrs,
 			@RequestParam(name = "phoneKind", required = false) String[] phoneKinds,
 			@RequestParam(name = "phoneNumber", required = false) String[] phoneNumbers,
 			@Validated User user,
@@ -167,8 +183,14 @@ public class UserController {
 			user.setId(id);
 			user.setRole(role);
 			user.setName(name);
-			user.setMail(mail);
 			user.setPassword(password);
+			if(!user.getMailList().isEmpty()) {
+				List<Mailaddress> mails = user.getMailList();
+				for(int i = 0; i < mails.size(); i++) {
+					mails.get(i).setMailKind(mailKinds[i]);
+					mails.get(i).setMailAddr(mailAddrs[i]);
+				}
+			}
 			if(!user.getTelephoneList().isEmpty()) {
 				List<Telephone> tels = user.getTelephoneList();
 				for(int i = 0; i < tels.size(); i++) {
@@ -242,6 +264,40 @@ public class UserController {
 		return mav;
 	}
 
+// <<-----------ユーザーメールアドレス新規画面------------->>
+	@GetMapping("users/{id}/mailnew")
+	public ModelAndView usermailaddressnew(@PathVariable Integer id,
+			ModelAndView mav) {
+		mav.setViewName("layout");
+		mav.addObject("contents", "mailaddress/usermailaddressnew::usermailaddress_contents");
+		mav.addObject("title", "ユーザーメールアドレス新規登録");
+		mav.addObject("user", userService.find(id));
+		return mav;
+	}
+
+// <<-----------ユーザーメールアドレス新規作成------------->>
+	@PostMapping("/users/{id}/mailnew")
+	public ModelAndView usermailaddresssave(@PathVariable Integer id,
+		@RequestParam(name = "mailKind", required = false) String mailKind,
+		@RequestParam(name = "mailAddr", required = false) String mailAddr,
+		ModelAndView mav) {
+			User user = userService.find(id);
+			Mailaddress mailAddress = new Mailaddress();
+			List<Mailaddress> mails = user.getMailList();
+			mailAddress.setMailKind(mailKind);
+			mailAddress.setMailAddr(mailAddr);
+			mailAddress.setUser(user);
+			mails.add(mailAddress);
+			mailaddressService.saveMailaddress(mailAddress);
+			user.setMailList(mails);
+			userService.saveUserImage(user);
+			mav.setViewName("layout");
+			mav.addObject("contents", "mailaddress/usermailaddressnew::mailaddress_contents");
+			mav.addObject("title", "ユーザーメールアドレス新規登録");
+			mav.addObject("user", user);
+			return new ModelAndView("redirect:/users/{id}");
+	}
+
 // <<-----------ユーザー電話新規画面------------->>
 	@GetMapping("users/{id}/telnew")
 	public ModelAndView usertelephonenew(@PathVariable Integer id,
@@ -287,6 +343,22 @@ public class UserController {
 		user.setTelephoneList(tels);
 		userService.saveUserImage(user);
 		telephoneService.delete(tid);
+		return new ModelAndView("redirect:/users/{uid}");
+	}
+
+// <<------------ユーザーメール削除---------------->>
+	@PostMapping("/users/{uid}/maildelete/{mid}")
+	public ModelAndView userMaildeleted(
+			@PathVariable Integer uid,
+			@PathVariable int mid,
+			ModelAndView mav) {
+		User user = userService.find(uid);
+		List<Mailaddress> mails = user.getMailList();
+		Mailaddress mailAddress = mailaddressService.find(mid);
+		mails.remove(mailAddress);
+		user.setMailList(mails);
+		userService.saveUserImage(user);
+		mailaddressService.delete(mid);
 		return new ModelAndView("redirect:/users/{uid}");
 	}
 

@@ -13,6 +13,7 @@
 	<a class="btn btn-sm btn-primary mr-4" th:href="@{/users?size=5&page=0}">一覧</a>
 	<a class="btn btn-sm btn-primary mr-4" th:href="@{/users/{id}/edit(id=${user.id})}">編集</a>
 	<a class="btn btn-sm btn-primary mr-4" th:href="@{/users/{id}/imgedit(id=${user.id})}">ファイル編集</a>
+	<a class="btn btn-sm btn-info mr-4" th:href="@{/users/{id}/mailnew(id=${user.id})}">メール新規登録</a>
 	<a class="btn btn-sm btn-info mr-4" th:href="@{/users/{id}/telnew(id=${user.id})}">電話新規登録</a>
 	<form th:action="@{/users/{id}/delete(id=${user.id})}" method="post">
 		<input class="btn btn-sm btn-danger text-white mr-4" type="submit" value="削除"
@@ -28,39 +29,42 @@
 			<a th:href="@{/users/{id}/download(id=${user.id})}" th:text="${user.filename} + ダウンロード"></a>
 		</div>
 		<div class="col-sm-8">
-			<div class="row">
-				<table class="table table-bordered table-hover" th:object="${user}">
+				<table th:object="${user}" class="table table-hover">
 					<tr>
-						<th scope="row" style="width:25%">ＩＤ</th>
-						<td th:text="*{id}" style="width:65%"></td>
-						<td style="width:10%"></td>
+						<th scope="row">ＩＤ</th>
+						<td th:text="*{id}"></td>
 					</tr>
 					<tr>
 						<th scope="row">名前</th>
 						<td th:text="*{name}"></td>
-						<td></td>
 					</tr>
+
 					<tr>
-						<th scope="row">メールアドレス</th>
-						<td><a th:href="'mailto:' + *{mail}" th:text="*{mail}"></a></td>
-						<td></td>
-					</tr>
-					<tr th:each="tel : ${user.telephoneList}">
-						<th scope="row">電話番号</th>
-						<td>
-							<span th:text="${tel.phoneKind}"></span>
-							：<span th:text="${tel.phoneNumber}"></span>
+						<th scope="row">メール</th>
+						<td th:each="mail : ${user.mailList}" class="row">
+
+							<span th:text="${mail.mailKind} + ':'" class="col-sm-3 m-2"></span>
+							<a th:href="'mailto:' + ${mail.mailAddr}" th:text="${mail.mailAddr}" class="col-sm-5 m-2"></a>
+							<form th:action="@{/users/{uid}/maildelete/{mid}(uid=${user.id}, mid=${mail.id})}" method="post" class="col-sm-2 m-2">
+								<input class="btn btn-sm btn-danger text-white mr-2" type="submit" value="メール削除"
+									onclick="return confirm('削除します。よろしいですか？')"/>
+							</form>
 						</td>
-						<td>
-							<form th:action="@{/users/{uid}/teldelete/{tid}(uid=${user.id},tid=${tel.id})}" method="post">
-								<input class="btn btn-sm btn-danger text-white mr-4" type="submit" value="電話削除"
+					</tr>
+
+					<tr>
+						<th scope="row">電話番号</th>
+						<td th:each="tel : ${user.telephoneList}" class="row">
+							<span th:text="${tel.phoneKind} + ':'" class="col-sm-3 m-2"></span>
+							<span th:text="${tel.phoneNumber}" class="col-sm-5 m-2"></span>
+							<form th:action="@{/users/{uid}/teldelete/{tid}(uid=${user.id},tid=${tel.id})}" method="post" class="col-sm-2 m-2">
+								<input class="btn btn-sm btn-danger text-white mr-2" type="submit" value="電話削除"
 									onclick="return confirm('削除します。よろしいですか？')"/>
 							</form>
 						</td>
 					</tr>
 
 				</table>
-			</div>
 		</div>
 	</div>
 </div>

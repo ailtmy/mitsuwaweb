@@ -25,7 +25,8 @@
 	<th>ID</th>
 	<th>名前</th>
 	<th>メールアドレス</th>
-	<th colspan="2">連絡先</th>
+	<th>連絡先</th>
+	<th colspan="2"></th>
 </tr>
 
 <tr th:each="user :${list}">
@@ -38,7 +39,15 @@
 	</td>
 	<td th:text="${user.id}"></td>
 	<td><a th:href="@{/users/{id}(id=${user.id})}" th:text="${user.name}"></a></td>
-	<td><a th:href="'mailto:' + ${user.mail}" th:text="${user.mail}"></a></td>
+	<td class="m-0 p-0">
+		<ul class="list-group list-group-flush m-1 p-1">
+			<li th:each="mail : ${user.mailList}" class="list-group-item m-0 p-0">
+				<span th:text="${mail.mailKind}"></span>
+				<span> : </span>
+				<a th:href="'mailto:' + ${mail.mailAddr}" th:text="${mail.mailAddr}"></a>
+			</li>
+		</ul>
+	</td>
 	<td class="m-0 p-0">
 		<ul class="list-group list-group-flush m-1 p-1">
 			<li th:each="tl : ${user.telephoneList}" class="list-group-item m-0 p-0">
@@ -47,6 +56,9 @@
 				<span th:text="${tl.phoneNumber}"></span>
 			</li>
 		</ul>
+	</td>
+	<td>
+		<a class="btn btn-info btn-sm text-white m-1 p-1" th:href="@{/users/{id}/mailnew(id=${user.id})}">メール新規</a>
 	</td>
 	<td>
 		<a class="btn btn-info btn-sm text-white m-1 p-1" th:href="@{/users/{id}/telnew(id=${user.id})}">電話新規</a>
