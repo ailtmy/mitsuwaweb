@@ -21,7 +21,8 @@
 <!-- =======ヘッダー（ナビゲーションバー）======== -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand text-white" href="#">司法書士法人みつわ合同事務所</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+  aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -39,9 +40,15 @@
         </div>
       </li>
     </ul>
-	<form method="post" th:action="@{/logout}">
-		<button class="btn btn-link btn-sm pull-right text-white" type="submit">ログアウト</button>
-	</form>
+    <div sec:authorize="isAuthenticated()" class="pull-right text-white">
+    	<form method="post" th:action="@{/logout}">
+    		<span>ユーザー[権限]：</span>
+	    	<a th:href="@{/users/myaccount?name={name}(name=${#authentication.name})}"
+	    	sec:authentication="name" class="text-white"></a>
+    		<span sec:authentication="authorities"></span>
+			<button class="btn btn-link btn-sm text-white" type="submit">ログアウト</button>
+		</form>
+	</div>
 </div>
 </nav>
 <!-- =======サイドバー========= -->

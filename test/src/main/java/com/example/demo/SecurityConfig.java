@@ -90,6 +90,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.usersByUsernameQuery(USER_SQL)
 			.authoritiesByUsernameQuery(ROLE_SQL)
 			.passwordEncoder(passwordEncoder());
+
+		auth.inMemoryAuthentication()
+			.withUser("user")
+			.password("password")
+			.roles("USER");
 	}
 
 }
