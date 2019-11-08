@@ -42,10 +42,9 @@
     </ul>
     <div sec:authorize="isAuthenticated()" class="pull-right text-white">
     	<form method="post" th:action="@{/logout}">
-    		<span>ユーザー[権限]：</span>
-	    	<a th:href="@{/users/myaccount?name={name}(name=${#authentication.name})}"
+    		<span>ユーザー：</span>
+	    	<a th:href="@{/users/myaccount}"
 	    	sec:authentication="name" class="text-white"></a>
-    		<span sec:authentication="authorities"></span>
 			<button class="btn btn-link btn-sm text-white" type="submit">ログアウト</button>
 		</form>
 	</div>
@@ -57,7 +56,10 @@
 		<div class="bg-light col-md-2 col-sm-2 sidebar">
 			<ul class="nav nav-pills nav-stacked list-group">
 				<li role="presentation" class="list-group-action">
-					<a th:href="@{/users?page=0}">ユーザー管理</a>
+					<a th:href="@{/users/myaccount}">アカウント管理</a>
+				</li>
+				<li role="presentation" class="list-group-action">
+					<a th:href="@{/users?page=0}" sec:authorize="hasRole('ADMIN')">ユーザー管理</a>
 				</li>
 				<li role="presentaion" class="list-group-action" sec:authorize="hasRole('ADMIN')">
 					<a th:href="@{/admin}">アドミン用画面</a>

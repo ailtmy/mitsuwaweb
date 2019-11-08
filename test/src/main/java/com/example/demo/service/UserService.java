@@ -37,6 +37,10 @@ public class UserService {
 
 	}
 
+	public User findByName(String name) {
+		return repository.findByName(name);
+	}
+
 	public void delete(Integer id) {
 		repository.deleteById(id);
 	}

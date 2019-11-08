@@ -2,6 +2,7 @@ package com.example.demo.controler;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -13,6 +14,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -360,6 +362,25 @@ public class UserController {
 		userService.saveUserImage(user);
 		mailaddressService.delete(mid);
 		return new ModelAndView("redirect:/users/{uid}");
+	}
+
+// <<-----------マイアカウント表示------------------>>
+	@GetMapping("/users/myaccount")
+	public ModelAndView getmyaccount(
+			@AuthenticationPrincipal Principal principal,
+			ModelAndView mav) {
+		User user = userService.findByName(principal.getName());
+		if(user.getImage() != null) {
+			byte[] image = user.getImage();
+			String encodedImage = Base64.getEncoder().encodeToString(image);
+			mav.addObject("image", encodedImage);
+		}
+		mav.setViewName("layout");
+		mav.addObject("contents", "user/show::user_contents");
+		mav.addObject("user", user);
+		mav.addObject("title", "ユーザー詳細");
+
+		return mav;
 	}
 
 }

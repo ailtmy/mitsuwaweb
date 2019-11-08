@@ -12,6 +12,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
 	public Page<User> findAllByOrderById(Pageable pageable);
 
+	public User findByName(String name);
+
 	Page<User> findDistinctByNameContainingOrMailList_MailAddrContainingOrTelephoneList_PhoneNumberContainingOrderById(
 			String name, String mailAddr, String phoneNumber, Pageable pageable);
 
