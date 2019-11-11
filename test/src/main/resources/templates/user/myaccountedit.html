@@ -8,18 +8,9 @@
 <body >
 <div th:fragment="user_contents">
 <h4 th:text="${title}"></h4>
-<form th:action="@{edit}" method="post" th:object="${user}"  enctype="multipart/form-data">
+<form th:action="@{myaccountedit}" method="post" th:object="${user}"  enctype="multipart/form-data">
 	<input type="hidden" name="id" th:value="*{id}"/>
-<div class="form-group row">
-	<label for="role" class="col-sm-2 text-right">権限</label>
-	<select id="role" name="role" class="form-control col-sm-6">
-		<option th:selected="${user.role == ''}"/>
-		<option th:each="role : ${T(com.example.demo.entity.User.Role).values()}"
-			th:value="${role}"
-			th:selected="${user.role == role}"
-			th:text="${role}"/>
-	</select>
-</div>
+	<input type="hidden" name="role" th:value="*{role}"/>
 <div class="form-group row">
 	<label for="name" class="col-sm-2 text-right">名前</label>
 	<input type="text" name="name" class="form-control col-sm-6" th:value="*{name}"/>

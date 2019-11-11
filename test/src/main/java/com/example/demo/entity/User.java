@@ -3,6 +3,7 @@ package com.example.demo.entity;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -36,7 +37,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@NotEmpty
+	@Column(name="name", nullable= false, unique=true)
 	private String name;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

@@ -11,11 +11,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -74,6 +76,7 @@ public class UserController {
 	}
 
 //  <<------------ユーザー新規作成----------------->>
+//	@Transactional(readOnly = false)
 	@PostMapping("users/new")
 	public ModelAndView save(
 			MultipartFile file,
@@ -85,8 +88,10 @@ public class UserController {
 			@Validated User user,
 			BindingResult result,
 			ModelAndView mav) throws IOException {
+
 	ModelAndView res = null;
 
+	try {
 	if(!result.hasErrors()) {
 		if(!file.isEmpty()) {
 			byte[] bytefile = file.getBytes();
@@ -108,13 +113,20 @@ public class UserController {
 		mailaddressService.saveMailaddress(mailAddress);
 		maillist.add(mailAddress);
 		user.setMailList(maillist);
-		res = new ModelAndView("redirect:/users");
+		res = new ModelAndView("redirect:/users/" + user.getId());
 	} else {
 		mav.setViewName("layout");
 		mav.addObject("msg", "sorry, error is occured...");
 		mav.addObject("contents", "user/new::user_contents");
 		mav.addObject("title", "ユーザー新規作成");
 		res = mav;
+	}
+	} catch(UnexpectedRollbackException | DataIntegrityViolationException e) {
+		mav.setViewName("layout");
+		mav.addObject("msg", "sorry, error is occured...");
+		mav.addObject("contents", "user/new::user_contents");
+		mav.addObject("title", "ユーザー新規作成");
+		return new ModelAndView("redirect:/users/new");
 	}
 		return res;
 	}
@@ -209,7 +221,7 @@ public class UserController {
 		}
 		userService.saveUser(user);
 
-		return new ModelAndView("redirect:./");
+		return new ModelAndView("redirect:/users/" + user.getId());
 	}
 
 // <<-----------ユーザーイメージ編集画面表示------------->>
@@ -381,6 +393,65 @@ public class UserController {
 		mav.addObject("title", "ユーザー詳細");
 
 		return mav;
+	}
+
+// <<-----------マイアカウント編集画面表示------------->>
+	@GetMapping("/users/myaccountedit")
+	public ModelAndView myaccountedit(
+			@AuthenticationPrincipal Principal principal,
+			ModelAndView mav) {
+		mav.setViewName("layout");
+		mav.addObject("contents", "user/myaccountedit::user_contents");
+		mav.addObject("title", "ユーザー編集");
+		mav.addObject("user", userService.findByName(principal.getName()));
+		return mav;
+	}
+
+// <<----------マイアカウント編集--------------------->>
+	@PostMapping("/users/myaccountedit")
+	public ModelAndView myaccountedited(
+			@AuthenticationPrincipal Principal principal,
+			@RequestParam("id") Integer id,
+			@RequestParam("role") Role role,
+			@RequestParam("name") String name,
+			@RequestParam("password") String password,
+			@RequestParam(name = "mailKind", required = false) String[] mailKinds,
+			@RequestParam(name = "mailAddr", required = false) String[] mailAddrs,
+			@RequestParam(name = "phoneKind", required = false) String[] phoneKinds,
+			@RequestParam(name = "phoneNumber", required = false) String[] phoneNumbers,
+			@Validated User user,
+			BindingResult result,
+			ModelAndView mav) throws IOException {
+		if(!result.hasErrors()) {
+			user = userService.findByName(principal.getName());
+			user.setId(id);
+			user.setRole(role);
+			user.setName(name);
+			user.setPassword(password);
+			if(!user.getMailList().isEmpty()) {
+				List<Mailaddress> mails = user.getMailList();
+				for(int i = 0; i < mails.size(); i++) {
+					mails.get(i).setMailKind(mailKinds[i]);
+					mails.get(i).setMailAddr(mailAddrs[i]);
+				}
+			}
+			if(!user.getTelephoneList().isEmpty()) {
+				List<Telephone> tels = user.getTelephoneList();
+				for(int i = 0; i < tels.size(); i++) {
+					tels.get(i).setPhoneKind(phoneKinds[i]);
+					tels.get(i).setPhoneNumber(phoneNumbers[i]);
+				}
+			}
+		} else {
+			mav.setViewName("layout");
+			mav.addObject("contents", "user/edit::user_contents");
+			mav.addObject("title", "ユーザー編集");
+			mav.addObject("user", userService.find(id));
+			return mav;
+		}
+		userService.saveUser(user);
+
+		return new ModelAndView("redirect:/users/myaccount");
 	}
 
 }
