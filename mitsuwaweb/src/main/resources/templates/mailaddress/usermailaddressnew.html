@@ -11,7 +11,7 @@
 <form th:action="@{/users/{id}/mailnew(id=${user.id})}" method="post" th:object="${user}">
 <div class="form-group">
 	<label for="name">名前</label>
-	<input type="text" name="name" class="form-control" th:value="${user.name}"/>
+	<input type="text" name="name" class="form-control" th:value="${user.name}" disabled="disabled" />
 </div>
 <div class="form-group">
 	<label for="mailKind">メール種類</label>

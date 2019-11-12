@@ -12,5 +12,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 
 	public Page<Customer> findAllByOrderById(Pageable pageable);
 
+	Page<Customer> findDistinctByNameContainingOrKanaContainingOrMailList_MailAddrContainingOrTelephoneList_PhoneNumberContainingOrderByKana(
+			String name, String kana, String mailAddr, String phoneNumber, Pageable pageable);
 
 }

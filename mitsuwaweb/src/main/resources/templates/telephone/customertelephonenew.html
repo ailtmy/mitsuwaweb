@@ -6,12 +6,12 @@
 <title th:text="${title}"></title>
 </head>
 <body >
-<div th:fragment="usertelephone_contents">
+<div th:fragment="customertelephone_contents">
 <h4 th:text="${title}"></h4>
-<form th:action="@{/users/{id}/telnew(id=${user.id})}" method="post" th:object="${user}">
+<form th:action="@{/customers/{id}/telnew(id=${customer.id})}" method="post" th:object="${customer}">
 <div class="form-group">
 	<label for="name">名前</label>
-	<input type="text" name="name" class="form-control" th:value="${user.name}" disabled="disabled" />
+	<input type="text" name="name" class="form-control" th:value="${customer.name}" disabled="disabled" />
 </div>
 <div class="form-group">
 	<label for="phoneKind">電話種類</label>

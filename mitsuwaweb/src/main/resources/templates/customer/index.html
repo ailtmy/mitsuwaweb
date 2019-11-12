@@ -10,7 +10,7 @@
 
 <div th:fragment="customer_contents">
 <h4 th:text="${title}"></h4>
-<form th:action="@{/users/search}" method="get">
+<form th:action="@{/customers/search}" method="get">
 <div th:fragment="search_contents">
 	<div class="form-group form-row">
 		<label for="name" class="col-sm-2 text-center">キーワード</label>
@@ -64,8 +64,8 @@
 	</td>
 
 	<td>
-		<a class="btn btn-info btn-sm text-white m-1 p-1" th:href="@{/customer/{id}/mailnew(id=${customer.id})}">メール新規</a><br>
-		<a class="btn btn-info btn-sm text-white m-1 p-1" th:href="@{/customer/{id}/telnew(id=${customer.id})}">電 話 新 規</a>
+		<a class="btn btn-info btn-sm text-white m-1 p-1" th:href="@{/customers/{id}/mailnew(id=${customer.id})}">メール新規</a><br>
+		<a class="btn btn-info btn-sm text-white m-1 p-1" th:href="@{/customers/{id}/telnew(id=${customer.id})}">電 話 新 規</a>
 	</td>
 </tr>
 </table>

@@ -267,9 +267,9 @@ public class UserController {
 //	<<------- ユーザー検索 ------------->>
 	@GetMapping("/users/search")
 	public ModelAndView fsearch(
-			@RequestParam("name") String name,
+			@RequestParam("name") String search,
 			@PageableDefault(page=0, size=5) Pageable pageable) {
-		Page<User> list = userService.search(name, name, name,  pageable);
+		Page<User> list = userService.search(search, search, search,  pageable);
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("layout");
 		mav.addObject("contents", "user/index::user_contents");

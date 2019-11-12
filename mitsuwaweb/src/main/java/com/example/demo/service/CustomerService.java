@@ -30,5 +30,10 @@ public class CustomerService {
 		repository.deleteById(id);
 	}
 
+	public Page<Customer> search(String name, String kana, String mailAddr, String phoneNumber, Pageable pageable){
+		return repository.findDistinctByNameContainingOrKanaContainingOrMailList_MailAddrContainingOrTelephoneList_PhoneNumberContainingOrderByKana(
+				name, kana, mailAddr, phoneNumber, pageable);
+	}
+
 
 }

@@ -1,5 +1,6 @@
 package com.example.demo.controler;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,8 +20,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.entity.Customer;
+import com.example.demo.entity.CustomerFile;
 import com.example.demo.entity.CustomerMail;
 import com.example.demo.entity.CustomerTel;
+import com.example.demo.service.CustomerFileService;
 import com.example.demo.service.CustomerMailService;
 import com.example.demo.service.CustomerService;
 import com.example.demo.service.CustomerTelService;
@@ -36,6 +39,9 @@ public class CustomerController {
 
 	@Autowired
 	CustomerMailService mailaddressService;
+
+	@Autowired
+	CustomerFileService fileService;
 
 	/**
 	 * 顧客一覧
@@ -67,10 +73,11 @@ public class CustomerController {
 
 	/**
 	 * 顧客新規作成
+	 * @throws IOException
 	 */
 	@PostMapping("/customers/new")
 	public ModelAndView customersave(
-			MultipartFile file,
+			@RequestParam("file") MultipartFile[] files,
 			@RequestParam("mailKind") String mailKind,
 			@RequestParam("mailAddr") String mailAddr,
 			@RequestParam("phoneKind") String phoneKind,
@@ -78,7 +85,7 @@ public class CustomerController {
 			@ModelAttribute("customer")
 			@Validated Customer customer,
 			BindingResult result,
-			ModelAndView mav) {
+			ModelAndView mav) throws IOException {
 
 		ModelAndView res = null;
 
@@ -91,6 +98,19 @@ public class CustomerController {
 			list.add(telephone);
 			customer.setTelephoneList(list);
 			customerService.saveCustomer(customer);
+
+			List<CustomerFile> customerFiles = new ArrayList<CustomerFile>();
+			for(MultipartFile file : files) {
+				CustomerFile customerFile = new CustomerFile();
+				System.out.println(file.getOriginalFilename());
+				customerFile.setFileName(file.getOriginalFilename());
+				customerFile.setFile(file.getBytes());
+				customerFile.setCustomer(customer);
+				fileService.saveCustomerFile(customerFile);
+				customerFiles.add(customerFile);
+			}
+
+			customer.setCustomerFileList(customerFiles);
 
 			List<CustomerMail> maillist = new ArrayList<CustomerMail>();
 			CustomerMail mailAddress = new CustomerMail();
@@ -196,6 +216,134 @@ public class CustomerController {
 		customerService.delete(id);
 		return new ModelAndView("redirect:/customers");
 	}
+
+	/**
+	 * 顧客メールアドレス新規画面
+	 */
+	@GetMapping("customers/{id}/mailnew")
+	public ModelAndView customermailaddressnew(@PathVariable Integer id,
+			ModelAndView mav) {
+		mav.setViewName("layout");
+		mav.addObject("contents", "mailaddress/customermailaddressnew::customermailaddress_contents");
+		mav.addObject("title", "顧客メールアドレス新規登録");
+		mav.addObject("customer", customerService.find(id));
+		return mav;
+	}
+
+	/**
+	 * 顧客メールアドレス新規作成
+	 */
+	@PostMapping("/customers/{id}/mailnew")
+	public ModelAndView usermailaddresssave(@PathVariable Integer id,
+		@RequestParam(name = "mailKind", required = false) String mailKind,
+		@RequestParam(name = "mailAddr", required = false) String mailAddr,
+		ModelAndView mav) {
+			Customer customer = customerService.find(id);
+			CustomerMail mailAddress = new CustomerMail();
+			List<CustomerMail> mails = customer.getMailList();
+			mailAddress.setMailKind(mailKind);
+			mailAddress.setMailAddr(mailAddr);
+			mailAddress.setCustomer(customer);
+			mails.add(mailAddress);
+			mailaddressService.saveCustomerMail(mailAddress);
+			customer.setMailList(mails);
+			customerService.saveCustomer(customer);
+			mav.setViewName("layout");
+			mav.addObject("contents", "mailaddress/customermailaddressnew::customermailaddress_contents");
+			mav.addObject("title", "顧客メールアドレス新規登録");
+			mav.addObject("customer", customer);
+			return new ModelAndView("redirect:/customers/{id}");
+	}
+
+	/**
+	 * 顧客電話新規画面
+	 */
+	@GetMapping("customers/{id}/telnew")
+	public ModelAndView customertelephonenew(@PathVariable Integer id,
+			ModelAndView mav) {
+		mav.setViewName("layout");
+		mav.addObject("contents", "telephone/customertelephonenew::customertelephone_contents");
+		mav.addObject("title", "顧客連絡先新規登録");
+		mav.addObject("customer", customerService.find(id));
+		return mav;
+	}
+
+	/**
+	 * 顧客電話新規作成
+	 */
+	@PostMapping("/customers/{id}/telnew")
+	public ModelAndView usertelephonesave(@PathVariable Integer id,
+		@RequestParam(name = "phoneKind", required = false) String phoneKind,
+		@RequestParam(name = "phoneNumber", required = false) String phoneNumber,
+		ModelAndView mav) {
+			Customer customer = customerService.find(id);
+			CustomerTel tel = new CustomerTel();
+			List<CustomerTel> tels = customer.getTelephoneList();
+			tel.setPhoneKind(phoneKind);
+			tel.setPhoneNumber(phoneNumber);
+			tels.add(tel);
+			customer.setTelephoneList(tels);
+			customerService.saveCustomer(customer);
+			mav.setViewName("layout");
+			mav.addObject("contents", "telephone/customertelephonenew::customertelephone_contents");
+			mav.addObject("title", "顧客連絡先新規登録");
+			mav.addObject("customer", customer);
+			return new ModelAndView("redirect:/customers/{id}");
+	}
+
+	/**
+	 * 顧客メール削除
+	 */
+	@PostMapping("/customers/{uid}/maildelete/{mid}")
+	public ModelAndView customerMaildeleted(
+			@PathVariable Integer uid,
+			@PathVariable int mid,
+			ModelAndView mav) {
+		Customer customer = customerService.find(uid);
+		List<CustomerMail> mails = customer.getMailList();
+		CustomerMail mailAddress = mailaddressService.find(mid);
+		mails.remove(mailAddress);
+		customer.setMailList(mails);
+		customerService.saveCustomer(customer);
+		mailaddressService.delete(mid);
+		return new ModelAndView("redirect:/customers/{uid}");
+	}
+
+	/**
+	 * 顧客電話削除
+	 */
+	@PostMapping("/customers/{uid}/teldelete/{tid}")
+	public ModelAndView customertelephonedeleted(
+			@PathVariable Integer uid,
+			@PathVariable int tid,
+			ModelAndView mav) {
+		Customer customer = customerService.find(uid);
+		List<CustomerTel> tels = customer.getTelephoneList();
+		CustomerTel tel = telephoneService.find(tid);
+		tels.remove(tel);
+		customer.setTelephoneList(tels);
+		customerService.saveCustomer(customer);
+		telephoneService.delete(tid);
+		return new ModelAndView("redirect:/customers/{uid}");
+	}
+
+	/**
+	 * 顧客検索
+	 */
+	@GetMapping("/customers/search")
+	public ModelAndView fsearch(
+			@RequestParam("name") String search,
+			@PageableDefault(page=0, size=5) Pageable pageable) {
+		Page<Customer> list = customerService.search(search, search, search, search, pageable);
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("layout");
+		mav.addObject("contents", "customer/index::customer_contents");
+		mav.addObject("title", "顧客検索");
+		mav.addObject("list", list);
+		return mav;
+	}
+
+
 
 
 
