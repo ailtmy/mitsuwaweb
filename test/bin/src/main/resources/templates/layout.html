@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	>
+<head>
+<meta charset="UTF-8">
+<!-- Bootstrapの設定 -->
+<link th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"
+	rel="stylesheet"></link>
+<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/1.14.1/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+
+<!-- CSSの読込 -->
+<link th:href="@{/css/style.css}" rel="stylesheet"></link>
+
+<title th:text="${title}"></title>
+</head>
+<body>
+<!-- =======ヘッダー（ナビゲーションバー）======== -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand text-white" href="#">司法書士法人みつわ合同事務所</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+  aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown"
+        role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          ユーザー管理
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/users?page=0">ユーザー一覧</a>
+          <a class="dropdown-item" href="/users/new">ユーザー新規作成</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">ホーム</a>
+        </div>
+      </li>
+    </ul>
+    <div sec:authorize="isAuthenticated()" class="pull-right text-white">
+    	<form method="post" th:action="@{/logout}">
+    		<span>ユーザー：</span>
+	    	<a th:href="@{/users/myaccount}"
+	    	sec:authentication="name" class="text-white"></a>
+			<button class="btn btn-link btn-sm text-white" type="submit">ログアウト</button>
+		</form>
+	</div>
+</div>
+</nav>
+<!-- =======サイドバー========= -->
+<div class="container-fluid">
+	<div class="row">
+		<div class="bg-light col-md-2 col-sm-2 sidebar">
+			<ul class="nav nav-pills nav-stacked list-group">
+				<li role="presentation" class="list-group-action">
+					<a th:href="@{/users/myaccount}">アカウント管理</a>
+				</li>
+				<li role="presentation" class="list-group-action">
+					<a th:href="@{/users?page=0}" sec:authorize="hasRole('ADMIN')">ユーザー管理</a>
+				</li>
+				<li role="presentaion" class="list-group-action" sec:authorize="hasRole('ADMIN')">
+					<a th:href="@{/admin}">アドミン用画面</a>
+				</li>
+				<li role="presentaion" class="list-group-action">
+					<a th:href="@{/customers}">顧客一覧</a>
+				</li>
+			</ul>
+		</div>
+<!--  =====コンテンツ===== -->
+		<div class="col-md-10 col-sm-10 col-md-0ffset-2 col-sm-offset-2 main">
+			<div th:include="__${contents}__"></div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

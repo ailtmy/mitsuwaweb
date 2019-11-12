@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+</head>
+<body >
+<div th:fragment="usermailaddress_contents">
+<h4 th:text="${title}"></h4>
+<form th:action="@{/users/{id}/mailnew(id=${user.id})}" method="post" th:object="${user}">
+<div class="form-group">
+	<label for="name">名前</label>
+	<input type="text" name="name" class="form-control" th:value="${user.name}"/>
+</div>
+<div class="form-group">
+	<label for="mailKind">メール種類</label>
+	<input type="text" name="mailKind" class="form-control" />
+</div>
+<div class="form-group">
+	<label for="mailAddr">メールアドレス</label>
+	<input type="text" name="mailAddr" class="form-control" />
+</div>
+<div>
+	<button type="submit" class="btn btn-primary mr-4">登録</button>
+	<button type="button" onclick="history.back()" class="btn btn-primary ml-4">戻る</button>
+</div>
+</form>
+</div>
