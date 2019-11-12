@@ -8,6 +8,18 @@ VALUES
 ('石川五右衛門', '$2a$10$ydBm8Ee3ns9XRRdgQ3Z/CO8vUYw6dj1IGh4S7iMLcqSU/I21vmjtq', 'ROLE_GENERAL'),
 ('次元大助', '$2a$10$ydBm8Ee3ns9XRRdgQ3Z/CO8vUYw6dj1IGh4S7iMLcqSU/I21vmjtq', 'ROLE_GENERAL');
 
+INSERT INTO mailaddress(mail_addr, mail_kind, user_id)
+VALUES
+('test@jitaku.com', '自宅PC', 1),
+('mail@office.com', '会社PC', 1),
+('office@office.com', '会社PC', 2),
+('jitaku@office.com', '自宅PC', 2),
+('home@jitaku.com', '自宅PC', 3),
+('smart@smart.co.jp', '携帯', 4),
+('mobile@mobile.ne.jp', '携帯', 5),
+('kaisya@kaisya.com', '会社PC', 6),
+('exam@example.co.jp', '会社PC', 7);
+
 INSERT INTO telephone(phone_kind, phone_number)
 VALUES
 ('自宅', '0123456789'),
@@ -38,6 +50,19 @@ VALUES
 ('合同会社あいうえ', 'ドウ）アイウエ', '2014-05-12', '法人'),
 ('山田三郎', 'ヤマダサブロウ', '1992-05-01', '個人'),
 ('有限会社ゆうげん', 'ユ）ユウゲン', '1934-09-21', '法人');
+
+INSERT INTO customer_mail(mail_addr, mail_kind, customer_id)
+VALUES
+('test@mail.com', '自宅PC', 1),
+('office@mail.com', '会社PC', 1),
+('test@office.com', '会社PC', 2),
+('info@office.com', 'info', 2),
+('home@jitaku.com', '自宅PC', 3),
+('company@company.co.jp', '会社代表', 4),
+('yamada@kinmu.co.jp', '会社PC', 5),
+('yamada@jitaku.com', '自宅PC', 5),
+('sample@example.co.jp', '会社PC', 6);
+
 
 INSERT INTO customer_tel(phone_kind, phone_number)
 VALUES

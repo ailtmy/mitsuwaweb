@@ -47,6 +47,31 @@
 						<th scope="row">生（設立）年月日</th>
 						<td th:text="*{birthday}"></td>
 					</tr>
+					<tr>
+						<th scope="row">メール</th>
+						<td th:each="mail : ${customer.mailList}" class="row">
+
+							<span th:text="${mail.mailKind} + ':'" class="col-sm-3 m-2"></span>
+							<a th:href="'mailto:' + ${mail.mailAddr}" th:text="${mail.mailAddr}" class="col-sm-5 m-2"></a>
+							<form th:action="@{/customers/{uid}/maildelete/{mid}(uid=${customer.id}, mid=${mail.id})}" method="post" class="col-sm-2 m-2">
+								<input class="btn btn-sm btn-danger text-white mr-2" type="submit" value="メール削除"
+									onclick="return confirm('削除します。よろしいですか？')" />
+							</form>
+						</td>
+					</tr>
+
+					<tr>
+						<th scope="row">電話番号</th>
+						<td th:each="tel : ${customer.telephoneList}" class="row">
+							<span th:text="${tel.phoneKind} + ':'" class="col-sm-3 m-2"></span>
+							<span th:text="${tel.phoneNumber}" class="col-sm-5 m-2"></span>
+							<form th:action="@{/customers/{uid}/teldelete/{tid}(uid=${customer.id},tid=${tel.id})}" method="post" class="col-sm-2 m-2">
+								<input class="btn btn-sm btn-danger text-white mr-2" type="submit" value="電話削除"
+									onclick="return confirm('削除します。よろしいですか？')"/>
+							</form>
+						</td>
+					</tr>
+
 				</table>
 		</div>
 	</div>

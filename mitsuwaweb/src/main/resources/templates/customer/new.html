@@ -37,6 +37,22 @@
 	<input type="date" name="birthday" class="form-control" th:field="*{birthday}"/>
 	<span class="text-danger" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}">生年（設立年）月日エラー</span>
 </div>
+<div class="form-group">
+	<label for="mailKind">メール種類</label>
+	<input type="text" name="mailKind" class="form-control" />
+</div>
+<div class="form-group">
+	<label for="mailAddr">メールアドレス</label>
+	<input type="text" name="mailAddr" class="form-control" />
+</div>
+<div class="form-group">
+	<label for="phoneKind">電話種類</label>
+	<input type="text" name="phoneKind" class="form-control" />
+</div>
+<div class="form-group">
+	<label for="phoneNumber">電話番号</label>
+	<input type="text" name="phoneNumber" class="form-control" />
+</div>
 <div>
 	<button type="submit" class="btn btn-primary mr-4">登録</button>
 	<button type="button" onclick="history.back()" class="btn btn-primary ml-4">戻る</button>

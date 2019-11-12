@@ -147,6 +147,10 @@ public class CustomerController {
 	 */
 	@PostMapping("/customers/{id}/edit")
 	public ModelAndView customeredited(@PathVariable Integer id,
+			@RequestParam(name = "mailKind", required = false) String[] mailKinds,
+			@RequestParam(name = "mailAddr", required = false) String[] mailAddrs,
+			@RequestParam(name = "phoneKind", required = false) String[] phoneKinds,
+			@RequestParam(name = "phoneNumber", required = false) String[] phoneNumbers,
 			@ModelAttribute("customer")
 			@Validated Customer customer,
 			BindingResult result,
@@ -158,6 +162,20 @@ public class CustomerController {
 			editCustomer.setKana(customer.getKana());
 			editCustomer.setBirthday(customer.getBirthday());
 			editCustomer.setPerson(customer.getPerson());
+			if(!editCustomer.getMailList().isEmpty()) {
+				List<CustomerMail> mails = editCustomer.getMailList();
+				for(int i = 0; i < mails.size(); i++) {
+					mails.get(i).setMailKind(mailKinds[i]);
+					mails.get(i).setMailAddr(mailAddrs[i]);
+				}
+			}
+			if(!editCustomer.getTelephoneList().isEmpty()) {
+				List<CustomerTel> tels = editCustomer.getTelephoneList();
+				for(int i = 0; i < tels.size(); i++) {
+					tels.get(i).setPhoneKind(phoneKinds[i]);
+					tels.get(i).setPhoneNumber(phoneNumbers[i]);
+				}
+			}
 
 		} else {
 			mav.setViewName("layout");
