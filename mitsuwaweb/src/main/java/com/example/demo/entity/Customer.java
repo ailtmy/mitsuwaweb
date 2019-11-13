@@ -77,6 +77,11 @@ public class Customer {
 	private List<CustomerFile> customerFileList;
 
 	/**
+	 * 顧客メモ(特徴・注意点等）
+	 */
+	private String memo;
+
+	/**
 	 * 案件リスト　manytomany
 	 */
 //	private List<Project> projectList;

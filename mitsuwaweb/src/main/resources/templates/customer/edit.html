@@ -53,6 +53,10 @@
 	<input type="text" name="phoneNumber" class="form-control col-sm-6" th:value="${tel.phoneNumber}" />
 </div>
 </div>
+<div class="form-group row">
+	<label for="memo" class="col-sm-2 text-right">備考</label>
+	<textarea name="memo" rows="5" cols="20" class="form-control col-sm-6" th:value="*{memo}" placeholder="注意点等ひと口メモ"></textarea>
+</div>
 <div>
 	<button type="submit" class="btn btn-primary m-4">更新</button>
 	<button type="button" onclick="history.back()" class="btn btn-primary m-4">戻る</button>

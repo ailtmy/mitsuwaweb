@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+</head>
+<body >
+<div th:fragment="customer_contents">
+<h4 th:text="${title}"></h4>
+<form th:action="@{/customers/{id}/fileedit(id=${customer.id})}" method="post" th:object="${customer}" enctype="multipart/form-data">
+	<input type="hidden" name="id" th:value="*{id}"/>
+<div class="form-group row">
+	<label for="file" class="col-sm-2 text-right">ファイル</label>
+	<input type="file" name="file" class="form-control col-sm-6" multiple="multiple" />
+</div>
+<div>
+	<button type="submit" class="btn btn-primary m-4">更新</button>
+	<button type="button" onclick="history.back()" class="btn btn-primary m-4">戻る</button>
+</div>
+</form>
+</div>

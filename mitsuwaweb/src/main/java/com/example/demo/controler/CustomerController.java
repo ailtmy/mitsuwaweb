@@ -1,8 +1,11 @@
 package com.example.demo.controler;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -102,7 +105,6 @@ public class CustomerController {
 			List<CustomerFile> customerFiles = new ArrayList<CustomerFile>();
 			for(MultipartFile file : files) {
 				CustomerFile customerFile = new CustomerFile();
-				System.out.println(file.getOriginalFilename());
 				customerFile.setFileName(file.getOriginalFilename());
 				customerFile.setFile(file.getBytes());
 				customerFile.setCustomer(customer);
@@ -149,6 +151,30 @@ public class CustomerController {
 	}
 
 	/**
+	 * 顧客ファイルダウンロード
+	 */
+	@GetMapping("customers/{uid}/download/{fid}")
+	public void fileDownload(
+			@PathVariable Integer uid,
+			@PathVariable Integer fid,
+			HttpServletResponse response,
+			ModelAndView mav
+			) {
+		try (OutputStream os = response.getOutputStream();) {
+			CustomerFile file = fileService.find(fid);
+            byte[] bytefile = file.getFile();
+            String filename = file.getFileName();
+            response.setContentType("application/octet-stream");
+            response.setHeader("Content-Disposition", "attachment; filename=" + filename);
+            response.setContentLength(bytefile.length);
+            os.write(bytefile);
+            os.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	}
+
+	/**
 	 * 顧客編集画面
 	 */
 	@GetMapping("customers/{id}/edit")
@@ -182,6 +208,7 @@ public class CustomerController {
 			editCustomer.setKana(customer.getKana());
 			editCustomer.setBirthday(customer.getBirthday());
 			editCustomer.setPerson(customer.getPerson());
+			editCustomer.setMemo(customer.getMemo());
 			if(!editCustomer.getMailList().isEmpty()) {
 				List<CustomerMail> mails = editCustomer.getMailList();
 				for(int i = 0; i < mails.size(); i++) {
@@ -204,6 +231,60 @@ public class CustomerController {
 			return mav;
 		}
 		customerService.saveCustomer(editCustomer);
+		return new ModelAndView("redirect:/customers/" + customer.getId());
+	}
+	/**
+	 * 顧客ファイル追加画面
+	 */
+	@GetMapping("/customers/{id}/fileedit")
+	public ModelAndView fileedit(@PathVariable Integer id,
+			ModelAndView mav) {
+		mav.setViewName("layout");
+		mav.addObject("contents", "customer/fileedit::customer_contents");
+		mav.addObject("title", "顧客ファイル追加");
+		mav.addObject("customer", customerService.find(id));
+		return mav;
+	}
+
+	/**
+	 * 顧客ファイル追加
+	 */
+	@PostMapping("/customers/{id}/fileedit")
+	public ModelAndView imgedited(@PathVariable Integer id,
+			@RequestParam("file") MultipartFile[] files,
+			ModelAndView mav) throws IOException {
+		Customer customer = customerService.find(id);
+		customer.setId(id);
+		List<CustomerFile> customerFiles = new ArrayList<CustomerFile>();
+		for(MultipartFile file : files) {
+			CustomerFile customerFile = new CustomerFile();
+			customerFile.setFileName(file.getOriginalFilename());
+			customerFile.setFile(file.getBytes());
+			customerFile.setCustomer(customer);
+			fileService.saveCustomerFile(customerFile);
+			customerFiles.add(customerFile);
+		}
+		customer.setCustomerFileList(customerFiles);
+		customerService.saveCustomer(customer);
+
+		return new ModelAndView("redirect:./");
+	}
+
+	/**
+	 * 顧客ファイル削除
+	 */
+	@PostMapping("/customers/{cid}/filedelete/{fid}")
+	public ModelAndView customerFiledeleted(
+			@PathVariable Integer cid,
+			@PathVariable Integer fid,
+			ModelAndView mav) {
+		Customer customer = customerService.find(cid);
+		List<CustomerFile> files = customer.getCustomerFileList();
+		CustomerFile customerFile = fileService.find(fid);
+		files.remove(customerFile);
+		customer.setCustomerFileList(files);
+		customerService.saveCustomer(customer);
+		fileService.delete(fid);
 		return new ModelAndView("redirect:/customers/" + customer.getId());
 	}
 
