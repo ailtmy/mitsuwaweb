@@ -1,4 +1,4 @@
-package com.example.demo.entity;
+package com.example.demo.entity.customer;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,6 +16,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.example.demo.entity.Audit;
+import com.example.demo.entity.honninkakunin.HonninKakunin;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -65,7 +68,7 @@ public class Customer extends Audit {
 	/**
 	 * 電話！！manytomanyである
 	 */
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<CustomerTel> telephoneList;
 
 	/**
@@ -87,7 +90,8 @@ public class Customer extends Audit {
 	/**
 	 * 本人確認リスト（住所・商業登記事項）onetomany
 	 */
-//	private List<HonninKakunin> honninKakuninList;
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+	private List<HonninKakunin> honninKakuninList;
 
 	/**
 	 * 支店。営業所リスト　onetomany
@@ -97,18 +101,13 @@ public class Customer extends Audit {
 	/**
 	 * 代理人・代表者リスト　manytomany
 	 */
-	@ManyToMany
-	private List<Customer> dairininList;
+//	@ManyToMany
+//	private List<Customer> dairininList;
 
 	/**
 	 * 贈答品リスト（年賀状、暑中見舞、中元歳暮 onetomany
 	 */
 //	private List<Present> presentList
-
-
-
-// 名刺等ファイル onetomany
-
 
 
 

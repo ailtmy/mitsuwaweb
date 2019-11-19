@@ -22,14 +22,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.example.demo.entity.Customer;
-import com.example.demo.entity.CustomerFile;
-import com.example.demo.entity.CustomerMail;
-import com.example.demo.entity.CustomerTel;
-import com.example.demo.service.CustomerFileService;
-import com.example.demo.service.CustomerMailService;
-import com.example.demo.service.CustomerService;
-import com.example.demo.service.CustomerTelService;
+import com.example.demo.entity.customer.Customer;
+import com.example.demo.entity.customer.CustomerFile;
+import com.example.demo.entity.customer.CustomerMail;
+import com.example.demo.entity.customer.CustomerTel;
+import com.example.demo.service.customer.CustomerFileService;
+import com.example.demo.service.customer.CustomerMailService;
+import com.example.demo.service.customer.CustomerService;
+import com.example.demo.service.customer.CustomerTelService;
 
 @Controller
 public class CustomerController {

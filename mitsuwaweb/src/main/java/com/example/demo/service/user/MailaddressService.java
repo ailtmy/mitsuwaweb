@@ -1,10 +1,10 @@
-package com.example.demo.service;
+package com.example.demo.service.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.entity.Mailaddress;
-import com.example.demo.repository.MailaddressRepository;
+import com.example.demo.entity.user.Mailaddress;
+import com.example.demo.repository.user.MailaddressRepository;
 
 @Service
 public class MailaddressService {

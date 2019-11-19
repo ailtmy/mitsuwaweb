@@ -1,12 +1,12 @@
-package com.example.demo.service;
+package com.example.demo.service.customer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.entity.Customer;
-import com.example.demo.repository.CustomerRepository;
+import com.example.demo.entity.customer.Customer;
+import com.example.demo.repository.customer.CustomerRepository;
 
 @Service
 public class CustomerService {

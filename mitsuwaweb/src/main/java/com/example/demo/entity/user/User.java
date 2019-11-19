@@ -1,4 +1,4 @@
-package com.example.demo.entity;
+package com.example.demo.entity.user;
 
 import java.util.List;
 
@@ -15,6 +15,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+
+import com.example.demo.entity.Audit;
+import com.example.demo.entity.honninkakunin.HonninKakunin;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -39,7 +42,7 @@ public class User extends Audit {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Mailaddress> mailList;
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Telephone> telephoneList;
 
 	private byte[] image;
@@ -51,5 +54,8 @@ public class User extends Audit {
 
 	@Enumerated(EnumType.STRING)
 	private Role role;
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<HonninKakunin> honninKakuninList;
 
 }

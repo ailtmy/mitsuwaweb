@@ -1,10 +1,20 @@
-package com.example.demo.entity;
+package com.example.demo.entity.honninkakunin;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.example.demo.entity.Audit;
+import com.example.demo.entity.customer.Customer;
+import com.example.demo.entity.user.User;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -22,11 +32,16 @@ public class HonninKakunin extends Audit {
 	/**
 	 * 確認者
 	 */
-
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
 
 	/**
 	 * 顧客 manytoone
 	 */
+	@ManyToOne
+	@JoinColumn(name = "customer_id")
+	private Customer customer;
 
 //対面取引クラス----------
 	/**
@@ -59,45 +74,22 @@ public class HonninKakunin extends Audit {
 	 * 返信日
 	 */
 
-//-----------------
-
-
 	/**
 	 * 備考
 	 */
+	private String memo;
 
-
-//住所クラス------------------
 	/**
 	 * 住所リスト onetomany
 	 */
-//-------------------------------
-
-// 本人確認書類クラス-------------------
-	/**
-	 * 書類ファイル
-	 */
+	@OneToMany(mappedBy = "honninKakunin", cascade = CascadeType.ALL)
+	private List<CustomerAddress> addressList;
 
 	/**
-	 * 書類名
+	 * 本人確認書類
 	 */
-
-	/**
-	 * 記号番号
-	 */
-
-	/**
-	 * 交付日
-	 */
-
-	/**
-	 * 有効期限
-	 */
-
-	/**
-	 * 発行者名
-	 */
-//---------------------------
+	@OneToMany(mappedBy = "honninKakunin", cascade = CascadeType.ALL)
+	private List<KakuninSyorui> kakuninSyoruiList;
 
 
 }

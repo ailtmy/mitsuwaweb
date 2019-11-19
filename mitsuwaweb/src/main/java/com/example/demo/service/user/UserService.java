@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.service.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -6,8 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.entity.User;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.entity.user.User;
+import com.example.demo.repository.user.UserRepository;
 
 @Service
 public class UserService {

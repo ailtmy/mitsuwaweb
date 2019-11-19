@@ -14,7 +14,7 @@
 	<label for="person" class="col-sm-2 text-right">区分</label>
 	<select id="person" name="person" class="form-control col-sm-6">
 		<option th:selected="${customer.person == ''}"/>
-		<option th:each="person : ${T(com.example.demo.entity.Customer.PersonDivision).values()}"
+		<option th:each="person : ${T(com.example.demo.entity.customer.Customer.PersonDivision).values()}"
 			th:value="${person}"
 			th:selected="${customer.person == person}"
 			th:text="${person}"/>

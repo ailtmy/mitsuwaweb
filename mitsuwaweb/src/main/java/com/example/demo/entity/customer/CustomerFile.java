@@ -1,27 +1,34 @@
-package com.example.demo.entity;
-
-import java.util.List;
+package com.example.demo.entity.customer;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+@Data
 @Entity
-@Table(name = "telephone")
-@Getter
+@Table
 @Setter
-public class Telephone extends TelAudit {
+@Getter
+public class CustomerFile {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@ManyToMany(mappedBy = "telephoneList")
-	private List<User> userList;
+	private String fileName;
+
+	private byte[] file;
+
+	@ManyToOne
+	@JoinColumn(name = "customer_id")
+	private Customer customer;
 
 }

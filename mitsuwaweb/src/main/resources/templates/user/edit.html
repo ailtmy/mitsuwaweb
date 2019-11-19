@@ -14,7 +14,7 @@
 	<label for="role" class="col-sm-2 text-right">権限</label>
 	<select id="role" name="role" class="form-control col-sm-6">
 		<option th:selected="${user.role == ''}"/>
-		<option th:each="role : ${T(com.example.demo.entity.User.Role).values()}"
+		<option th:each="role : ${T(com.example.demo.entity.user.User.Role).values()}"
 			th:value="${role}"
 			th:selected="${user.role == role}"
 			th:text="${role}"/>

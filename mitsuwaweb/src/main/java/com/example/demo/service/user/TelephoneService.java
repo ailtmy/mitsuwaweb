@@ -1,10 +1,10 @@
-package com.example.demo.service;
+package com.example.demo.service.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.entity.Telephone;
-import com.example.demo.repository.TelephoneRepository;
+import com.example.demo.entity.user.Telephone;
+import com.example.demo.repository.user.TelephoneRepository;
 
 @Service
 public class TelephoneService {

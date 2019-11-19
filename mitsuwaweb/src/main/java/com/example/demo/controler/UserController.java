@@ -28,13 +28,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.example.demo.entity.Mailaddress;
-import com.example.demo.entity.Telephone;
-import com.example.demo.entity.User;
-import com.example.demo.entity.User.Role;
-import com.example.demo.service.MailaddressService;
-import com.example.demo.service.TelephoneService;
-import com.example.demo.service.UserService;
+import com.example.demo.entity.user.Mailaddress;
+import com.example.demo.entity.user.Telephone;
+import com.example.demo.entity.user.User;
+import com.example.demo.entity.user.User.Role;
+import com.example.demo.service.user.MailaddressService;
+import com.example.demo.service.user.TelephoneService;
+import com.example.demo.service.user.UserService;
 
 @Controller
 public class UserController {

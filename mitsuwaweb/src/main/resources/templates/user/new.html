@@ -18,7 +18,7 @@
 	<label for="role">権限</label>
 	<select id="role" name="role" class="form-control">
 		<option th:selected="${''}"/>
-		<option th:each="role : ${T(com.example.demo.entity.User.Role).values()}"
+		<option th:each="role : ${T(com.example.demo.entity.user.User.Role).values()}"
 			th:text="${role}"/>
 	</select>
 </div>

@@ -1,4 +1,6 @@
-package com.example.demo.entity;
+package com.example.demo.entity.honninkakunin;
+
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,15 +15,37 @@ import lombok.Setter;
 
 @Entity
 @Table
-@Getter
 @Setter
-public class CustomerMail extends MailAudit {
+@Getter
+public class CustomerAddress {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
+	/**
+	 * 住所種類
+	 */
+	private String addrKind;
+
+	/**
+	 * 郵便番号
+	 */
+
+	private String zipCode;
+
+	/**
+	 * 住所
+	 */
+	private String addr;
+
+	/**
+	 * 住定日
+	 */
+	private LocalDate addrDate;
+
 	@ManyToOne
-	@JoinColumn(name = "customerId")
-	private Customer customer;
+	@JoinColumn(name = "honnin_kakunin_id")
+	private HonninKakunin honninKakunin;
+
 }
