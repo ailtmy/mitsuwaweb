@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.example.demo.entity.Audit;
@@ -43,18 +44,12 @@ public class HonninKakunin extends Audit {
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
 
-//対面取引クラス----------
 	/**
 	 * 対面取引
 	 */
+	@OneToOne(mappedBy = "honninKakunin",cascade = CascadeType.ALL)
+	private TaimenTorihiki taimen;
 
-	/**
-	 * 確認日時
-	 */
-
-	/**
-	 * 確認場所
-	 */
 //-----------------
 
 //非対面取引クラス----------
