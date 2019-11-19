@@ -16,15 +16,10 @@ import lombok.Setter;
 @Table(name = "telephone")
 @Getter
 @Setter
-public class Telephone {
-
+public class Telephone extends TelAudit {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-
-	private String phoneKind;
-
-	private String phoneNumber;
 
 	@ManyToMany(mappedBy = "telephoneList")
 	private List<User> userList;

@@ -16,16 +16,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Data
 @Entity
 @Table(name="users")
 @Setter
 @Getter
-public class User {
+public class User extends Audit {
 
 	public static enum Role {
 		ROLE_ADMIN, ROLE_GENERAL

@@ -17,16 +17,14 @@ import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Data
 @Entity
 @Table
 @Getter
 @Setter
-public class Customer {
+public class Customer extends Audit {
 
 	public static enum PersonDivision {
 		個人, 法人
@@ -89,7 +87,7 @@ public class Customer {
 	/**
 	 * 本人確認リスト（住所・商業登記事項）onetomany
 	 */
-//	private List<HonninKakunin> honninkakuninList;
+//	private List<HonninKakunin> honninKakuninList;
 
 	/**
 	 * 支店。営業所リスト　onetomany

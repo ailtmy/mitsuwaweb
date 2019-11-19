@@ -7,7 +7,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,16 +15,11 @@ import lombok.Setter;
 @Table(name = "mailaddress")
 @Getter
 @Setter
-public class Mailaddress {
+public class Mailaddress extends MailAudit {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-
-	private String mailKind;
-
-	@Email
-	private String mailAddr;
 
 	@ManyToOne
 	@JoinColumn(name = "userId")
