@@ -50,24 +50,11 @@ public class HonninKakunin extends Audit {
 	@OneToOne(mappedBy = "honninKakunin",cascade = CascadeType.ALL)
 	private TaimenTorihiki taimen;
 
-//-----------------
-
-//非対面取引クラス----------
 	/**
 	 * 非対面取引
 	 */
-
-	/**
-	 * 書類受領日
-	 */
-
-	/**
-	 * 送付日
-	 */
-
-	/**
-	 * 返信日
-	 */
+	@OneToOne(mappedBy = "honninKakunin", cascade = CascadeType.ALL)
+	private HitaimenTorihiki hitaimen;
 
 	/**
 	 * 備考

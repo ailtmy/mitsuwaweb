@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+</head>
+<body >
+<div th:fragment="honninkakunin_contents">
+<h4 th:text="${title}"></h4>
+<form th:action="@{customers/{id)/idents/tnew(id=${customer.id})}" method="post" enctype="multipart/form-data" th:object="${honninkakunin}">
+<div class="form-group">
+	<label for="file">ファイル</label>
+	<input type="file" name="file" class="form-control" multiple="multiple"/>
+</div>
+<div class="form-group">
+	<label for="user">確認者</label>
+	<select id="user" name="user" class="form-control">
+		<option th:selected="${''}"/>
+	</select>
+</div>
+<div>
+	<label for="addrkind">住所種類</label>
+	<input type="text" name="addrkind" class="form-control"/>
+</div>
+<div>
+	<label for="zipcode">郵便番号</label>
+	<input type="text" name="zipcode" class="form-control"/>
+</div>
+<div>
+	<label for="addr">住所</label>
+	<input type="text" name="addr" class="form-control"/>
+</div>
+<div>
+	<label for="addrdate">住定日</label>
+	<input type="date" name="addrdate" class="form-control"/>
+</div>
+<div>
+	<label for="syoruiname">確認書類名</label>
+	<input type="text" name="syoruiname" class="form-control"/>
+</div>
+<div>
+	<label for="syoruikigou">記号番号</label>
+	<input type="text" name="syoruikigou" class="form-control"/>
+</div>
+<div>
+	<label for="hakkosya">発行者名</label>
+	<input type="text" name="hakkosya" class="form-control"/>
+</div>
+<div class="form-group">
+	<label for="kofubi">発行日</label>
+	<input type="date" name="kofubi" class="form-control"/>
+</div>
+<div class="form-group">
+	<label for="yukokigen">有効期限</label>
+	<input type="date" name="yukokigen" class="form-control"/>
+</div>
+<div class="form-group">
+	<label for="kakununDate">確認日時</label>
+	<input type="date" name="kakuninDate" class="form-control"/>
+</div>
+<div>
+	<label for="kakuninPlace">確認場所</label>
+	<input type="text" name="kakuninPlace" class="form-control"/>
+</div>
+<div class="form-group">
+	<label for="memo">備考</label>
+	<textarea name=memo rows="5" cols="20" class="form-control" placeholder="注意点等ひと口メモ"></textarea>
+</div>
+<div>
+	<button type="submit" class="btn btn-primary mr-4">登録</button>
+	<button type="button" onclick="history.back()" class="btn btn-primary ml-4">戻る</button>
+</div>
+</form>
+</div>

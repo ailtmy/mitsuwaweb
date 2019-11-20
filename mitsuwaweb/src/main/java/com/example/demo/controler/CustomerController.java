@@ -30,6 +30,7 @@ import com.example.demo.service.customer.CustomerFileService;
 import com.example.demo.service.customer.CustomerMailService;
 import com.example.demo.service.customer.CustomerService;
 import com.example.demo.service.customer.CustomerTelService;
+import com.example.demo.service.honninkakunin.HonninKakuninService;
 
 @Controller
 public class CustomerController {
@@ -45,6 +46,9 @@ public class CustomerController {
 
 	@Autowired
 	CustomerFileService fileService;
+
+	@Autowired
+	HonninKakuninService honninKakuninService;
 
 	/**
 	 * 顧客一覧

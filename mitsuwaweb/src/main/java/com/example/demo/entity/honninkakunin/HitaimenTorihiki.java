@@ -1,5 +1,6 @@
 package com.example.demo.entity.honninkakunin;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
@@ -17,21 +18,37 @@ import lombok.Setter;
 @Table
 @Getter
 @Setter
-public class TaimenTorihiki {
+public class HitaimenTorihiki {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	/**
-	 * 確認日時
+	 * 書類受領日
 	 */
-	private LocalDateTime kakuninDate;
+	private LocalDate jyuryo;
 
 	/**
-	 * 確認場所
+	 * 送付日
 	 */
-	private String kakuninPlace;
+	private LocalDate sofu;
+
+	/**
+	 * 返信日
+	 */
+	private LocalDate henshin;
+
+	/**
+	 * 意思確認方法
+	 */
+	private String ishikakunin;
+
+	/**
+	 * 確認日時
+	 */
+	private LocalDateTime ishikakuninDate;
+
 
 	@OneToOne
 	@JoinColumn(name = "honnin_kakunin_id")
