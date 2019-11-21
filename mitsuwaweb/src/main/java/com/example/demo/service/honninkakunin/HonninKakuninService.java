@@ -19,4 +19,8 @@ public class HonninKakuninService {
 		return repository.findByCustomerOrderByIdDesc(customer, pageable);
 	}
 
+	public HonninKakunin saveHonninKakunin(HonninKakunin honninKakunin) {
+		return repository.saveAndFlush(honninKakunin);
+	}
+
 }

@@ -427,24 +427,4 @@ public class CustomerController {
 		mav.addObject("list", list);
 		return mav;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

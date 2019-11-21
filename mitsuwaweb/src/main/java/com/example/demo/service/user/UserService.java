@@ -1,5 +1,7 @@
 package com.example.demo.service.user;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +22,10 @@ public class UserService {
 
 	public Page<User> getAll(Pageable pageable){
 		return  repository.findAllByOrderById(pageable);
+	}
+
+	public List<User> findAll(){
+		return repository.findAll();
 	}
 
 	public User saveUser(User user) {

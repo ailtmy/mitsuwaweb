@@ -8,7 +8,7 @@
 <body >
 <div th:fragment="honninkakunin_contents">
 <h4 th:text="${title}"></h4>
-<form th:action="@{customers/{id)/idents/tnew(id=${customer.id})}" method="post" enctype="multipart/form-data" th:object="${honninkakunin}">
+<form th:action="@{/customers/{id}/idents/tnew(id=${customer.id})}" method="post" enctype="multipart/form-data" th:object="${honninkakunin}">
 <div class="form-group">
 	<label for="file">ファイル</label>
 	<input type="file" name="file" class="form-control" multiple="multiple"/>
@@ -17,6 +17,7 @@
 	<label for="user">確認者</label>
 	<select id="user" name="user" class="form-control">
 		<option th:selected="${''}"/>
+		<option th:each="user : ${users}" th:value="${user.name}" th:text="${user.name}"/>
 	</select>
 </div>
 <div>
