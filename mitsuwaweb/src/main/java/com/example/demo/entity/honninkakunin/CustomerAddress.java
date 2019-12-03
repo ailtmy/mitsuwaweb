@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -42,6 +44,7 @@ public class CustomerAddress {
 	/**
 	 * 住定日
 	 */
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate addrDate;
 
 	@ManyToOne

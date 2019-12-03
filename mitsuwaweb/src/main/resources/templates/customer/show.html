@@ -13,6 +13,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light mt-2 mb-4">
 	<a class="btn btn-sm btn-primary mr-4" th:href="@{/customers?size=5&page=0}">顧客一覧</a>
 	<a class="btn btn-sm btn-primary mr-4" th:href="@{/customers/{id}/edit(id=${customer.id})}">顧客編集</a>
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/customers/{id}/idents(id=${customer.id})}">本人確認記録作成</a>
 	<a class="btn btn-sm btn-primary mr-4" th:href="@{/customers/{id}/fileedit(id=${customer.id})}">顧客ファイル追加</a>
 	<a class="btn btn-sm btn-info mr-4" th:href="@{/customers/{id}/mailnew(id=${customer.id})}">メール新規登録</a>
 	<a class="btn btn-sm btn-info mr-4" th:href="@{/customers/{id}/telnew(id=${customer.id})}">電話新規登録</a>

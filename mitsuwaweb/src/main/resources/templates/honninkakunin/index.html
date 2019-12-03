@@ -22,9 +22,10 @@
 <p th:text="|${list.getTotalElements()}件のデータが存在します。|"></p>
 <table class="table table-bordered text-center table-hover table-sm">
 <tr>
-	<th class="m-1 p-1"><a class="btn btn-info btn-sm text-white ml-1 p-1" th:href="@{/customers/new}">新規作成</a></th>
+	<th class="m-1 p-1"><a class="btn btn-info btn-sm text-white ml-1 p-1" th:href="@{/customers/{id}/idents/tnew(id=${customer.id})}">新規作成</a></th>
 	<th>ID</th>
 	<th>確認者</th>
+	<th>住所</th>
 	<th>最終更新日</th>
 	<th colspan="2"></th>
 </tr>
@@ -36,9 +37,12 @@
 		onclick="return confirm('削除します。よろしいですか？')" sec:authorize="hasRole('ADMIN')"/>
 	</form>
 	</td>
-	<td th:text="*{id}"></td>
-	<td th:text="*{user.name}"></td>
-	<td th:text="*{lastModifiedDate}"></td>
+	<td th:text="${kakunin.id}"></td>
+	<td th:text="${kakunin.user.name}"></td>
+	<td th:each="addr : ${kakunin.addressList}">
+		<p th:text="${addr.addr}"></p>
+	</td>
+	<td th:text="${kakunin.lastModifiedDate}"></td>
 	<!--
 </tr>
 -->

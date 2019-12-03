@@ -17,16 +17,16 @@
 	<label for="user">確認者</label>
 	<select id="user" name="user" class="form-control">
 		<option th:selected="${''}"/>
-		<option th:each="user : ${users}" th:value="${user.name}" th:text="${user.name}"/>
+		<option th:each="user : ${users}" th:value="${user.id}" th:text="${user.name}"/>
 	</select>
 </div>
 <div>
 	<label for="addrkind">住所種類</label>
-	<input type="text" name="addrkind" class="form-control"/>
+	<input type="text" name="addrKind" class="form-control"/>
 </div>
 <div>
 	<label for="zipcode">郵便番号</label>
-	<input type="text" name="zipcode" class="form-control"/>
+	<input type="text" name="zipCode" class="form-control"/>
 </div>
 <div>
 	<label for="addr">住所</label>
@@ -34,31 +34,31 @@
 </div>
 <div>
 	<label for="addrdate">住定日</label>
-	<input type="date" name="addrdate" class="form-control"/>
+	<input type="date" name="addrDate" class="form-control"/>
 </div>
 <div>
 	<label for="syoruiname">確認書類名</label>
-	<input type="text" name="syoruiname" class="form-control"/>
+	<input type="text" name="syoruiName" class="form-control"/>
 </div>
 <div>
 	<label for="syoruikigou">記号番号</label>
-	<input type="text" name="syoruikigou" class="form-control"/>
+	<input type="text" name="syoruiKigou" class="form-control"/>
 </div>
 <div>
 	<label for="hakkosya">発行者名</label>
-	<input type="text" name="hakkosya" class="form-control"/>
+	<input type="text" name="syoruiHakkosya" class="form-control"/>
 </div>
 <div class="form-group">
 	<label for="kofubi">発行日</label>
-	<input type="date" name="kofubi" class="form-control"/>
+	<input type="date" name="syoruiKoufubi" class="form-control"/>
 </div>
 <div class="form-group">
 	<label for="yukokigen">有効期限</label>
-	<input type="date" name="yukokigen" class="form-control"/>
+	<input type="date" name="syoruiYukokigen" class="form-control"/>
 </div>
 <div class="form-group">
-	<label for="kakununDate">確認日時</label>
-	<input type="date" name="kakuninDate" class="form-control"/>
+	<label for="kakuninDate">確認日時</label>
+	<input type="datetime-local" name="kakuninDate" class="form-control"/>
 </div>
 <div>
 	<label for="kakuninPlace">確認場所</label>

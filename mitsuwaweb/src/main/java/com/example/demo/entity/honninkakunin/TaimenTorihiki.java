@@ -10,6 +10,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,6 +29,7 @@ public class TaimenTorihiki {
 	/**
 	 * 確認日時
 	 */
+	@DateTimeFormat(iso = ISO.DATE_TIME)
 	private LocalDateTime kakuninDate;
 
 	/**

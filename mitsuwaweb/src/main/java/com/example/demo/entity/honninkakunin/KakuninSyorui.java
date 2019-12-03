@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,27 +31,28 @@ public class KakuninSyorui {
 	/**
 	 * 書類名
 	 */
-	private String name;
+	private String syoruiName;
 
 	/**
 	 * 記号番号
 	 */
-	private String kigou;
+	private String syoruiKigou;
 
 	/**
 	 * 交付日
 	 */
-	private LocalDate koufubi;
-
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate syoruiKoufubi;
 	/**
 	 * 有効期限
 	 */
-	private LocalDate yukokigen;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate syoruiYukokigen;
 
 	/**
 	 * 発行者名
 	 */
-	private String hakkousya;
+	private String syoruiHakkosya;
 
 	/**
 	 * 確認書類ファイル
