@@ -23,4 +23,8 @@ public class HonninKakuninService {
 		return repository.saveAndFlush(honninKakunin);
 	}
 
+	public HonninKakunin find(Integer id) {
+		return repository.findById(id).orElse(null);
+	}
+
 }

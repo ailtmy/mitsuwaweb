@@ -148,5 +148,22 @@ public class HonninKakuninController {
 
 	}
 
+	/*
+	 * 本人確認記録詳細
+	 */
+	@GetMapping("/customers/{cid}/idents/{hid}")
+	public ModelAndView identshow(
+			@PathVariable Integer cid,
+			@PathVariable Integer hid,
+			ModelAndView mav
+			) {
+		HonninKakunin honninKakunin = honninKakuninService.find(hid);
+		mav.setViewName("layout");
+		mav.addObject("contents", "honninkakunin/show::honninkakunin_contents");
+		mav.addObject("title", "本人確認記録詳細");
+		mav.addObject("honninKakunin", honninKakunin);
+		return mav;
+	}
+
 
 }

@@ -37,7 +37,7 @@
 		onclick="return confirm('削除します。よろしいですか？')" sec:authorize="hasRole('ADMIN')"/>
 	</form>
 	</td>
-	<td th:text="${kakunin.id}"></td>
+	<td><a th:href="@{/customers/{cid}/idents/{hid(cid=${customer.id}, hid=${honninKakunin.id})}"></a></td>
 	<td th:text="${kakunin.user.name}"></td>
 	<td th:each="addr : ${kakunin.addressList}">
 		<p th:text="${addr.addr}"></p>
