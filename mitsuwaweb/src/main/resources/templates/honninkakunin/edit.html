@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+</head>
+<body >
+<div th:fragment="honnninkakunin_contents">
+<h4 th:text="${title}"></h4>
+<form th:action="@{edit}" method="post" th:object="${honninKakunin}"  enctype="multipart/form-data">
+	<input type="hidden" name="id" th:value="*{id}"/>
+<div class="form-group row">
+	<label for="user" class="col-sm-2 text-right">確認者</label>
+	<select id="user" name="user" class="form-control col-sm-6">
+		<option th:selected="*{user.name}" th:value="*{user.id}" th:text="*{user.name}"/>
+		<option th:each="user : ${users}" th:value="${user.id}" th:text="${user.name}"/>
+	</select>
+</div>
+<div th:each="addr : *{addressList}">
+<div class="form-group row">
+	<label for="addrkind" class="col-sm-2 text-right">住所種類</label>
+	<input type="text" name="addrKind" class="form-control col-sm-6" th:value="${addr.addrKind}"/>
+</div>
+<div class="form-group row">
+	<label for="zipcode" class="col-sm-2 text-right">郵便番号</label>
+	<input type="text" name="zipCode" class="form-control col-sm-6" th:value="${addr.zipCode}"/>
+</div>
+<div class="form-group row">
+	<label for="addr" class="col-sm-2 text-right">住所</label>
+	<input type="text" name="addr" class="form-control col-sm-6" th:value="${addr.addr}"/>
+</div>
+<div class="form-group row">
+	<label for="addrDate" class="col-sm-2 text-right">住定日</label>
+	<input type="date" name="addrDate" class="form-control col-sm-6" th:value="${addr.addrDate}"/>
+</div>
+</div>
+<div th:each="syorui : *{kakuninSyoruiList}">
+<div class="form-group row">
+	<label for="syoruiname" class="col-sm-2 text-right">確認書類名</label>
+	<input type="text" name="syoruiName" class="form-control col-sm-6" th:value="${syorui.syoruiName}"/>
+</div>
+<div class="form-group row">
+	<label for="syoruiKigou" class="col-sm-2 text-right">記号番号</label>
+	<input type="text" name="syoruiKigou" class="form-control col-sm-6" th:value="${syorui.syoruiKigou}"/>
+</div>
+<div class="form-group row">
+	<label for="syoruiHakkosya" class="col-sm-2 text-right">発行者名</label>
+	<input type="text" name="syoruiHakkosya" class="form-control col-sm-6" th:value="${syorui.syoruiHakkosya}"/>
+</div>
+<div class="form-group row">
+	<label for="syoruiKoufubi" class="col-sm-2 text-right">発行日</label>
+	<input type="date" name="syoruiKoufubi" class="form-control col-sm-6" th:value="${syorui.syoruiKoufubi}"/>
+</div>
+<div class="form-group row">
+	<label for="syoruiYukokigen" class="col-sm-2 text-right">有効期限</label>
+	<input type="date" name="syoruiYukokigen" class="form-control col-sm-6" th:value="${syorui.syoruiYukokigen}"/>
+</div>
+</div>
+<div th:if="${taimen != null}">
+<div class="form-group row">
+	<label for="kakuninDate" class="col-sm-2 text-right">確認日時</label>
+	<input type="datetime-local" name="kakuninDate" class="form-control col-sm-6" th:value="*{taimen.kakuninDate}"/>
+</div>
+<div class="form-group row">
+	<label for="kakuninPlace" class="col-sm-2 text-right">確認場所</label>
+	<input type="text" name="kakuninPlace" class="form-control col-sm-6" th:value="*{taimen.kakuninPlace}"/>
+</div>
+</div>
+<div th:if="${hitaimen != null}">
+<div class="form-group row">
+	<label for="jyuryo" class="col-sm-2 text-right">確認書類受領日</label>
+	<input type="date" name="jyuryo" class="form-control col-sm-6" th:value="*{hitaimen.jyuryo}"/>
+</div>
+<div class="form-group row">
+	<label for="sofu" class="col-sm-2 text-right">関係文書送付日</label>
+	<input type="date" name="sofu" class="form-control col-sm-6" th:value="*{hitaimen.sofu}"/>
+</div>
+<div class="form-group row">
+	<label for="registeredNumber" class="col-sm-2 text-right">郵便問い合わせ番号</label>
+	<input type="date" name="registeredNumber" class="form-control col-sm-6" th:value="*{hitaimen.registeredNumber}"/>
+</div>
+<div class="form-group row">
+	<label for="henshin" class="col-sm-2 text-right">関係文書返信日</label>
+	<input type="date" name="henshin" class="form-control col-sm-6" th:value="*{hitaimen.henshin}"/>
+</div>
+<div class="form-group row">
+	<label for="ishikakunin" class="col-sm-2 text-right">意思確認方法</label>
+	<input type="text" name="ishikakunin" class="form-control col-sm-6" th:value="*{hitaimen.ishikakunin}"/>
+</div>
+<div class="form-group row">
+	<label for="ishikakuninDate" class="col-sm-2 text-right">意思確認日時</label>
+	<input type="date" name="ishikakuninDate" class="form-control col-sm-6" th:value="*{hitaimen.ishikakuninDate}"/>
+</div>
+</div>
+<div class="form-group row">
+	<label for="memo" class="col-sm-2 text-right">備考</label>
+	<textarea name="memo" rows="5" cols="20" class="form-control col-sm-6" th:field="*{memo}" placeholder="注意点等ひと口メモ"></textarea>
+</div>
+<div>
+	<button type="submit" class="btn btn-primary m-4">更新</button>
+	<button type="button" onclick="history.back()" class="btn btn-primary m-4">戻る</button>
+</div>
+</form>
+</div>

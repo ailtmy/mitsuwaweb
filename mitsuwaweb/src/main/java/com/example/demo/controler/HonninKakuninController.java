@@ -283,5 +283,28 @@ public class HonninKakuninController {
 
 	}
 
+	/**
+	 * 本人確認記録編集画面表示
+	 */
+	@GetMapping("customers/{cid}/idents/{hid}/edit")
+	public ModelAndView identedit(
+			@PathVariable Integer cid,
+			@PathVariable Integer hid,
+			ModelAndView mav
+			) {
+		mav.setViewName("layout");
+		mav.addObject("contents", "honninkakunin/edit::honnninkakunin_contents");
+		mav.addObject("title", "本人確認記録編集");
+		mav.addObject("honninKakunin", honninKakuninService.find(hid));
+		mav.addObject("taimen", taimenTorihikiService.findByHonninKakuninId(hid));
+		mav.addObject("hitaimen", hitaimenTorihikiService.findByHonninKakuninId(hid));
+		mav.addObject("users", userService.findAll());
+		return mav;
+	}
+
+	/**
+	 * 本人確認記録編集
+	 */
+
 
 }

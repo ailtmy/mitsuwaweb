@@ -35,7 +35,7 @@
 <tr th:each="kakunin : ${list}">
 	<td class="m-1 p-1">
 	<form th:action="@{/idents/{id}/delete(id=${kakunin.id})}" method="post">
-		<a class="btn btn-primary btn-sm text-white ml-1 p-1" th:href="@{/idents/{id}/edit(id=${kakunin.id})}">編集</a>
+		<a class="btn btn-primary btn-sm text-white ml-1 p-1" th:href="@{/customers/{cid}/idents/{id}/edit(cid=${customer.id},id=${kakunin.id})}">編集</a>
 		<input class="btn btn-danger btn-sm text-white m-1 p-1" type="submit" value="削除"
 		onclick="return confirm('削除します。よろしいですか？')" sec:authorize="hasRole('ADMIN')"/>
 	</form>
