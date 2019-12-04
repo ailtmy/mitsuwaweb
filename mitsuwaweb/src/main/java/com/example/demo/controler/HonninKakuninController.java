@@ -1,8 +1,11 @@
 package com.example.demo.controler;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.entity.customer.Customer;
 import com.example.demo.entity.honninkakunin.CustomerAddress;
+import com.example.demo.entity.honninkakunin.HitaimenTorihiki;
 import com.example.demo.entity.honninkakunin.HonninKakunin;
 import com.example.demo.entity.honninkakunin.HonninKakuninFile;
 import com.example.demo.entity.honninkakunin.KakuninSyorui;
@@ -27,6 +31,8 @@ import com.example.demo.entity.honninkakunin.TaimenTorihiki;
 import com.example.demo.entity.user.User;
 import com.example.demo.service.customer.CustomerService;
 import com.example.demo.service.honninkakunin.CustomerAddressService;
+import com.example.demo.service.honninkakunin.HitaimenTorihikiService;
+import com.example.demo.service.honninkakunin.HonninKakuninFileService;
 import com.example.demo.service.honninkakunin.HonninKakuninService;
 import com.example.demo.service.honninkakunin.KakuninSyoruiService;
 import com.example.demo.service.honninkakunin.TaimenTorihikiService;
@@ -48,7 +54,13 @@ public class HonninKakuninController {
 	TaimenTorihikiService taimenTorihikiService;
 
 	@Autowired
+	HitaimenTorihikiService hitaimenTorihikiService;
+
+	@Autowired
 	KakuninSyoruiService kakuninSyoruiService;
+
+	@Autowired
+	HonninKakuninFileService honninKakuninFileService;
 
 	@Autowired
 	UserService userService;
@@ -91,11 +103,29 @@ public class HonninKakuninController {
 	}
 
 	/**
+	 * 非対面取引本人確認記録新規作成画面
+	 */
+	@GetMapping("/customers/{id}/idents/hnew")
+	public ModelAndView hnew(
+			@PathVariable Integer id,
+			@ModelAttribute HonninKakunin honninkakunin,
+			ModelAndView mav) {
+		Customer customer = customerService.find(id);
+		List<User> users = userService.findAll();
+		mav.setViewName("layout");
+		mav.addObject("contents", "honninkakunin/hitaimennew::honninkakunin_contents");
+		mav.addObject("title", "非対面取引本人確認記録作成");
+		mav.addObject("customer", customer);
+		mav.addObject("users", users);
+		return mav;
+	}
+
+	/**
 	 * 対面取引本人確認記録作成
 	 * @throws IOException
 	 */
 	@PostMapping("/customers/{customerId}/idents/tnew")
-	public ModelAndView tcreat(
+	public ModelAndView tcreate(
 			@PathVariable Integer customerId,
 			@RequestParam("file") MultipartFile[] files,
 			@ModelAttribute("CustomerAddress") CustomerAddress customerAddress,
@@ -148,7 +178,65 @@ public class HonninKakuninController {
 
 	}
 
-	/*
+	/**
+	 * 非対面取引本人確認記録作成
+	 * @throws IOException
+	 */
+	@PostMapping("/customers/{customerId}/idents/hnew")
+	public ModelAndView hcreate(
+			@PathVariable Integer customerId,
+			@RequestParam("file") MultipartFile[] files,
+			@ModelAttribute("CustomerAddress") CustomerAddress customerAddress,
+			@ModelAttribute("HitaimenTorihiki") HitaimenTorihiki hitaimenTorihiki,
+			@ModelAttribute("KakuninSyorui") KakuninSyorui kakuninSyorui,
+			@ModelAttribute("HonninKakunin") HonninKakunin honninKakunin,
+			BindingResult result,
+			ModelAndView mav) throws IOException {
+
+		if(!result.hasErrors()) {
+			Customer customer = customerService.find(customerId);
+			honninKakunin.setCustomer(customer);
+
+			List<CustomerAddress> addresses = new ArrayList<CustomerAddress>();
+
+			honninKakuninService.saveHonninKakunin(honninKakunin);
+			customerAddress.setHonninKakunin(honninKakunin);
+			CustomerAddress address = customerAddressService.save(customerAddress);
+			addresses.add(address);
+			honninKakunin.setAddressList(addresses);
+
+			hitaimenTorihiki.setHonninKakunin(honninKakunin);
+			hitaimenTorihikiService.saveHitaimenTorihiki(hitaimenTorihiki);
+			honninKakunin.setHitaimen(hitaimenTorihiki);
+
+			kakuninSyorui.setHonninKakunin(honninKakunin);
+			List<HonninKakuninFile> kakuninSyoruiFileList = new ArrayList<HonninKakuninFile>();
+			for(MultipartFile file : files) {
+				HonninKakuninFile honninKakuninFile = new HonninKakuninFile();
+				honninKakuninFile.setFileName(file.getOriginalFilename());
+				honninKakuninFile.setFile(file.getBytes());
+				honninKakuninFile.setKakuninSyorui(kakuninSyorui);
+				kakuninSyoruiFileList.add(honninKakuninFile);
+			}
+			kakuninSyorui.setKakuninSyoruiFileList(kakuninSyoruiFileList);
+			kakuninSyoruiService.saveKakuninSyorui(kakuninSyorui);
+
+			List<KakuninSyorui> kakuninSyoruiList = new ArrayList<KakuninSyorui>();
+			kakuninSyoruiList.add(kakuninSyorui);
+			honninKakunin.setKakuninSyoruiList(kakuninSyoruiList);
+
+
+
+			mav.setViewName("layout");
+			mav.addObject("contents", "honninkakunin/hitaimennew::honninkakunin_contents");
+			mav.addObject("title", "非対面取引本人確認記録作成");
+			mav.addObject("customer", customer);
+		}
+		return new ModelAndView("redirect:/customers/" + customerId + "/idents");
+
+	}
+
+	/**
 	 * 本人確認記録詳細
 	 */
 	@GetMapping("/customers/{cid}/idents/{hid}")
@@ -158,11 +246,41 @@ public class HonninKakuninController {
 			ModelAndView mav
 			) {
 		HonninKakunin honninKakunin = honninKakuninService.find(hid);
+		TaimenTorihiki taimen = taimenTorihikiService.findByHonninKakuninId(hid);
+		HitaimenTorihiki hitaimen = hitaimenTorihikiService.findByHonninKakuninId(hid);
 		mav.setViewName("layout");
 		mav.addObject("contents", "honninkakunin/show::honninkakunin_contents");
 		mav.addObject("title", "本人確認記録詳細");
 		mav.addObject("honninKakunin", honninKakunin);
+		mav.addObject("taimen", taimen);
+		mav.addObject("hitaimen", hitaimen);
+
 		return mav;
+	}
+
+	/**
+	 * 本人確認ファイルダウンロード
+	 */
+	@GetMapping("/customers/{cid}/idents/{hid}/download/{fid}")
+	public void kakuninFileDownload(
+			@PathVariable Integer cid,
+			@PathVariable Integer hid,
+			@PathVariable Integer fid,
+			HttpServletResponse response
+			) {
+		try (OutputStream os = response.getOutputStream();) {
+			HonninKakuninFile file = honninKakuninFileService.find(fid);
+            byte[] bytefile = file.getFile();
+            String filename = file.getFileName();
+            response.setContentType("application/octet-stream");
+            response.setHeader("Content-Disposition", "attachment; filename=" + filename);
+            response.setContentLength(bytefile.length);
+            os.write(bytefile);
+            os.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 	}
 
 

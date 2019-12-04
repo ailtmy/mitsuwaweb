@@ -22,7 +22,10 @@
 <p th:text="|${list.getTotalElements()}件のデータが存在します。|"></p>
 <table class="table table-bordered text-center table-hover table-sm">
 <tr>
-	<th class="m-1 p-1"><a class="btn btn-info btn-sm text-white ml-1 p-1" th:href="@{/customers/{id}/idents/tnew(id=${customer.id})}">新規作成</a></th>
+	<th class="m-1 p-1">
+		<a class="btn btn-info btn-sm text-white ml-1 p-1" th:href="@{/customers/{id}/idents/tnew(id=${customer.id})}">対面型新規</a>
+		<a class="btn btn-info btn-sm text-white ml-1 p-1" th:href="@{/customers/{id}/idents/hnew(id=${customer.id})}">非対面新規</a>
+	</th>
 	<th>ID</th>
 	<th>確認者</th>
 	<th>住所</th>
@@ -37,7 +40,7 @@
 		onclick="return confirm('削除します。よろしいですか？')" sec:authorize="hasRole('ADMIN')"/>
 	</form>
 	</td>
-	<td><a th:href="@{/customers/{cid}/idents/{hid(cid=${customer.id}, hid=${honninKakunin.id})}"></a></td>
+	<td><a th:href="@{/customers/{cid}/idents/{hid}(cid=${customer.id}, hid=${kakunin.id})}" th:text="${kakunin.id}"></a></td>
 	<td th:text="${kakunin.user.name}"></td>
 	<td th:each="addr : ${kakunin.addressList}">
 		<p th:text="${addr.addr}"></p>

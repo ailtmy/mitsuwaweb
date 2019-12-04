@@ -16,4 +16,8 @@ public class TaimenTorihikiService {
 		return repository.saveAndFlush(taimenTorihiki);
 	}
 
+	public TaimenTorihiki findByHonninKakuninId(Integer hid){
+		return repository.findByHonninKakuninId(hid).orElse(null);
+	}
+
 }

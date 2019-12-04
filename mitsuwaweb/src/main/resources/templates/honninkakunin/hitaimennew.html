@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+</head>
+<body >
+<div th:fragment="honninkakunin_contents">
+<h4 th:text="${title}"></h4>
+<form th:action="@{/customers/{id}/idents/hnew(id=${customer.id})}" method="post" enctype="multipart/form-data" th:object="${honninkakunin}">
+<div class="form-group">
+	<label for="file">ファイル</label>
+	<input type="file" name="file" class="form-control" multiple="multiple"/>
+</div>
+<div class="form-group">
+	<label for="user">確認者</label>
+	<select id="user" name="user" class="form-control">
+		<option th:selected="${''}"/>
+		<option th:each="user : ${users}" th:value="${user.id}" th:text="${user.name}"/>
+	</select>
+</div>
+<div>
+	<label for="addrkind">住所種類</label>
+	<input type="text" name="addrKind" class="form-control"/>
+</div>
+<div>
+	<label for="zipcode">郵便番号</label>
+	<input type="text" name="zipCode" class="form-control"/>
+</div>
+<div>
+	<label for="addr">住所</label>
+	<input type="text" name="addr" class="form-control"/>
+</div>
+<div>
+	<label for="addrdate">住定日</label>
+	<input type="date" name="addrDate" class="form-control"/>
+</div>
+<div>
+	<label for="syoruiname">確認書類名</label>
+	<input type="text" name="syoruiName" class="form-control"/>
+</div>
+<div>
+	<label for="syoruikigou">記号番号</label>
+	<input type="text" name="syoruiKigou" class="form-control"/>
+</div>
+<div>
+	<label for="hakkosya">発行者名</label>
+	<input type="text" name="syoruiHakkosya" class="form-control"/>
+</div>
+<div class="form-group">
+	<label for="kofubi">発行日</label>
+	<input type="date" name="syoruiKoufubi" class="form-control"/>
+</div>
+<div class="form-group">
+	<label for="yukokigen">有効期限</label>
+	<input type="date" name="syoruiYukokigen" class="form-control"/>
+</div>
+<div>
+	<label for="jyuryo">確認書類受領日</label>
+	<input type="date" name="jyuryo" class="form-control"/>
+</div>
+<div>
+	<label for="sofu">関係文書送付日</label>
+	<input type="date" name="sofu" class="form-control"/>
+</div>
+<div>
+	<label for="registeredNumber">郵便問い合わせ番号</label>
+	<input type="text" name="registeredNumber" class="form-control"/>
+</div>
+<div>
+	<label for="henshin">関係文書返信日</label>
+	<input type="date" name="henshin" class="form-control"/>
+</div>
+<div>
+	<label for="ishikakunin">意思確認方法</label>
+	<input type="text" name="ishikakunin" class="form-control"/>
+</div>
+<div class="form-group">
+	<label for="ishikakuninDate">意思確認日時</label>
+	<input type="datetime-local" name="ishikakuninDate" class="form-control"/>
+</div>
+<div class="form-group">
+	<label for="memo">備考</label>
+	<textarea name=memo rows="5" cols="20" class="form-control" placeholder="注意点等ひと口メモ"></textarea>
+</div>
+<div>
+	<button type="submit" class="btn btn-primary mr-4">登録</button>
+	<button type="button" onclick="history.back()" class="btn btn-primary ml-4">戻る</button>
+</div>
+</form>
+</div>

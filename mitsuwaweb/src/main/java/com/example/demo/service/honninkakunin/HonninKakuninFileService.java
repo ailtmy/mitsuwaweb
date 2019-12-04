@@ -16,4 +16,8 @@ public class HonninKakuninFileService {
 		return repository.saveAndFlush(honninKakuninFile);
 	}
 
+	public HonninKakuninFile find(Integer id) {
+		return repository.findById(id).orElse(new HonninKakuninFile());
+	}
+
 }

@@ -7,27 +7,120 @@
 <title th:text="|${title}|"></title>
 </head>
 <body >
-<div class="container-fluid" th:fragment="customer_contents">
+<div class="container-fluid" th:fragment="honninkakunin_contents">
 <h4 th:text="${title}"></h4>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light mt-2 mb-4">
 	<a class="btn btn-sm btn-primary mr-4" href=""></a>
-
+<!--
 	<form th:action="@{/customers/{cid}/delete/{hid}(cid=${customer.id}, hid=${honninkakunin.id})}" method="post">
 		<input class="btn btn-sm btn-danger text-white mr-4" type="submit" value="削除"
 		onclick="return confirm('削除します。よろしいですか？')" sec:authorize="hasRole('ADMIN')"/>
 	</form>
+ -->
 	<a class="btn btn-sm btn-primary mr-4" onclick="history.back()" href="#" >戻る</a>
 </nav>
 
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-sm-8">
+		<div class="col-sm-10">
+			<table th:object="${honninKakunin}" class="table table-hover">
+				<tr>
+					<th scope="row">ＩＤ</th>
+					<td th:text="*{id}"></td>
+				</tr>
+				<tr>
+					<th scope="row">確認者</th>
+					<td th:text="*{user.name}"></td>
+				</tr>
+				<tr>
+					<th scope="row">顧客氏名</th>
+					<td><a th:href="@{/customers/{cid}(cid=*{customer.id})}" th:text="*{customer.name}"></a></td>
+				</tr>
+				<tr>
+					<th scope="row">生年月日</th>
+					<td th:text="*{customer.birthday}"></td>
+				</tr>
+				<tr>
+					<th scope="row">住所・居所</th>
+					<td  th:each="address : *{addressList}">
+						<p>
+						<span th:text="${address.addrKind}"></span>
+						<span th:text="|〒${address.zipCode}|"></span>
+						<span th:text="${address.addr}"></span>
+						<span th:text="|／住定日：${address.addrDate}|"></span>
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">本人確認書類</th>
+					<td  th:each="syorui : *{kakuninSyoruiList}">
+						<p>
+							<span th:text="|確認書類：　${syorui.syoruiName}|" class="col-sm-6"></span>
+							<span th:text="|記号番号：　${syorui.syoruiKigou}|"class="col-sm-6"></span>
+						</p>
+						<p>
+							<span th:text="|交付日：　${syorui.syoruiKoufubi}|" class="col-sm-6"></span>
+							<span th:text="|有効期限：　${syorui.syoruiYukokigen}|"class="col-sm-6"></span>
+						</p>
+						<p>
+							<span th:text="|発行者名：　${syorui.syoruiHakkosya}|" class="col-sm-12"></span>
+						</p>
+						<p th:each="file : ${syorui.kakuninSyoruiFileList}|" class="col-sm-12">
+							<a th:href
+							="@{/customers/{cid}/idents/{hid}/download/{fid}(cid=${honninKakunin.customer.id},
+							hid=${honninKakunin.id}, fid=${file.id})}" th:text="|${file.fileName}　|"></a>
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">取引形態</th>
+					<td th:if="${taimen != null}">対面</td>
+					<td th:if="${hitaimen != null}">非対面</td>
+				</tr>
+				<tr th:if="${taimen != null}">
+					<th scope="row">確認日時：場所</th>
+					<td th:text="|${taimen.kakuninDate}　:　${taimen.kakuninPlace}|"></td>
+				</tr>
+				<tbody  th:if="${hitaimen != null}">
+					<tr>
+						<th scope="row">確認書類受領日</th>
+						<td th:text="${hitaimen.jyuryo}"></td>
+					</tr>
+					<tr>
+						<th scope="row">関係文書送付日</th>
+						<td>
+							<span th:text="|${hitaimen.sofu}　|"></span>
+							<span th:text="|　郵便問い合わせ番号：${hitaimen.registeredNumber}|"></span>
 
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">関係文書返信日</th>
+						<td th:text="${hitaimen.henshin}"></td>
+					</tr>
+					<tr>
+						<th scope="row">意思確認方法</th>
+						<td th:text="${hitaimen.ishikakunin}"></td>
+					</tr>
+					<tr>
+						<th scope="row">意思確認日時</th>
+						<td th:text="${hitaimen.ishikakuninDate}"></td>
+					</tr>
+				</tbody>
+				<tr>
+					<th scope="row">備考</th>
+					<td th:text="*{memo}"></td>
+				</tr>
+
+
+	</table>
 		</div>
-		<div class="co-sm-4">
+		<div class="co-sm-2">
 
 		</div>
 	</div>
+
+
 </div>
 </div>
