@@ -142,6 +142,7 @@ public class HonninKakuninController {
 			List<CustomerAddress> addresses = new ArrayList<CustomerAddress>();
 
 			honninKakuninService.saveHonninKakunin(honninKakunin);
+
 			customerAddress.setHonninKakunin(honninKakunin);
 			CustomerAddress address = customerAddressService.save(customerAddress);
 			addresses.add(address);
@@ -152,6 +153,7 @@ public class HonninKakuninController {
 			honninKakunin.setTaimen(taimenTorihiki);
 
 			kakuninSyorui.setHonninKakunin(honninKakunin);
+
 			List<HonninKakuninFile> kakuninSyoruiFileList = new ArrayList<HonninKakuninFile>();
 			for(MultipartFile file : files) {
 				HonninKakuninFile honninKakuninFile = new HonninKakuninFile();
@@ -166,8 +168,6 @@ public class HonninKakuninController {
 			List<KakuninSyorui> kakuninSyoruiList = new ArrayList<KakuninSyorui>();
 			kakuninSyoruiList.add(kakuninSyorui);
 			honninKakunin.setKakuninSyoruiList(kakuninSyoruiList);
-
-
 
 			mav.setViewName("layout");
 			mav.addObject("contents", "honninkakunin/taimennew::honninkakunin_contents");
@@ -194,12 +194,15 @@ public class HonninKakuninController {
 			ModelAndView mav) throws IOException {
 
 		if(!result.hasErrors()) {
+			//顧客セット
 			Customer customer = customerService.find(customerId);
 			honninKakunin.setCustomer(customer);
 
-			List<CustomerAddress> addresses = new ArrayList<CustomerAddress>();
-
+			//本人確認記録保存
 			honninKakuninService.saveHonninKakunin(honninKakunin);
+
+			//住所セット
+			List<CustomerAddress> addresses = new ArrayList<CustomerAddress>();
 			customerAddress.setHonninKakunin(honninKakunin);
 			CustomerAddress address = customerAddressService.save(customerAddress);
 			addresses.add(address);
@@ -286,12 +289,13 @@ public class HonninKakuninController {
 	/**
 	 * 本人確認記録編集画面表示
 	 */
-	@GetMapping("customers/{cid}/idents/{hid}/edit")
+	@GetMapping("/customers/{cid}/idents/{hid}/edit")
 	public ModelAndView identedit(
 			@PathVariable Integer cid,
 			@PathVariable Integer hid,
 			ModelAndView mav
 			) {
+
 		mav.setViewName("layout");
 		mav.addObject("contents", "honninkakunin/edit::honnninkakunin_contents");
 		mav.addObject("title", "本人確認記録編集");
@@ -305,6 +309,51 @@ public class HonninKakuninController {
 	/**
 	 * 本人確認記録編集
 	 */
+	@PostMapping("/customers/{cid}/idents/{hid}/edit")
+	public ModelAndView identedited(
+			@PathVariable Integer cid,
+			@PathVariable Integer hid,
+			@ModelAttribute("CustomerAddress") CustomerAddress customerAddress,
+			@ModelAttribute("TaimenTorihiki") TaimenTorihiki taimen,
+			@ModelAttribute("HitaimenTorihiki") HitaimenTorihiki hitaimen,
+			@ModelAttribute("KakuninSyorui") KakuninSyorui kakuninSyorui,
+			@ModelAttribute("HonninKakunin") HonninKakunin honninKakunin,
+			BindingResult result,
+			ModelAndView mav
+			) {
+		Customer customer = customerService.find(cid);
+		honninKakunin.setCustomer(customer);
 
+		List<CustomerAddress> addresses = new ArrayList<CustomerAddress>();
+
+		honninKakuninService.saveHonninKakunin(honninKakunin);
+
+		customerAddress.setHonninKakunin(honninKakunin);
+		CustomerAddress address = customerAddressService.save(customerAddress);
+		addresses.add(address);
+		honninKakunin.setAddressList(addresses);
+
+
+		//////////////////////対面・非対面分岐
+		taimenTorihikiService.saveTaimenTorihiki(taimen);
+
+		hitaimenTorihikiService.saveHitaimenTorihiki(hitaimen);
+
+		//確認書類セット!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!やり直し
+		kakuninSyorui.setHonninKakunin(honninKakunin);
+		kakuninSyoruiService.saveKakuninSyorui(kakuninSyorui);
+
+
+
+		mav.setViewName("layout");
+		mav.addObject("contents", "honninkakunin/show::honninkakunin_contents");
+		mav.addObject("title", "本人確認記録詳細");
+		mav.addObject("honninKakunin", honninKakunin);
+		mav.addObject("taimen", taimen);
+		mav.addObject("hitaimen", hitaimen);
+		mav.addObject("customer", customer);
+
+		return mav;
+	}
 
 }
