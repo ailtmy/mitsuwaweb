@@ -78,7 +78,7 @@
 </div>
 <div class="form-group row">
 	<label for="registeredNumber" class="col-sm-2 text-right">郵便問い合わせ番号</label>
-	<input type="date" name="registeredNumber" class="form-control col-sm-6" th:value="*{hitaimen.registeredNumber}"/>
+	<input type="text" name="registeredNumber" class="form-control col-sm-6" th:value="*{hitaimen.registeredNumber}"/>
 </div>
 <div class="form-group row">
 	<label for="henshin" class="col-sm-2 text-right">関係文書返信日</label>
@@ -90,7 +90,7 @@
 </div>
 <div class="form-group row">
 	<label for="ishikakuninDate" class="col-sm-2 text-right">意思確認日時</label>
-	<input type="date" name="ishikakuninDate" class="form-control col-sm-6" th:value="*{hitaimen.ishikakuninDate}"/>
+	<input type="datetime-local" name="ishikakuninDate" class="form-control col-sm-6" th:value="*{hitaimen.ishikakuninDate}"/>
 </div>
 </div>
 <div class="form-group row">

@@ -322,36 +322,55 @@ public class HonninKakuninController {
 			ModelAndView mav
 			) {
 		Customer customer = customerService.find(cid);
+		HonninKakunin hk = honninKakuninService.find(hid);
 		honninKakunin.setCustomer(customer);
+		honninKakunin.setCreateBy(hk.getCreateBy());
+		honninKakunin.setCreatedDate(hk.getCreatedDate());
 
-		List<CustomerAddress> addresses = new ArrayList<CustomerAddress>();
+		//住所リスト登録
+		List<CustomerAddress> addressList = new ArrayList<CustomerAddress>();
+		CustomerAddress address = customerAddressService.save(customerAddress);
+		address.setHonninKakunin(hk);
+		addressList.add(address);
+		honninKakunin.setAddressList(addressList);
+
+		//本人確認書類登録
+		List<KakuninSyorui> originalKakuninSyoruiList = hk.getKakuninSyoruiList();
+		List<KakuninSyorui> kakuninSyoruiList = new ArrayList<KakuninSyorui>();
+		KakuninSyorui syorui = kakuninSyorui;
+		for(KakuninSyorui os : originalKakuninSyoruiList) {
+			syorui.setKakuninSyoruiFileList(os.getKakuninSyoruiFileList());
+		}
+		kakuninSyoruiList.add(syorui);
+		kakuninSyorui.setHonninKakunin(hk);
+		syorui = kakuninSyoruiService.saveKakuninSyorui(kakuninSyorui);
+		honninKakunin.setKakuninSyoruiList(kakuninSyoruiList);
+
+		if(hk.getTaimen() != null) {
+			taimen.setId(hk.getTaimen().getId());
+			honninKakunin.setTaimen(taimen);
+			taimen.setHonninKakunin(hk);
+		}
+
+		if(hk.getHitaimen() != null) {
+			hitaimen.setId(hk.getHitaimen().getId());
+			honninKakunin.setHitaimen(hitaimen);
+			hitaimen.setHonninKakunin(hk);
+		}
 
 		honninKakuninService.saveHonninKakunin(honninKakunin);
-
-		customerAddress.setHonninKakunin(honninKakunin);
-		CustomerAddress address = customerAddressService.save(customerAddress);
-		addresses.add(address);
-		honninKakunin.setAddressList(addresses);
-
-
-		//////////////////////対面・非対面分岐
-		taimenTorihikiService.saveTaimenTorihiki(taimen);
-
-		hitaimenTorihikiService.saveHitaimenTorihiki(hitaimen);
-
-		//確認書類セット!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!やり直し
-		kakuninSyorui.setHonninKakunin(honninKakunin);
-		kakuninSyoruiService.saveKakuninSyorui(kakuninSyorui);
-
-
 
 		mav.setViewName("layout");
 		mav.addObject("contents", "honninkakunin/show::honninkakunin_contents");
 		mav.addObject("title", "本人確認記録詳細");
 		mav.addObject("honninKakunin", honninKakunin);
-		mav.addObject("taimen", taimen);
-		mav.addObject("hitaimen", hitaimen);
-		mav.addObject("customer", customer);
+		if(hk.getTaimen() != null) {
+			mav.addObject("taimen", taimen);
+		}
+		if(hk.getHitaimen() != null) {
+			mav.addObject("hitaimen", hitaimen);
+		}
+			mav.addObject("customer", customer);
 
 		return mav;
 	}
