@@ -28,6 +28,11 @@ public class Mishikko extends Audit {
 	private Integer id;
 
 	/**
+	 * 件名
+	 */
+	private String kenmei;
+
+	/**
 	 * 申請年月日
 	 */
 	private String date;

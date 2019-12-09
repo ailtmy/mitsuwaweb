@@ -14,6 +14,8 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -21,6 +23,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.example.demo.soft.entity.Mishikko;
 import com.example.demo.soft.repository.MishikkoRepository;
 
 @Service
@@ -28,6 +31,10 @@ public class MishikkoService {
 
 	@Autowired
 	MishikkoRepository repository;
+
+	public Page<Mishikko> getAll(Pageable pageable){
+		return repository.findAllByOrderByIdDesc(pageable);
+	}
 
 	public Element xmlFileGet() throws ParserConfigurationException, SAXException, IOException, TransformerException {
 		// 1. DocumentBuilderFactoryのインスタンスを取得する

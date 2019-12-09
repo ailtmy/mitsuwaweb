@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+</head>
+<body >
+<div th:fragment="mishikko_contents">
+<h4 th:text="${title}"></h4>
+
+<p th:text="|${list.getTotalElements()}件のデータが存在します。|"></p>
+<table class="table table-bordered table-sm table-hover text-center">
+	<tr>
+		<th></th>
+		<th>ID</th>
+		<th>件名</th>
+		<th>申請年月日</th>
+		<th>登記所</th>
+		<th>登記所コード</th>
+		<th>物件</th>
+	</tr>
+	<tr th:each="mishikko : ${list}">
+		<td th:text="${mishikko.id}"></td>
+		<td th:text="${mishikko.kenmei}"></td>
+		<td th:text="${mishikko.date}"></td>
+		<td th:text="${mishikko.tokisyo}"></td>
+		<td th:text="${mishikko.taisyoBukkenList}"></td>
+	</tr>
+
+</table>
+</div>
