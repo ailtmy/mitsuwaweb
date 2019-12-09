@@ -11,7 +11,7 @@
 <h4 th:text="${title}"></h4>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light mt-2 mb-4">
-	<a class="btn btn-sm btn-primary mr-4" href=""></a>
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/customers/{cid}/idents/{id}/edit(cid=${customer.id},id=${honninKakunin.id})}" th:text="編集"></a>
 <!--
 	<form th:action="@{/customers/{cid}/delete/{hid}(cid=${customer.id}, hid=${honninkakunin.id})}" method="post">
 		<input class="btn btn-sm btn-danger text-white mr-4" type="submit" value="削除"

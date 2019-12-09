@@ -257,6 +257,7 @@ public class HonninKakuninController {
 		mav.addObject("honninKakunin", honninKakunin);
 		mav.addObject("taimen", taimen);
 		mav.addObject("hitaimen", hitaimen);
+		mav.addObject("customer", customerService.find(cid));
 
 		return mav;
 	}

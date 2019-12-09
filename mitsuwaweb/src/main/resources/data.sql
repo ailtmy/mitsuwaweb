@@ -86,3 +86,7 @@ VALUES
 (5,6),
 (6,7),
 (6,8);
+
+INSERT INTO tokisyo(tokisyo_code, tokisyo_name)
+VALUES
+(1200, '大阪法務局');
