@@ -27,7 +27,7 @@ public class TaisyoBukken {
 
 	private String chibanKaokuBango;
 
-	private String bulkenJyotai; //既存　閉鎖
+	private String bulkenJyotai = "既存"; //既存　閉鎖
 
 	private String mokuteki;
 

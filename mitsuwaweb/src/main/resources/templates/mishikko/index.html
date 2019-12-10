@@ -12,7 +12,9 @@
 <p th:text="|${list.getTotalElements()}件のデータが存在します。|"></p>
 <table class="table table-bordered table-sm table-hover text-center">
 	<tr>
-		<th></th>
+		<th>
+			<a class="btn btn-info btn-sm text-white ml-1 p-1" th:href="@{/soft/mishikko/new}" th:text="データ作成"></a>
+		</th>
 		<th>ID</th>
 		<th>件名</th>
 		<th>申請年月日</th>
@@ -21,11 +23,15 @@
 		<th>物件</th>
 	</tr>
 	<tr th:each="mishikko : ${list}">
+		<td></td>
 		<td th:text="${mishikko.id}"></td>
 		<td th:text="${mishikko.kenmei}"></td>
 		<td th:text="${mishikko.date}"></td>
-		<td th:text="${mishikko.tokisyo}"></td>
-		<td th:text="${mishikko.taisyoBukkenList}"></td>
+		<td th:text="${mishikko.tokisyo.tokisyoName}"></td>
+		<td th:text="${mishikko.tokisyo.tokisyoCode}"></td>
+		<td th:each="bukken : ${mishikko.taisyoBukkenList}">
+			<p th:text="|${bukken.chibanKuiki}${bukken.chibanKaokuBango}|"></p>
+		</td>
 	</tr>
 
 </table>

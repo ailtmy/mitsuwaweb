@@ -37,6 +37,14 @@ public class MishikkoService {
 		return repository.findAllByOrderByIdDesc(pageable);
 	}
 
+	public Mishikko find(Integer id) {
+		return repository.findById(id).orElse(new Mishikko());
+	}
+
+	public Mishikko saveMishikko(Mishikko mishikko) {
+		return repository.saveAndFlush(mishikko);
+	}
+
 	public Element xmlFileGet() throws ParserConfigurationException, SAXException, IOException, TransformerException {
 		// 1. DocumentBuilderFactoryのインスタンスを取得する
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

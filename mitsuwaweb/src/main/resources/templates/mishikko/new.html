@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+</head>
+<body >
+<div th:fragment="mishikko_contents">
+<h4 th:text="${title}"></h4>
+<form th:action="@{/soft/mishikko/new}" method="post" th:object="${mishikko}">
+	<div class="form-group" th:classappend="${#fields.hasErrors('kenmei')}? 'has-error'">
+		<label for="kenmei">件名</label>
+		<input type="text" name="kenmei" class="form-control" th:field="*{kenmei}" />
+		<span class="text-danger" th:if="${#fields.hasErrors('kenmei')}" th:errors="*{kenmei}">件名エラー</span>
+	</div>
+	<div class="form-group" th:classappend="${#fields.hasErrors('date')}? 'has-error'">
+		<label for="date">申請年月日</label>
+		<input type="text" name="date" class="form-control" th:field="*{date}"/>
+		<span class="text-danger" th:if="${#fields.hasErrors('date')}" th:errors="*{date}">申請日エラー</span>
+	</div>
+	<div class="form-group" th:classappend="${#fields.hasErrors('tokisyo')}? 'has-error'">
+		<label for="tokisyo">登記所</label>
+		<select id="tokisyo" name="tokisyo" class="form-control">
+		<option th:selected="${''}"/>
+		<option th:each="tks : ${tokisyo}" th:value="${tks.id}" th:text="${tks.tokisyoName}"/>
+	</select>
+	</div>
+
+	<div id="bukken">
+	<div class="form-group">
+		<label for="bukkenKubun">土地・建物</label>
+		<input type="text" name="bukkenKubun" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label for="chibanKuiki">地番区域</label>
+		<input type="text" name="chibanKuiki" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label for="chibanKaokuBango">地番家屋番号</label>
+		<input type="text" name="chibanKaokuBango" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label for="mokuteki">登記の目的</label>
+		<input type="text" name="mokuteki" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label for="yoshiKubun">甲区・乙区</label>
+		<input type="text" name="yoshiKubun" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label for="uketsukeDate">受付年月日</label>
+		<input type="text" name="uketsukeDate" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label for="uketsukeBango">受付番号</label>
+		<input type="text" name="uketsukeBango" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label for="Dohyuni">同順位（あ）（い）</label>
+		<input type="text" name="Dojyuni" class="form-control" />
+	</div>
+	</div>
+	<div>
+		<button type="submit" class="btn btn-primary mr-4">登録</button>
+		<button type="button" onclick="history.back()" class="btn btn-primary ml-4">戻る</button>
+	</div>
+</form>
+</div>
+</body>
