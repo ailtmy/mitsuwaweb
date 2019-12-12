@@ -35,12 +35,10 @@ public class ZipCreate {
 
 			// 全ファイルをZIPに格納
 			for (File file : files) {
-
 				// ZIP化実施ファイルの情報をオブジェクトに設定
 				ZipEntry entry = new ZipEntry(
 						file.getAbsolutePath().replace(dir.getAbsolutePath() + File.separator, ""));
 				zos.putNextEntry(entry);
-
 
 				// ZIPファイルに情報を書き込む
 				is = new BufferedInputStream(new FileInputStream(file));
@@ -78,17 +76,10 @@ public class ZipCreate {
 			if (f.isFile()) {
 				files.add(f);
 
-			} else if(f.isDirectory() && f.listFiles() == null) {
-
-				files.add(f);
-
-
 				// ディレクトリの場合は再帰処理
 			} else if (f.isDirectory() ) {
 				getFiles(f, files);
-
 			}
-
 		}
 	}
 }

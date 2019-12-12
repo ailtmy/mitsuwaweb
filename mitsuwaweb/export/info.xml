@@ -9,9 +9,9 @@
 		<TetsuzukiID>HM0504000300001</TetsuzukiID>
 		<ShinseiBango/>
 		<ShokaiShinseiBango/>
-		<ShoriJokyoKubun>2</ShoriJokyoKubun>
-		<Kemmei>未失効照会</Kemmei>
-		<SaishuKoshinNichiji>2019/12/10 11:04:58</SaishuKoshinNichiji>
+		<ShoriJokyoKubun>1</ShoriJokyoKubun>
+		<Kemmei>未失効照会２</Kemmei>
+		<SaishuKoshinNichiji>2019/12/12 18:03:26</SaishuKoshinNichiji>
 		<TempuFileUmuFlag>0</TempuFileUmuFlag>
 		<ShomeiUmuFlag>0</ShomeiUmuFlag>
 		<RenkenDoJuniBango>0</RenkenDoJuniBango>
@@ -22,8 +22,8 @@
 		<HoseiNoOshiraseUmuFlag>0</HoseiNoOshiraseUmuFlag>
 		<KobunshoUmuFlag>0</KobunshoUmuFlag>
 		<NofuJohoUmuFlag>0</NofuJohoUmuFlag>
-		<ShinseisakiTokishoCode>1200</ShinseisakiTokishoCode>
-		<ShinseisakiTokishoMeisho>大阪法務局</ShinseisakiTokishoMeisho>
+		<ShinseisakiTokishoCode>1310</ShinseisakiTokishoCode>
+		<ShinseisakiTokishoMeisho>京都地方法務局伏見出張所</ShinseisakiTokishoMeisho>
 		<UketsukeTokisho/>
 		<SoshinshaID/>
 		<SoshinshaMei/>

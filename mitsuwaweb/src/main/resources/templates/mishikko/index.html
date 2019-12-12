@@ -25,7 +25,7 @@
 	<tr th:each="mishikko : ${list}">
 		<td></td>
 		<td th:text="${mishikko.id}"></td>
-		<td th:text="${mishikko.kenmei}"></td>
+		<td><a th:href="@{/soft/mishikko/{id}(id=${mishikko.id})}" th:text="${mishikko.kenmei}"></a></td>
 		<td th:text="${mishikko.date}"></td>
 		<td th:text="${mishikko.tokisyo.tokisyoName}"></td>
 		<td th:text="${mishikko.tokisyo.tokisyoCode}"></td>

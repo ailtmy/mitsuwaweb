@@ -89,4 +89,5 @@ VALUES
 
 INSERT INTO tokisyo(tokisyo_code, tokisyo_name)
 VALUES
-(1200, '大阪法務局');
+(1200, '大阪法務局'),
+(1310, '京都地方法務局伏見出張所');

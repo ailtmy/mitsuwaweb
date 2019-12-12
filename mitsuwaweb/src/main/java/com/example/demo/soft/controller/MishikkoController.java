@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
-import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 import com.example.demo.soft.entity.Mishikko;
@@ -111,17 +110,19 @@ public class MishikkoController {
 	}
 
 
-	@GetMapping("/soft")
+	@GetMapping("/soft/mishikko/{id}/create")
 	public ModelAndView mishikko(
+			@PathVariable Integer id,
 			ModelAndView mav
 			) throws ParserConfigurationException, SAXException, IOException, TransformerException {
 
-
+		Mishikko mishikko = mishikkoService.find(id);
 		mav.setViewName("layout");
-		mav.addObject("contents", "soft/mishikkonew::soft_contents");
-		Element element = mishikkoService.xmlFileGet();
-		mav.addObject("element", element);
+		mav.addObject("contents", "mishikko/show::mishikko_contents");
+		String message = mishikkoService.xmlFileGet("HM0504000300001", mishikko);
+		mav.addObject("createMessage", message);
 		mav.addObject("title", "未失効照会作成");
+		mav.addObject("mishikko", mishikko);
 		return mav;
 	}
 
