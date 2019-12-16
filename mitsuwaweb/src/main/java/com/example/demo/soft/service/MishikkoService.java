@@ -91,20 +91,20 @@ public class MishikkoService {
 			ShinseiXmlHelper.elementTextset(mishikkoElement, "同順位符号", mishikko.getTaisyoBukkenList().get(i).getDojyuni(), i);
 		}
 
-		ShinseiXmlHelper.makeFolder(shinseiName);
+		ShinseiXmlHelper.makeFolder(shinseiName, mishikko.getKenmei());
 
-		ShinseiXmlHelper.makeShinseiFile(docList, shinseiName);
+		ShinseiXmlHelper.makeShinseiFile(docList, shinseiName, mishikko.getKenmei());
 
 
         // ZIP化実施フォルダを取得
-     	File destination = new File("./統合/" + mishikko.getKenmei() + ".zip");
-     	File dirzip = new File("./export");
+     	File destination = new File("./" + mishikko.getKenmei() + "s/" + mishikko.getKenmei() + ".zip");
+     	File dirzip = new File("./" + mishikko.getKenmei());
 
      	// 圧縮実行
      	ZipCreate.compressDirectory(destination, dirzip);
 
      	// ZIP化実施フォルダを取得
-     	File dir = new File("./統合");
+     	File dir = new File("./" + mishikko.getKenmei() + "s");
 
      	// ZIP化実施フォルダを取得
      	File destination2 = new File("./" + mishikko.getKenmei() + ".zip");

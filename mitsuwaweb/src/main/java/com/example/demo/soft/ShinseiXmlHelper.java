@@ -83,16 +83,16 @@ public class ShinseiXmlHelper {
 	 * @param fileName 手続ファイル名(ex.HM0504000300001)
 	 * @throws IOException
 	 */
-	public static void makeFolder(String fileName) throws IOException {
+	public static void makeFolder(String fileName, String folderName) throws IOException {
 
-		File togo = new File("./統合/");
-		File export = new File("./export/");
-		File kanri = new File("./export/署名・送信/");
-		File oshirase = new File("./export/お知らせ/");
-		File kobunsyo = new File("./export/取得公文書/");
-		File htmlFile = new File("./export/" + fileName + ".html");
-		File oshiraseDummy = new File("./export/お知らせ/dummy.txt");
-		File kobunsyoDummy = new File("./export/取得公文書/dummy.txt");
+		File togo = new File("./" + folderName + "s/");
+		File export = new File("./" + folderName + "/");
+		File kanri = new File("./" + folderName + "/署名・送信/");
+		File oshirase = new File("./" + folderName + "/お知らせ/");
+		File kobunsyo = new File("./" + folderName + "/取得公文書/");
+		File htmlFile = new File("./" + folderName + "/" + fileName + ".html");
+		File oshiraseDummy = new File("./" + folderName + "/お知らせ/dummy.txt");
+		File kobunsyoDummy = new File("./" + folderName + "/取得公文書/dummy.txt");
 
 		togo.mkdir();
 		export.mkdir();
@@ -105,7 +105,7 @@ public class ShinseiXmlHelper {
 
 	}
 
-	public static void makeShinseiFile(List<Document> doc, String fileName) throws TransformerException {
+	public static void makeShinseiFile(List<Document> doc, String fileName, String folderName) throws TransformerException {
 
 		TransformerFactory tfFactory = TransformerFactory.newInstance();
         Transformer tf = tfFactory.newTransformer();
@@ -113,11 +113,11 @@ public class ShinseiXmlHelper {
         tf.setOutputProperty("indent", "yes");
         tf.setOutputProperty("encoding", "UTF-8");
 
-        tf.transform(new DOMSource(doc.get(0)), new StreamResult(new File("./export/署名・送信/" + fileName + ".xml")));
-        tf.transform(new DOMSource(doc.get(1)), new StreamResult(new File("./export/署名・送信/" + fileName + ".xsl")));
-        tf.transform(new DOMSource(doc.get(2)), new StreamResult(new File("./export/署名・送信/index.rdf")));
-        tf.transform(new DOMSource(doc.get(3)), new StreamResult(new File("./export/info.xml")));
-        tf.transform(new DOMSource(doc.get(4)), new StreamResult(new File("./統合/export.xml")));
+        tf.transform(new DOMSource(doc.get(0)), new StreamResult(new File("./" + folderName + "/署名・送信/" + fileName + ".xml")));
+        tf.transform(new DOMSource(doc.get(1)), new StreamResult(new File("./" + folderName + "/署名・送信/" + fileName + ".xsl")));
+        tf.transform(new DOMSource(doc.get(2)), new StreamResult(new File("./" + folderName + "/署名・送信/index.rdf")));
+        tf.transform(new DOMSource(doc.get(3)), new StreamResult(new File("./" + folderName + "/info.xml")));
+        tf.transform(new DOMSource(doc.get(4)), new StreamResult(new File("./" + folderName + "s/export.xml")));
 
 	}
 
