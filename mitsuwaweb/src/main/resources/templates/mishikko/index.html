@@ -23,15 +23,22 @@
 		<th>物件</th>
 	</tr>
 	<tr th:each="mishikko : ${list}">
-		<td></td>
+		<td>
+			<form th:action="@{/soft/mishikko/{id}/delete(id=${mishikko.id})}" method="post">
+				<a th:href="@{/soft/mishikko/{id}/edit(id=${mishikko.id})}" th:text="編集"
+				class="btn btn-primary btn-sm text-white ml-1 p-1"></a>
+				<input class="btn btn-danger btn-sm text-white m-1 p-1" type="submit" value="削除"
+				onclick="return confirm('削除します。よろしいですか？')"/>
+			</form>
+		</td>
 		<td th:text="${mishikko.id}"></td>
 		<td><a th:href="@{/soft/mishikko/{id}(id=${mishikko.id})}" th:text="${mishikko.kenmei}"></a></td>
 		<td th:text="${mishikko.date}"></td>
 		<td th:text="${mishikko.tokisyo.tokisyoName}"></td>
 		<td th:text="${mishikko.tokisyo.tokisyoCode}"></td>
 		<td>
-			<ul th:each="bukken : ${mishikko.taisyoBukkenList}">
-				<li th:text="|${bukken.chibanKuiki}${bukken.chibanKaokuBango}|"></li>
+			<ul th:each="bukken : ${mishikko.taisyoBukkenList}" class="list-group">
+				<li th:text="|${bukken.chibanKuiki}${bukken.chibanKaokuBango}|" class="list-group-item"></li>
 			</ul>
 		</td>
 	</tr>

@@ -42,6 +42,10 @@ public class MishikkoService {
 		return repository.saveAndFlush(mishikko);
 	}
 
+	public void delete(Integer id) {
+		repository.deleteById(id);
+	}
+
 	public String xmlFileGet(String shinseiName, Mishikko mishikko) throws ParserConfigurationException, SAXException, IOException, TransformerException {
 		// 1. DocumentBuilderFactoryのインスタンスを取得する
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

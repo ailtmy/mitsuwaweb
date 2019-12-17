@@ -214,4 +214,13 @@ public class MishikkoController {
 
 		return new ModelAndView("redirect:/soft/mishikko/" + mishikko.getId());
 	}
+
+	@PostMapping("/soft/mishikko/{id}/delete")
+	public ModelAndView mishikkoDelete(
+			@PathVariable Integer id,
+			ModelAndView mav
+			) {
+		mishikkoService.delete(id);
+		return new ModelAndView("redirect:/soft/mishikko");
+	}
 }
