@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.xml.sax.SAXException;
 
@@ -81,15 +82,31 @@ public class MishikkoController {
 	@PostMapping("/soft/mishikko/new")
 	public ModelAndView mishikkoCreate(
 		@ModelAttribute("Mishikko") Mishikko mishikko,
-		@ModelAttribute("TaisyoBukken") TaisyoBukken bukken,
-		@PageableDefault(page=0, size=5)
-		Pageable pageable,
+		@RequestParam(name = "bukkenKubun", required = false) String[] bukkenKubuns,
+		@RequestParam(name = "chibanKuiki", required = false) String[] chibanKuikis,
+		@RequestParam(name = "chibanKaokuBango", required = false) String[] chibanKaokuBangos,
+		@RequestParam(name = "mokuteki", required = false) String[] mokutekis,
+		@RequestParam(name = "yoshiKubun", required = false) String[] yoshiKubuns,
+		@RequestParam(name = "uketsukeDate", required = false) String[] uketsukeDates,
+		@RequestParam(name = "uketsukeBango", required = false) int[] uketsukeBangos,
+		@RequestParam(name = "Dojyuni", required = false, defaultValue = " ") String[] Dojyunis,
 		ModelAndView mav
 			) {
 
-		bukkenService.saveBukken(bukken);
 		List<TaisyoBukken> bukkenList = new ArrayList<TaisyoBukken>();
-		bukkenList.add(bukken);
+		for(int i = 0; i < bukkenKubuns.length; i++) {
+			TaisyoBukken bukken = new TaisyoBukken();
+			bukken.setBukkenKubun(bukkenKubuns[i]);
+			bukken.setChibanKuiki(chibanKuikis[i]);
+			bukken.setChibanKaokuBango(chibanKaokuBangos[i]);
+			bukken.setMokuteki(mokutekis[i]);
+			bukken.setYoshiKubun(yoshiKubuns[i]);
+			bukken.setUketsukeDate(uketsukeDates[i]);
+			bukken.setUketsukeBango(uketsukeBangos[i]);
+			bukken.setDojyuni(Dojyunis[i]);
+			bukkenService.saveBukken(bukken);
+			bukkenList.add(bukken);
+		}
 		mishikko.setTaisyoBukkenList(bukkenList);
 		mishikkoService.saveMishikko(mishikko);
 		return new ModelAndView("redirect:./" + mishikko.getId());
@@ -109,7 +126,16 @@ public class MishikkoController {
 		return mav;
 	}
 
-
+	/**
+	 * 未失効照会外部ファイル作成
+	 * @param id
+	 * @param mav
+	 * @return
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws TransformerException
+	 */
 	@GetMapping("/soft/mishikko/{id}/create")
 	public ModelAndView mishikko(
 			@PathVariable Integer id,
@@ -126,5 +152,66 @@ public class MishikkoController {
 		return mav;
 	}
 
+	/**
+	 * 未失効照会編集画面
+	 * @param id
+	 * @param mav
+	 * @return
+	 */
+	@GetMapping("/soft/mishikko/{id}/edit")
+	public ModelAndView mishikkoedit(
+			@PathVariable Integer id,
+			ModelAndView mav
+			) {
+		mav.setViewName("layout");
+		mav.addObject("contents", "mishikko/edit::mishikko_contents");
+		mav.addObject("title", "未失効照会編集");
+		mav.addObject("mishikko", mishikkoService.find(id));
+		mav.addObject("tokisyo", tokisyoService.findAll());
 
+		return mav;
+	}
+
+	@PostMapping("/soft/mishikko/{id}/edit")
+	public ModelAndView mishikkoUpdate(
+			@PathVariable Integer id,
+			@ModelAttribute("Mishikko") Mishikko mishikko,
+			@RequestParam(name = "bukkenKubun", required = false) String[] bukkenKubuns,
+			@RequestParam(name = "chibanKuiki", required = false) String[] chibanKuikis,
+			@RequestParam(name = "chibanKaokuBango", required = false) String[] chibanKaokuBangos,
+			@RequestParam(name = "mokuteki", required = false) String[] mokutekis,
+			@RequestParam(name = "yoshiKubun", required = false) String[] yoshiKubuns,
+			@RequestParam(name = "uketsukeDate", required = false) String[] uketsukeDates,
+			@RequestParam(name = "uketsukeBango", required = false) int[] uketsukeBangos,
+			@RequestParam(name = "Dojyuni", required = false, defaultValue = " ") String[] Dojyunis,
+			ModelAndView mav
+			) {
+
+		Mishikko emishikko = mishikkoService.find(id);
+		emishikko.setId(id);
+		emishikko.setKenmei(mishikko.getKenmei());
+		emishikko.setDate(mishikko.getDate());
+		emishikko.setTokisyo(mishikko.getTokisyo());
+
+		List<TaisyoBukken> bukkens = new ArrayList<TaisyoBukken>();
+		for(int i = 0; i < bukkenKubuns.length; i++) {
+			TaisyoBukken bukken = new TaisyoBukken();
+			bukken.setBukkenKubun(bukkenKubuns[i]);
+			bukken.setChibanKuiki(chibanKuikis[i]);
+			bukken.setChibanKuiki(chibanKuikis[i]);
+			bukken.setChibanKaokuBango(chibanKaokuBangos[i]);
+			bukken.setMokuteki(mokutekis[i]);
+			bukken.setYoshiKubun(yoshiKubuns[i]);
+			bukken.setUketsukeDate(uketsukeDates[i]);
+			bukken.setUketsukeBango(uketsukeBangos[i]);
+			bukken.setDojyuni(Dojyunis[i]);
+			bukkenService.saveBukken(bukken);
+			bukkens.add(bukken);
+		}
+
+		emishikko.setTaisyoBukkenList(bukkens);
+		mishikkoService.saveMishikko(emishikko);
+
+		return new ModelAndView("redirect:/soft/mishikko/" + mishikko.getId());
+	}
 }

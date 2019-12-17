@@ -8,7 +8,8 @@
 <body >
 <div th:fragment="mishikko_contents">
 <h4 th:text="${title}"></h4>
-<form th:action="@{/soft/mishikko/new}" method="post" th:object="${mishikko}">
+<form th:action="@{edit}" method="post" th:object="${mishikko}">
+	<input type="hidden" name="id" th:value="*{id}"/>
 	<div class="form-group" th:classappend="${#fields.hasErrors('kenmei')}? 'has-error'">
 		<label for="kenmei">件名</label>
 		<input type="text" name="kenmei" class="form-control" th:field="*{kenmei}" />
@@ -22,58 +23,59 @@
 	<div class="form-group" th:classappend="${#fields.hasErrors('tokisyo')}? 'has-error'">
 		<label for="tokisyo">登記所</label>
 		<select id="tokisyo" name="tokisyo" class="form-control">
-		<option th:selected="${''}"/>
+		<option th:selected="*{tokisyo.id}" th:value="*{tokisyo.id}" th:text="*{tokisyo.tokisyoName}"/>
 		<option th:each="tks : ${tokisyo}" th:value="${tks.id}" th:text="${tks.tokisyoName}"/>
 	</select>
 	</div>
 	<div class="mishikko_bukken_wrap">
-	<div class="mishikko_bukken_hyouji">
+	<div th:each="tb: *{taisyoBukkenList}" class="mishikko_bukken_hyouji">
 		<div class="form-group">
 			<label for="bukkenKubun">土地・建物</label>
 			<select name="bukkenKubun" class="form-control">
+				<option th:selected="${tb.bukkenKubun}" th:text="${tb.bukkenKubun}"/>
 				<option value="土地">土地</option>
 				<option value="建物">建物</option>
 			</select>
 		</div>
 		<div class="form-group">
 			<label for="chibanKuiki">地番区域</label>
-			<input type="text" name="chibanKuiki" class="form-control" />
+			<input type="text" name="chibanKuiki" th:value="${tb.chibanKuiki}" class="form-control" />
 		</div>
 		<div class="form-group">
 			<label for="chibanKaokuBango">地番家屋番号</label>
-			<input type="text" name="chibanKaokuBango" class="form-control" />
+			<input type="text" name="chibanKaokuBango" th:value="${tb.chibanKaokuBango}" class="form-control" />
 		</div>
 		<div class="form-group">
 			<label for="mokuteki">登記の目的</label>
-			<input type="text" name="mokuteki" class="form-control" />
+			<input type="text" name="mokuteki" th:value="${tb.mokuteki}" class="form-control" />
 		</div>
 		<div class="form-group">
 			<label for="yoshiKubun">甲区・乙区</label>
 			<select name="yoshiKubun" class="form-control">
+				<option th:selected="${tb.yoshiKubun}" th:text="${tb.yoshiKubun}"></option>
 				<option value="甲区">甲区</option>
 				<option value="乙区">乙区</option>
 			</select>
 		</div>
 		<div class="form-group">
 			<label for="uketsukeDate">受付年月日</label>
-			<input type="text" name="uketsukeDate" class="form-control" />
+			<input type="text" name="uketsukeDate" th:value="${tb.uketsukeDate}" class="form-control" />
 		</div>
 		<div class="form-group">
 			<label for="uketsukeBango">受付番号</label>
-			<input type="text" name="uketsukeBango" class="form-control" />
+			<input type="text" name="uketsukeBango" th:value="${tb.uketsukeBango}" class="form-control" />
 		</div>
 		<div class="form-group">
 			<label for="Dojyuni">同順位（あ）（い）</label>
-			<input type="text" name="Dojyuni" class="form-control" />
+			<input type="text" name="Dojyuni" th:value="${tb.Dojyuni}" class="form-control" />
 		</div>
 	</div>
 	</div>
 	<button type="button" class="btn btn-primary m-4" id="mishikko_bukken">物件追加</button>
 	<button type="button" class="btn btn-danger m-4" id="mishikko_bukken_remove">物件削除</button>
 	<div>
-		<button type="submit" class="btn btn-primary mr-4">登録</button>
+		<button type="submit" class="btn btn-primary mr-4">更新</button>
 		<button type="button" onclick="history.back()" class="btn btn-primary ml-4">戻る</button>
 	</div>
 </form>
 </div>
-</body>

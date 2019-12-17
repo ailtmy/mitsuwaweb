@@ -29,8 +29,10 @@
 		<td th:text="${mishikko.date}"></td>
 		<td th:text="${mishikko.tokisyo.tokisyoName}"></td>
 		<td th:text="${mishikko.tokisyo.tokisyoCode}"></td>
-		<td th:each="bukken : ${mishikko.taisyoBukkenList}">
-			<p th:text="|${bukken.chibanKuiki}${bukken.chibanKaokuBango}|"></p>
+		<td>
+			<ul th:each="bukken : ${mishikko.taisyoBukkenList}">
+				<li th:text="|${bukken.chibanKuiki}${bukken.chibanKaokuBango}|"></li>
+			</ul>
 		</td>
 	</tr>
 
