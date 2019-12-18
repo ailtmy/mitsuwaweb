@@ -60,6 +60,11 @@ public class Customer extends Audit {
 	private PersonDivision person;
 
 	/**
+	 * 会社法人等番号
+	 */
+	private String houjinbango;
+
+	/**
 	 * メール（ユニーク）
 	 */
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
