@@ -19,9 +19,9 @@ public class Tourokumenkyozei {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	private String gokei;
+	private String toumenGokei;
 
-	private String uchiwake;
+	private String toumenUchiwake;
 
 	private String jyobun;
 

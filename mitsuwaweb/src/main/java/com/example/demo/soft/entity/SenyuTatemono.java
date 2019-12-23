@@ -16,7 +16,7 @@ import lombok.Setter;
 @Table
 @Getter
 @Setter
-public class SenyuTatemono implements ShinseiBukken {
+public class SenyuTatemono extends ShinseiBukken {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -82,7 +82,7 @@ public class SenyuTatemono implements ShinseiBukken {
 	 * 附属建物
 	 */
 	@OneToMany
-	private List<FuzokuTatemono> fuzokuTatemono;
+//	private List<FuzokuTatemono> fuzokuTatemono;
 
 	/**
 	 * 地番区域情報

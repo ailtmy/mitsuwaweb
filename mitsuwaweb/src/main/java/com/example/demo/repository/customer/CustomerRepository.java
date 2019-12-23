@@ -1,5 +1,7 @@
 package com.example.demo.repository.customer;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,5 +16,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 
 	Page<Customer> findDistinctByNameContainingOrKanaContainingOrMailList_MailAddrContainingOrTelephoneList_PhoneNumberContainingOrderByKana(
 			String name, String kana, String mailAddr, String phoneNumber, Pageable pageable);
+
+	public List<Customer> findAllByOrderByKana();
 
 }

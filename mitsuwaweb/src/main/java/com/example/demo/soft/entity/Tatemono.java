@@ -1,7 +1,5 @@
 package com.example.demo.soft.entity;
 
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,7 +13,7 @@ import lombok.Setter;
 @Table
 @Getter
 @Setter
-public class Tatemono implements ShinseiBukken {
+public class Tatemono extends ShinseiBukken {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -79,7 +77,7 @@ public class Tatemono implements ShinseiBukken {
 	/**
 	 * 附属建物
 	 */
-	private List<FuzokuTatemono> fuzokuTatemono;
+//	private List<FuzokuTatemono> fuzokuTatemono;
 
 	@Override
 	public String getChibanKuikiJyoho() {

@@ -19,8 +19,8 @@ public class Kazeikakaku {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	private String goukei;
+	private String kazeiGoukei;
 
-	private String uchiwake;
+	private String kazeiUchiwake;
 
 }

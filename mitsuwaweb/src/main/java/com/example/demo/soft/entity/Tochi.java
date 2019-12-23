@@ -13,7 +13,7 @@ import lombok.Setter;
 @Table
 @Getter
 @Setter
-public class Tochi implements ShinseiBukken {
+public class Tochi extends ShinseiBukken {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

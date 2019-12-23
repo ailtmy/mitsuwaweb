@@ -1,6 +1,25 @@
 package com.example.demo.soft.entity;
 
-public interface ShinseiBukken {
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-	String getChibanKuikiJyoho();
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity
+@Table
+@Getter
+@Setter
+public class ShinseiBukken {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+
+	public String getChibanKuikiJyoho() {
+		return "";
+	}
 }
