@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+</head>
+<body >
+<div th:fragment="ittou_contents">
+<h4 th:text="${title}"></h4>
+<form th:action="@{edit}" method="post" th:object="${ittou}">
+	<input type="hidden" name="id" th:value="*{id}"/>
+	<div class="form-group" th:classappend="${#fields.hasErrors('shikucyoson')}? 'has-error'">
+		<label for="shikucyoson">所在(市区町村（何市何町))</label>
+		<input type="text" name="shikucyoson" class="form-control" th:field="*{shikucyoson}"/>
+		<span class="text-danger" th:if="${#fields.hasErrors('shikucyoson')}" th:errors="*{shikucyoson}">所在(市区町村（何市何町))エラー</span>
+	</div>
+	<div class="form-group" th:classappend="${#fields.hasErrors('ooaza')}? 'has-error'">
+		<label for="ooaza">所在(大字（何一丁目))</label>
+		<input type="text" name="ooaza" class="form-control" th:field="*{ooaza}"/>
+		<span class="text-danger" th:if="${#fields.hasErrors('ooaza')}" th:errors="*{ooaza}">所在(大字（何一丁目))エラー</span>
+	</div>
+	<div class="form-group" th:classappend="${#fields.hasErrors('shikichiban')}? 'has-error'">
+		<label for="shikichiban">敷地番</label>
+		<input type="text" name="shikichiban" class="form-control" th:field="*{shikichiban}"/>
+		<span class="text-danger" th:if="${#fields.hasErrors('shikichiban')}" th:errors="*{shikichiban}">敷地番エラー</span>
+	</div>
+	<div class="form-group" th:classappend="${#fields.hasErrors('kanchi')}? 'has-error'">
+		<label for="kanchi">換地等の記載</label>
+		<input type="text" name="kanchi" class="form-control" th:field="*{kanchi}"/>
+		<span class="text-danger" th:if="${#fields.hasErrors('kanchi')}" th:errors="*{kanchi}">換地等の記載エラー</span>
+	</div>
+	<div class="form-group" th:classappend="${#fields.hasErrors('tatemonoBango')}? 'has-error'">
+		<label for="tatemonoBango">建物の名称</label>
+		<input type="text" name="tatemonoBango" class="form-control" th:field="*{tatemonoBango}"/>
+		<span class="text-danger" th:if="${#fields.hasErrors('tatemonoBango')}" th:errors="*{tatemonoBango}">建物の名称エラー</span>
+	</div>
+	<div class="form-group" th:classappend="${#fields.hasErrors('kozo')}? 'has-error'">
+		<label for="kozo">構造</label>
+		<input type="text" name="kozo" class="form-control" th:field="*{kozo}"/>
+		<span class="text-danger" th:if="${#fields.hasErrors('kozo')}" th:errors="*{kozo}">構造エラー</span>
+	</div>
+	<div class="form-group" th:classappend="${#fields.hasErrors('yukamenseki')}? 'has-error'">
+		<label for="yukamenseki">床面積</label>
+		<input type="text" name="yukamenseki" class="form-control" th:field="*{yukamenseki}"/>
+		<span class="text-danger" th:if="${#fields.hasErrors('yukamenseki')}" th:errors="*{yukamenseki}">床面積エラー</span>
+	</div>
+	<div class="form-group" th:classappend="${#fields.hasErrors('biko')}? 'has-error'">
+		<label for="biko">備考</label>
+		<input type="text" name="biko" class="form-control" th:field="*{biko}"/>
+		<span class="text-danger" th:if="${#fields.hasErrors('biko')}" th:errors="*{biko}">備考エラー</span>
+	</div>
+
+	<div>
+		<button type="submit" class="btn btn-primary mr-4">更新</button>
+		<a class="btn btn-primary mr-4" th:href="@{/soft/ittou}" >戻る</a>
+	</div>
+</form>
+</div>

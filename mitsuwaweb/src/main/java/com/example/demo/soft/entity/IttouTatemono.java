@@ -1,9 +1,6 @@
 package com.example.demo.soft.entity;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -14,25 +11,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class IttouTatemono extends ShinseiBukken {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-
-	/**
-	 * 物件種別
-	 */
-	private final String BUKKENSYUBETSU = "区分建物（一棟）";
-
-	/**
-	 * 地番家屋番号情報
-	 */
-	private String chibanKaokubango;
-
-	/**
-	 * 物件区分
-	 */
-	private final String BUKKENKUBUN = "一棟";
 
 	/**
 	 * 地番区域市区町村
@@ -74,11 +52,28 @@ public class IttouTatemono extends ShinseiBukken {
 	 */
 	private String biko;
 
-	/**
-	 * 地番区域
-	 */
+	@Override
+	public String getBukkenSyubetsu() {
+		return "区分建物（一棟）";
+	}
+
 	@Override
 	public String getChibanKuikiJyoho() {
 		return shikucyoson + ooaza;
 	}
+
+	@Override
+	public String getChibanKaokubangoJyoho() {
+		String str = shikichiban.replace("番地", "－");
+		if(str.endsWith("－")) {
+			str = str.replace("－", "");
+		}
+		return str;
+	}
+
+	@Override
+	public String getBukkenKubun() {
+		return "一棟";
+	}
+
 }
