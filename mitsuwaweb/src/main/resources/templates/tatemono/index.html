@@ -8,36 +8,44 @@
 </head>
 <body >
 
-<div th:fragment="tochi_contents">
+<div th:fragment="tatemono_contents">
 <h4 th:text="${title}"></h4>
 
 <p th:text="|${list.getTotalElements()}件のデータが存在します。|"></p>
 <table class="table table-bordered text-center table-hover table-sm">
 <tr>
-	<th class="m-1 p-1"><a class="btn btn-info btn-sm text-white ml-1 p-1" th:href="@{/soft/tochi/new}">新規作成</a></th>
+	<th class="m-1 p-1"><a class="btn btn-info btn-sm text-white ml-1 p-1" th:href="@{/soft/tatemono/new}">新規作成</a></th>
 	<th>ID</th>
 	<th>不動産番号</th>
 	<th>所在</th>
-	<th>地番</th>
-	<th>地目</th>
-	<th>地積</th>
+	<th>家屋番号</th>
+	<th>種類</th>
+	<th>構造</th>
+	<th>床面積</th>
+	<th>附属</th>
 	<th colspan="2"></th>
 </tr>
 
-<tr th:each="tochi : ${list}">
+<tr th:each="tatemono : ${list}">
 	<td class="m-1 p-1">
-	<form th:action="@{/soft/tochi/{id}/delete(id=${tochi.id})}" method="post">
-		<a class="btn btn-primary btn-sm text-white ml-1 p-1" th:href="@{/soft/tochi/{id}/edit(id=${tochi.id})}">編集</a>
+	<form th:action="@{/soft/tatemono/{id}/delete(id=${tatemono.id})}" method="post">
+		<a class="btn btn-primary btn-sm text-white ml-1 p-1" th:href="@{/soft/tatemono/{id}/edit(id=${tatemono.id})}">編集</a>
 		<input class="btn btn-danger btn-sm text-white m-1 p-1" type="submit" value="削除"
 		onclick="return confirm('削除します。よろしいですか？')" sec:authorize="hasRole('ADMIN')"/>
 	</form>
 	</td>
-	<td><a th:href="@{/soft/tochi/{id}(id=${tochi.id})}" th:text="${tochi.id}"></a></td>
-	<td th:text="${tochi.fudosanBango}"></td>
-	<td th:text="${tochi.syozai}"></td>
-	<td th:text="${tochi.chiban}"></td>
-	<td th:text="${tochi.chimoku}"></td>
-	<td th:text="${tochi.chiseki}"></td>
+	<td><a th:href="@{/soft/tatemono/{id}(id=${tatemono.id})}" th:text="${tatemono.id}"></a></td>
+	<td th:text="${tatemono.fudosanBango}"></td>
+	<td th:text="${tatemono.syozai} + ${tatemono.shikichiban}"></td>
+	<td th:text="${tatemono.kaokuBango}"></td>
+	<td th:text="${tatemono.syurui}"></td>
+	<td th:text="${tatemono.kozo}"></td>
+	<td th:text="${tatemono.yukamenseki}"></td>
+	<td>
+		<ul th:each="fuzoku : ${tatemono.fuzokuTatemono}">
+			<li th:text="${fuzoku.fugo}"></li>
+		</ul>
+	</td>
 </tr>
 </table>
 <nav aria-label="Page navigation">

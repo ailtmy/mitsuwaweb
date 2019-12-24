@@ -5,25 +5,25 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.soft.entity.Tochi;
-import com.example.demo.soft.repository.TochiRepository;
+import com.example.demo.soft.entity.Tatemono;
+import com.example.demo.soft.repository.TatemonoRepository;
 
 @Service
-public class TochiService {
+public class TatemonoService {
 
 	@Autowired
-	TochiRepository repository;
+	TatemonoRepository repository;
 
-	public Page<Tochi> getAll(Pageable pageable){
+	public Page<Tatemono> getAll(Pageable pageable){
 		return repository.findAllByOrderByIdDesc(pageable);
 	}
 
-	public Tochi saveTochi(Tochi tochi) {
-		return repository.saveAndFlush(tochi);
+	public Tatemono saveTatemono(Tatemono tatemono) {
+		return repository.saveAndFlush(tatemono);
 	}
 
-	public Tochi find(Integer id) {
-		return repository.findById(id).orElse(new Tochi());
+	public Tatemono find(Integer id) {
+		return repository.findById(id).orElse(new Tatemono());
 	}
 
 	public void delete(Integer id) {

@@ -1,9 +1,6 @@
 package com.example.demo.soft.entity;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -15,29 +12,10 @@ import lombok.Setter;
 @Setter
 public class Tochi extends ShinseiBukken {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-
 	/**
-	 * 物件種別
-	 */
-	private final String BUKKENSYUBETSU = "土地";
-
-	/**
-	 * 地番区域情報　所在
+	 * 所在
 	 */
 	private String syozai;
-
-	/**
-	 * 地番家屋番号情報　ハイフン方式
-	 */
-	private String chibanKaokuBangoJyoho;
-
-	/**
-	 * 物件区分
-	 */
-	private final String BUKKENKUBUN = "土地";
 
 	/**
 	 * 地番
@@ -60,8 +38,26 @@ public class Tochi extends ShinseiBukken {
 	private String biko;
 
 	@Override
+	public String getBukkenSyubetsu() {
+		return "土地";
+	}
+
+	@Override
 	public String getChibanKuikiJyoho() {
 		return syozai;
 	}
 
+	@Override
+	public String getChibanKaokubangoJyoho() {
+		String str = chiban.replace("番", "－");
+		if(str.endsWith("－")) {
+			str = str.replace("－", "");
+		}
+		return str;
+	}
+
+	@Override
+	public String getBukkenKubun() {
+		return "土地";
+	}
 }

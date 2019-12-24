@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="UTF-8">
+<title th:text="|${title}|"></title>
+</head>
+<body >
+<div class="container-fluid" th:fragment="tatemono_contents">
+<h4 th:text="${title}"></h4>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light mt-2 mb-4">
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/soft/tatemono/{id}/edit(id=${tatemono.id})}" th:text="編集"></a>
+	<form th:action="@{/soft/tatemono/{id}/delete(id=${tatemono.id})}" method="post">
+		<input class="btn btn-sm btn-danger text-white mr-4" type="submit" value="削除"
+		onclick="return confirm('削除します。よろしいですか？')" />
+	</form>
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/soft/tatemono}" >戻る</a>
+</nav>
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-10">
+			<table th:object="${tatemono}" class="table table-hover">
+				<tr>
+					<th scope="row">ＩＤ</th>
+					<td th:text="*{id}"></td>
+				</tr>
+				<tr>
+					<th scope="row">不動産番号</th>
+					<td th:text="*{fudosanBango}"></td>
+				</tr>
+				<tr>
+					<th scope="row">所在</th>
+					<td th:text="|*{syozai} *{shikichiban} (*{kanchi})|"></td>
+				</tr>
+				<tr>
+					<th scope="row">家屋番号</th>
+					<td th:text="*{kaokuBango}"></td>
+				</tr>
+				<tr>
+					<th scope="row">種類</th>
+					<td th:text="*{syurui}"></td>
+				</tr>
+				<tr>
+					<th scope="row">構造</th>
+					<td th:text="*{kozo}"></td>
+				</tr>
+				<tr>
+					<th scope="row">床面積</th>
+					<td th:text="*{yukamenseki}"></td>
+				</tr>
+				<tr>
+					<th scope="row">備考</th>
+					<td th:text="*{biko}"></td>
+				</tr>
+				<tr th:each="fuzoku : *{fuzokuTatemono}">
+					<th scope="row" th:text="|附属建物${fuzoku.fugo}|"></th>
+					<td th:text="|${fuzoku.syurui} ${fuzoku.kozo} ${fuzoku.yukamenseki} ${fuzoku.biko}|"></td>
+				</tr>
+	</table>
+		</div>
+		<div class="co-sm-2">
+
+		</div>
+	</div>
+</div>
+</div>

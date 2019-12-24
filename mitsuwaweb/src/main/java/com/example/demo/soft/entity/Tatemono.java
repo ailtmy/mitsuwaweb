@@ -1,9 +1,10 @@
 package com.example.demo.soft.entity;
 
+import java.util.List;
+
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -15,29 +16,10 @@ import lombok.Setter;
 @Setter
 public class Tatemono extends ShinseiBukken {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-
 	/**
-	 * 物件種別
-	 */
-	private final String BUKKENSYUBETSU = "一般建物";
-
-	/**
-	 * 地番区域情報　所在
+	 * 所在
 	 */
 	private String syozai;
-
-	/**
-	 * 地番家屋番号情報　ハイフン方式
-	 */
-	private String chibanKaokuBangoJyoho;
-
-	/**
-	 * 物件区分
-	 */
-	private final String BUKKENKUBUN = "建物";
 
 	/**
 	 * 敷地番
@@ -77,11 +59,33 @@ public class Tatemono extends ShinseiBukken {
 	/**
 	 * 附属建物
 	 */
-//	private List<FuzokuTatemono> fuzokuTatemono;
+	@OneToMany
+	@JoinColumn(name = "shinsei_bukken_id")
+	private List<FuzokuTatemono> fuzokuTatemono;
+
+	@Override
+	public String getBukkenSyubetsu() {
+		return "一般建物";
+	}
 
 	@Override
 	public String getChibanKuikiJyoho() {
 		return syozai;
+	}
+
+	@Override
+	public String getChibanKaokubangoJyoho() {
+		String str = kaokuBango.replace("番", "－");
+		str = str.replace("の", "－");
+		if(str.endsWith("－")) {
+			str = str.replace("－", "");
+		}
+		return str;
+	}
+
+	@Override
+	public String getBukkenKubun() {
+		return "建物";
 	}
 
 }
