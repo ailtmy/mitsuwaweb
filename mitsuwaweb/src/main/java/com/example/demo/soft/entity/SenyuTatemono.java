@@ -3,9 +3,6 @@ package com.example.demo.soft.entity;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -17,25 +14,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SenyuTatemono extends ShinseiBukken {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-
-	/**
-	 * 物件種別
-	 */
-	private final String BUKKENSYUBETSU = "区分建物（専有）";
-
-	/**
-	 * 地番家屋番号情報
-	 */
-	private String chibanKaokubango;
-
-	/**
-	 * 物件区分
-	 */
-	private final String BUKKENKUBUN = "区建";
 
 	/**
 	 * 地番区域市区町村
@@ -82,14 +60,31 @@ public class SenyuTatemono extends ShinseiBukken {
 	 * 附属建物
 	 */
 	@OneToMany
-//	private List<FuzokuTatemono> fuzokuTatemono;
+	private List<FuzokuTatemono> fuzokuTatemono;
 
-	/**
-	 * 地番区域情報
-	 */
+	@Override
+	public String getBukkenSyubetsu() {
+		return "区分建物（専有）";
+	}
+
 	@Override
 	public String getChibanKuikiJyoho() {
 		return shikucyoson + ooaza;
+	}
+
+	@Override
+	public String getChibanKaokubangoJyoho() {
+		String str = kaokuBango.replace("番", "－");
+		str = str.replace("の", "－");
+		if(str.endsWith("－")) {
+			str = str.replace("－", "");
+		}
+		return str;
+	}
+
+	@Override
+	public String getBukkenKubun() {
+		return "区建";
 	}
 
 }

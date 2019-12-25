@@ -3,7 +3,6 @@ package com.example.demo.soft.entity;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -60,7 +59,6 @@ public class Tatemono extends ShinseiBukken {
 	 * 附属建物
 	 */
 	@OneToMany
-	@JoinColumn(name = "shinsei_bukken_id")
 	private List<FuzokuTatemono> fuzokuTatemono;
 
 	@Override
