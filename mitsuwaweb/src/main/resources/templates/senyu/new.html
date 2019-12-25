@@ -1,10 +1,85 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title th:text="${title}"></title>
 </head>
-<body>
-
+<body >
+<div th:fragment="senyu_contents">
+<h4 th:text="${title}"></h4>
+<form th:action="@{/soft/senyu/new}" method="post" th:object="${senyuTatemono}">
+	<div class="form-group" th:classappend="${#fields.hasErrors('fudosanBango')}? 'has-error'">
+		<label for="fudosanBango">不動産番号</label>
+		<input type="text" name="fudosanBango" class="form-control" th:field="*{fudosanBango}" />
+		<span class="text-danger" th:if="${#fields.hasErrors('fudosanBango')}" th:errors="*{fudosanBango}">不動産番号エラー</span>
+	</div>
+	<div class="form-group" th:classappend="${#fields.hasErrors('shikucyoson')}? 'has-error'">
+		<label for="shikucyoson">地番区域市区町村</label>
+		<input type="text" name="shikucyoson" class="form-control" th:field="*{shikucyoson}" />
+		<span class="text-danger" th:if="${#fields.hasErrors('shikucyoson')}" th:errors="*{shikucyoson}">地番区域市区町村エラー</span>
+	</div>
+	<div class="form-group" th:classappend="${#fields.hasErrors('ooaza')}? 'has-error'">
+		<label for="ooaza">地番区域大字</label>
+		<input type="text" name="ooaza" class="form-control" th:field="*{ooaza}" />
+		<span class="text-danger" th:if="${#fields.hasErrors('ooaza')}" th:errors="*{ooaza}">地番区域大字エラー</span>
+	</div>
+	<div class="form-group" th:classappend="${#fields.hasErrors('kaokuBango')}? 'has-error'">
+		<label for="kaokuBango">家屋番号</label>
+		<input type="text" name="kaokuBango" class="form-control" th:field="*{kaokuBango}"/>
+		<span class="text-danger" th:if="${#fields.hasErrors('kaokuBango')}" th:errors="*{kaokuBango}">家屋番号エラー</span>
+	</div>
+	<div class="form-group" th:classappend="${#fields.hasErrors('tatemonoBango')}? 'has-error'">
+		<label for="tatemonoBango">建物の名称</label>
+		<input type="text" name="tatemonoBango" class="form-control" th:field="*{tatemonoBango}"/>
+		<span class="text-danger" th:if="${#fields.hasErrors('tatemonoBango')}" th:errors="*{tatemonoBango}">建物の名称エラー</span>
+	</div>
+	<div class="form-group" th:classappend="${#fields.hasErrors('syurui')}? 'has-error'">
+		<label for="syurui">種類</label>
+		<input type="text" name="chimoku" class="form-control" th:field="*{syurui}"/>
+		<span class="text-danger" th:if="${#fields.hasErrors('syurui')}" th:errors="*{syurui}">種類エラー</span>
+	</div>
+	<div class="form-group" th:classappend="${#fields.hasErrors('kozo')}? 'has-error'">
+		<label for="kozo">構造</label>
+		<input type="text" name="kozo" class="form-control" th:field="*{kozo}"/>
+		<span class="text-danger" th:if="${#fields.hasErrors('kozo')}" th:errors="*{kozo}">構造エラー</span>
+	</div>
+	<div class="form-group" th:classappend="${#fields.hasErrors('yukamenseki')}? 'has-error'">
+		<label for="yukamenseki">床面積</label>
+		<input type="text" name="yukamenseki" class="form-control" th:field="*{yukamenseki}"/>
+		<span class="text-danger" th:if="${#fields.hasErrors('yukamenseki')}" th:errors="*{yukamenseki}">床面積エラー</span>
+	</div>
+	<div class="form-group" th:classappend="${#fields.hasErrors('biko')}? 'has-error'">
+		<label for="biko">備考</label>
+		<input type="text" name="biko" class="form-control" th:field="*{biko}"/>
+		<span class="text-danger" th:if="${#fields.hasErrors('biko')}" th:errors="*{biko}">備考エラー</span>
+	</div>
+<!--
+	<div class="fuzokuwrap">
+		<div class="form-group" th:classapeend="${#fields.hasErrors('fuzokuTatemono')}? 'has-error'">
+			<label for="fuzokuTatemono">附属建物</label>
+			<select id="fuzokuTatemono" name="fuzokuTatemono" class="form-control">
+				<option th:selected="${''}"/>
+				<option th:each="fuzoku : ${fuzokuTatemono}" th:value="${fuzoku.id}"
+				 th:text="|${fuzoku.fugo} ${fuzoku.syurui} ${fuzoku.kozo} ${fuzoku.yukamenseki}|"/>
+			</select>
+		</div>
+	</div>
+	<div class="shikichiwrap">
+		<div class="form-group" th:classapeend="${#fields.hasErrors('shikichiken')}? 'has-error'">
+			<label for="shikichiken">敷地権</label>
+			<select id="shikichiken" name="shikichiken" class="form-control">
+				<option th:selected="${''}"/>
+				<option th:each="shikichi : ${shikichiken}" th:value="${fuzoku.id}"
+				 th:text="|${shikichi.fugo} ${shikichi.syozaiChiban} ${shikichi.chimoku} ${shikichi.chiseki}|"/>
+			</select>
+		</div>
+	</div>
+ -->
+	<div>
+		<button type="submit" class="btn btn-primary mr-4">登録</button>
+		<button type="button" onclick="history.back()" class="btn btn-primary ml-4">戻る</button>
+	</div>
+</form>
+</div>
 </body>
-</html>

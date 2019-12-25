@@ -51,6 +51,11 @@ public class SenyuTatemono extends ShinseiBukken {
 	private String yukamenseki;
 
 	/**
+	 * 備考
+	 */
+	private String biko;
+
+	/**
 	 * 敷地権
 	 */
 	@OneToMany

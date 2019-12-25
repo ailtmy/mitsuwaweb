@@ -104,7 +104,7 @@ public class SenyuTatemonoController {
 			) {
 
 		mav.setViewName("layout");
-		mav.addObject("contents", "senyu/edit::senyu_contens");
+		mav.addObject("contents", "senyu/edit::senyu_contents");
 		mav.addObject("title", "専有部分編集");
 		mav.addObject("senyu", senyuService.find(id));
 		return mav;
