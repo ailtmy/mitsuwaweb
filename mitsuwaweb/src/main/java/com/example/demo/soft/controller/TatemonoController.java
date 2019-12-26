@@ -79,18 +79,20 @@ public class TatemonoController {
 			) {
 
 		List<FuzokuTatemono> fuzokuTatemono = new ArrayList<FuzokuTatemono>();
-		for(int i = 0; i < fuzokus.getFuzokufugo().length(); i++) {
-			FuzokuTatemono fuzoku = new FuzokuTatemono();
-			fuzoku.setFuzokufugo(fuzokus.getFuzokufugo().split(",")[i]);
-			fuzoku.setFuzokusyurui(fuzokus.getFuzokusyurui().split(",")[i]);
-			fuzoku.setFuzokukozo(fuzokus.getFuzokukozo().split(",")[i]);
-			fuzoku.setFuzokuyukamenseki(fuzokus.getFuzokuyukamenseki().split(",")[i]);
-			fuzoku.setFuzokubiko(fuzokus.getFuzokubiko().split(",")[i]);
-			fuzokuService.saveFuzoku(fuzoku);
-			fuzokuTatemono.add(fuzoku);
+		if(fuzokus.getFuzokufugo().isEmpty()){
+		} else {
+			for(int i = 0; i < fuzokus.getFuzokufugo().length(); i++) {
+				FuzokuTatemono fuzoku = new FuzokuTatemono();
+				fuzoku.setFuzokufugo(fuzokus.getFuzokufugo().split(",")[i]);
+				fuzoku.setFuzokusyurui(fuzokus.getFuzokusyurui().split(",")[i]);
+				fuzoku.setFuzokukozo(fuzokus.getFuzokukozo().split(",")[i]);
+				fuzoku.setFuzokuyukamenseki(fuzokus.getFuzokuyukamenseki().split(",")[i]);
+				fuzoku.setFuzokubiko(fuzokus.getFuzokubiko().split(",")[i]);
+				fuzokuService.saveFuzoku(fuzoku);
+				fuzokuTatemono.add(fuzoku);
+			}
+			tatemono.setFuzokuTatemono(fuzokuTatemono);
 		}
-		tatemono.setFuzokuTatemono(fuzokuTatemono);
-
 		tatemonoService.saveTatemono(tatemono);
 
 		return new ModelAndView("redirect:/soft/tatemono/" + tatemono.getId());
@@ -143,7 +145,8 @@ public class TatemonoController {
 			) {
 
 		List<FuzokuTatemono> fuzokuTatemono = tatemonoService.find(id).getFuzokuTatemono();
-		if(!fuzokuTatemono.isEmpty()){
+		if(fuzokuTatemono.isEmpty()){
+		} else {
 			for(int i = 0; i < fuzokus.getFuzokufugo().length(); i++) {
 				FuzokuTatemono fuzoku = fuzokuService.find(fuzokuTatemono.get(i));
 				fuzoku.setFuzokufugo(fuzokus.getFuzokufugo().split(",")[i]);

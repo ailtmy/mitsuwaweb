@@ -55,26 +55,32 @@
 		<span class="text-danger" th:if="${#fields.hasErrors('biko')}" th:errors="*{biko}">備考エラー</span>
 	</div>
 	<div class="tatemono_new_fuzokuwrap">
-		<div class="form-group">
-			<label for="fuzokufugo">附属建物符号</label>
-			<input type="text" name="fuzokufugo" class="form-control"/>
+		<div class="tatemono_fuzokuhyoji">
+			<div class="form-group">
+				<label for="fuzokufugo">附属建物符号</label>
+				<input type="text" name="fuzokufugo" class="form-control"/>
+			</div>
+			<div class="form-group">
+				<label for="fuzokusyurui">附属建物種類</label>
+				<input type="text" name="fuzokusyurui" class="form-control"/>
+			</div>
+			<div class="form-group">
+				<label for="fuzokukozo">附属建物構造</label>
+				<input type="text" name="fuzokukozo" class="form-control"/>
+			</div>
+			<div class="form-group">
+				<label for="fuzokuyukamenseki">附属建物床面積</label>
+				<input type="text" name="fuzokuyukamenseki" class="form-control"/>
+			</div>
+			<div class="form-group">
+				<label for="fuzokubiko">附属建物備考</label>
+				<input type="text" name="fuzokubiko" class="form-control" value=" "/>
+			</div>
 		</div>
-		<div class="form-group">
-			<label for="fuzokusyurui">附属建物種類</label>
-			<input type="text" name="fuzokusyurui" class="form-control"/>
-		</div>
-		<div class="form-group">
-			<label for="fuzokukozo">附属建物構造</label>
-			<input type="text" name="fuzokukozo" class="form-control"/>
-		</div>
-		<div class="form-group">
-			<label for="fuzokuyukamenseki">附属建物床面積</label>
-			<input type="text" name="fuzokuyukamenseki" class="form-control"/>
-		</div>
-		<div class="form-group">
-			<label for="fuzokubiko">附属建物備考</label>
-			<input type="text" name="fuzokubiko" class="form-control" value=" "/>
-		</div>
+	</div>
+	<div class=mb-2>
+		<button type="button" id="tatemono_fuzoku_new" class="btn btn-primary mr-4">附属追加</button>
+		<button type="button" id="tatemono_fuzoku_remove" class="btn btn-primary ml-4">附属削除</button>
 	</div>
 	<div>
 		<button type="submit" class="btn btn-primary mr-4">登録</button>

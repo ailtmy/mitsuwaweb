@@ -10,6 +10,44 @@ $(document).ready(function(){
 		$('.mishikko_bukken_hyouji:last-child').remove();
 	});
 
+	//建物附属建物追加
+	$('#tatemono_fuzoku_new').click(function(){
+		$(".tatemono_fuzokuhyoji:last").clone().appendTo('.tatemono_new_fuzokuwrap');
+	});
+
+	//附属建物編集追加
+	$('#tatemono_fuzoku_edit').click(function(){
+		var fuzoku = '<div class="tatemono_fuzokuhyoji">' +
+						'<div class="form-group">' +
+							'<label for="fuzokufugo">附属建物符号</label>' +
+							'<input type="text" name="fuzokufugo" class="form-control"/>' +
+						'</div>' +
+						'<div class="form-group">' +
+							'<label for="fuzokusyurui">附属建物種類</label>' +
+							'<input type="text" name="fuzokusyurui" class="form-control"/>' +
+						'</div>' +
+						'<div class="form-group">' +
+							'<label for="fuzokukozo">附属建物構造</label>' +
+							'<input type="text" name="fuzokukozo" class="form-control"/>' +
+						'</div>' +
+						'<div class="form-group">' +
+						'<label for="fuzokuyukamenseki">附属建物床面積</label>' +
+							'<input type="text" name="fuzokuyukamenseki" class="form-control"/>' +
+						'</div>' +
+						'<div class="form-group">' +
+							'<label for="fuzokubiko">附属建物備考</label>' +
+							'<input type="text" name="fuzokubiko" class="form-control" value=" "/>' +
+						'</div>'
+		$(".tatemono_edit").append(fuzoku);
+	});
+
+	//建物附属建物削除
+	$('#tatemono_fuzoku_remove').click(function(){
+		if($('.tatemono_fuzokuhyoji').length != 1){
+			$('.tatemono_fuzokuhyoji:last-child').remove();
+		}
+	});
+
 	//一棟の建物物件追加
 	$('#ittou_tatemono_hyouji').click(function(){
 		var html = '<div class="ittou_tatemono">' +
@@ -50,6 +88,7 @@ $(document).ready(function(){
 							'<input type="text" name="biko" class="form-control"/>' +
 						'</div>' +
 					'</div>';
+
 		$('.shinseibukken_hyouji').append(html);
 	});
 
