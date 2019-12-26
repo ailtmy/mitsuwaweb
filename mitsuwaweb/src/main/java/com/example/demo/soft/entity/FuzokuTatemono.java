@@ -22,25 +22,25 @@ public class FuzokuTatemono {
 	/**
 	 * 符号
 	 */
-	private String fugo;
+	private String fuzokufugo;
 
 	/**
 	 * 種類
 	 */
-	private String syurui;
+	private String fuzokusyurui;
 
 	/**
 	 * 構造
 	 */
-	private String Kozo;
+	private String fuzokukozo;
 
 	/**
 	 * 床面積
 	 */
-	private String yukamenseki;
+	private String fuzokuyukamenseki;
 
 	/**
 	 * 備考
 	 */
-	private String biko;
+	private String fuzokubiko;
 }

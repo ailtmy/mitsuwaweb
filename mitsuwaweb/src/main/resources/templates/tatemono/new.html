@@ -36,7 +36,7 @@
 	</div>
 	<div class="form-group" th:classappend="${#fields.hasErrors('syurui')}? 'has-error'">
 		<label for="syurui">種類</label>
-		<input type="text" name="chimoku" class="form-control" th:field="*{syurui}"/>
+		<input type="text" name="syurui" class="form-control" th:field="*{syurui}"/>
 		<span class="text-danger" th:if="${#fields.hasErrors('syurui')}" th:errors="*{syurui}">種類エラー</span>
 	</div>
 	<div class="form-group" th:classappend="${#fields.hasErrors('kozo')}? 'has-error'">
@@ -54,18 +54,48 @@
 		<input type="text" name="biko" class="form-control" th:field="*{biko}"/>
 		<span class="text-danger" th:if="${#fields.hasErrors('biko')}" th:errors="*{biko}">備考エラー</span>
 	</div>
-	<!--
 	<div class="fuzokuwrap">
-		<div class="form-group" th:classapeend="${#fields.hasErrors('fuzokuTatemono')}? 'has-error'">
-			<label for="fuzokuTatemono">附属建物</label>
-			<select id="fuzokuTatemono" name="fuzokuTatemono" class="form-control">
-				<option th:selected="${''}"/>
-				<option th:each="fuzoku : ${fuzokuTatemono}" th:value="${fuzoku.id}"
-				 th:text="|${fuzoku.fugo} ${fuzoku.syurui} ${fuzoku.kozo} ${fuzoku.yukamenseki}|"/>
-			</select>
+		<div class="form-group">
+			<label for="fuzokufugo">附属建物符号</label>
+			<input type="text" name="fuzokufugo" class="form-control"/>
+		</div>
+		<div class="form-group">
+			<label for="fuzokusyurui">附属建物種類</label>
+			<input type="text" name="fuzokusyurui" class="form-control"/>
+		</div>
+		<div class="form-group">
+			<label for="fuzokukozo">附属建物構造</label>
+			<input type="text" name="fuzokukozo" class="form-control"/>
+		</div>
+		<div class="form-group">
+			<label for="fuzokuyukamenseki">附属建物床面積</label>
+			<input type="text" name="fuzokuyukamenseki" class="form-control"/>
+		</div>
+		<div class="form-group">
+			<label for="fuzokubiko">附属建物備考</label>
+			<input type="text" name="fuzokubiko" class="form-control" value=" "/>
+		</div>
+		<div class="form-group">
+			<label for="fuzokufugo">附属建物符号</label>
+			<input type="text" name="fuzokufugo" class="form-control"/>
+		</div>
+		<div class="form-group">
+			<label for="fuzokusyurui">附属建物種類</label>
+			<input type="text" name="fuzokusyurui" class="form-control"/>
+		</div>
+		<div class="form-group">
+			<label for="fuzokukozo">附属建物構造</label>
+			<input type="text" name="fuzokukozo" class="form-control"/>
+		</div>
+		<div class="form-group">
+			<label for="fuzokuyukamenseki">附属建物床面積</label>
+			<input type="text" name="fuzokuyukamenseki" class="form-control"/>
+		</div>
+		<div class="form-group">
+			<label for="fuzokubiko">附属建物備考</label>
+			<input type="text" name="fuzokubiko" class="form-control" value=" "/>
 		</div>
 	</div>
-	 -->
 	<div>
 		<button type="submit" class="btn btn-primary mr-4">登録</button>
 		<button type="button" onclick="history.back()" class="btn btn-primary ml-4">戻る</button>

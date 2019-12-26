@@ -1,5 +1,8 @@
 package com.example.demo.soft.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.demo.soft.entity.FuzokuTatemono;
 import com.example.demo.soft.entity.Tatemono;
+import com.example.demo.soft.service.FuzokuTatemonoService;
 import com.example.demo.soft.service.TatemonoService;
 
 @Controller
@@ -19,6 +24,9 @@ public class TatemonoController {
 
 	@Autowired
 	TatemonoService tatemonoService;
+
+	@Autowired
+	FuzokuTatemonoService fuzokuService;
 
 	/**
 	 * 建物一覧
@@ -65,9 +73,23 @@ public class TatemonoController {
 	 */
 	@PostMapping("/soft/tatemono/new")
 	public ModelAndView tatemonoCreate(
+			ModelAndView mav,
 			@ModelAttribute("Tatemono") Tatemono tatemono,
-			ModelAndView mav
+			@ModelAttribute("FuzokuTatemono") FuzokuTatemono fuzokus
 			) {
+
+		List<FuzokuTatemono> fuzokuTatemono = new ArrayList<FuzokuTatemono>();
+		for(int i = 0; i < fuzokus.getFuzokufugo().length() - 1; i++) {
+			FuzokuTatemono fuzoku = new FuzokuTatemono();
+			fuzoku.setFuzokufugo(fuzokus.getFuzokufugo().split(",")[i]);
+			fuzoku.setFuzokusyurui(fuzokus.getFuzokusyurui().split(",")[i]);
+			fuzoku.setFuzokukozo(fuzokus.getFuzokukozo().split(",")[i]);
+			fuzoku.setFuzokuyukamenseki(fuzokus.getFuzokuyukamenseki().split(",")[i]);
+			fuzoku.setFuzokubiko(fuzokus.getFuzokubiko().split(",")[i]);
+			fuzokuService.saveFuzoku(fuzoku);
+			fuzokuTatemono.add(fuzoku);
+		}
+		tatemono.setFuzokuTatemono(fuzokuTatemono);
 
 		tatemonoService.saveTatemono(tatemono);
 

@@ -56,8 +56,8 @@
 					<td th:text="*{biko}"></td>
 				</tr>
 				<tr th:each="fuzoku : *{fuzokuTatemono}">
-					<th scope="row" th:text="|附属建物${fuzoku.fugo}|"></th>
-					<td th:text="|${fuzoku.syurui} ${fuzoku.kozo} ${fuzoku.yukamenseki} ${fuzoku.biko}|"></td>
+					<th scope="row" th:text="|附属建物${fuzoku.fuzokufugo}|"></th>
+					<td th:text="|${fuzoku.fuzokusyurui}　${fuzoku.fuzokukozo}　${fuzoku.fuzokuyukamenseki}　${fuzoku.fuzokubiko}|"></td>
 				</tr>
 	</table>
 		</div>
