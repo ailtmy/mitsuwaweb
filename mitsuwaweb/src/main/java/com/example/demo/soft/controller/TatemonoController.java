@@ -79,7 +79,7 @@ public class TatemonoController {
 			) {
 
 		List<FuzokuTatemono> fuzokuTatemono = new ArrayList<FuzokuTatemono>();
-		for(int i = 0; i < fuzokus.getFuzokufugo().length() - 1; i++) {
+		for(int i = 0; i < fuzokus.getFuzokufugo().length(); i++) {
 			FuzokuTatemono fuzoku = new FuzokuTatemono();
 			fuzoku.setFuzokufugo(fuzokus.getFuzokufugo().split(",")[i]);
 			fuzoku.setFuzokusyurui(fuzokus.getFuzokusyurui().split(",")[i]);
@@ -138,9 +138,23 @@ public class TatemonoController {
 	public ModelAndView update(
 			@PathVariable Integer id,
 			@ModelAttribute("Tatemono") Tatemono tatemono,
+			@ModelAttribute("FuzokuTatemono") FuzokuTatemono fuzokus,
 			ModelAndView mav
 			) {
 
+		List<FuzokuTatemono> fuzokuTatemono = tatemonoService.find(id).getFuzokuTatemono();
+		if(!fuzokuTatemono.isEmpty()){
+			for(int i = 0; i < fuzokus.getFuzokufugo().length(); i++) {
+				FuzokuTatemono fuzoku = fuzokuService.find(fuzokuTatemono.get(i));
+				fuzoku.setFuzokufugo(fuzokus.getFuzokufugo().split(",")[i]);
+				fuzoku.setFuzokusyurui(fuzokus.getFuzokusyurui().split(",")[i]);
+				fuzoku.setFuzokukozo(fuzokus.getFuzokukozo().split(",")[i]);
+				fuzoku.setFuzokuyukamenseki(fuzokus.getFuzokuyukamenseki().split(",")[i]);
+				fuzoku.setFuzokubiko(fuzokus.getFuzokubiko().split(",")[i]);
+				fuzokuService.saveFuzoku(fuzoku);
+			}
+			tatemono.setFuzokuTatemono(fuzokuTatemono);
+		}
 		tatemonoService.saveTatemono(tatemono);
 		return new ModelAndView("redirect:/soft/tatemono/" + tatemono.getId());
 	}
