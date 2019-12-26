@@ -81,6 +81,7 @@ public class TatemonoController {
 		List<FuzokuTatemono> fuzokuTatemono = new ArrayList<FuzokuTatemono>();
 		if(fuzokus.getFuzokufugo().isEmpty()){
 		} else {
+//			Nullガード
 			for(int i = 0; i < fuzokus.getFuzokufugo().length(); i++) {
 				FuzokuTatemono fuzoku = new FuzokuTatemono();
 				fuzoku.setFuzokufugo(fuzokus.getFuzokufugo().split(",")[i]);
@@ -147,6 +148,7 @@ public class TatemonoController {
 		List<FuzokuTatemono> fuzokuTatemono = tatemonoService.find(id).getFuzokuTatemono();
 		if(fuzokuTatemono.isEmpty()){
 		} else {
+			//Nullガード
 			for(int i = 0; i < fuzokus.getFuzokufugo().length(); i++) {
 				FuzokuTatemono fuzoku = fuzokuService.find(fuzokuTatemono.get(i));
 				fuzoku.setFuzokufugo(fuzokus.getFuzokufugo().split(",")[i]);
