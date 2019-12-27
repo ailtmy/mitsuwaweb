@@ -43,9 +43,9 @@ $(document).ready(function(){
 
 	//建物附属建物削除
 	$('#tatemono_fuzoku_remove').click(function(){
-		if($('.tatemono_fuzokuhyoji').length != 1){
+//		if($('.tatemono_fuzokuhyoji').length != 1){
 			$('.tatemono_fuzokuhyoji:last-child').remove();
-		}
+//		}
 	});
 
 	//一棟の建物物件追加
