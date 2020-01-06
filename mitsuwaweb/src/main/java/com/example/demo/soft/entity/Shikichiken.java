@@ -22,35 +22,49 @@ public class Shikichiken {
 	/**
 	 * 土地の符号
 	 */
-	private String fugo;
+	private String shikichifugo;
 
 	/**
 	 * 所在地番
 	 */
-	private String syozaiChiban;
+	private String shikichisyozaichiban;
 
 	/**
 	 * 地目
 	 */
-	private String chimoku;
+	private String shikichichimoku;
 
 	/**
 	 * 地積
 	 */
-	private String chiseki;
+	private String shikichichiseki;
 
 	/**
 	 * 敷地権の種類
 	 */
-	private String shikichiSyurui;
+	private String shikichisyurui;
 
 	/**
 	 * 敷地権の割合
 	 */
-	private String shikichiWariai;
+	private String shikichiwariai;
 
 	/**
 	 * 備考
 	 */
-	private String biko;
+	private String shikichibiko;
+
+	public Shikichiken() {
+		super();
+	}
+
+	public Shikichiken(Shikichiken shikichi) {
+		this.shikichifugo = shikichi.shikichifugo;
+		this.shikichisyozaichiban = shikichi.shikichisyozaichiban;
+		this.shikichichimoku = shikichi.shikichichimoku;
+		this.shikichichiseki = shikichi.shikichichiseki;
+		this.shikichisyurui = shikichi.shikichisyurui;
+		this.shikichiwariai = shikichi.shikichiwariai;
+		this.shikichibiko = shikichi.shikichibiko;
+	}
 }

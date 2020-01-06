@@ -24,5 +24,9 @@ public class FuzokuTatemonoService {
 		repository.delete(fuzoku);
 	}
 
+	public FuzokuTatemono findById(Integer id) {
+		return repository.findById(id).orElse(new FuzokuTatemono());
+	}
+
 
 }

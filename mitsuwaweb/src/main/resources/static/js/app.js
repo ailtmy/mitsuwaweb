@@ -15,6 +15,25 @@ $(document).ready(function(){
 		$(".tatemono_fuzokuhyoji:last").clone().appendTo('.tatemono_new_fuzokuwrap');
 	});
 
+	//建物附属建物削除
+	$('#tatemono_fuzoku_remove').click(function(){
+//		if($('.tatemono_fuzokuhyoji').length != 1){
+			$('.tatemono_fuzokuhyoji:last-child').remove();
+//		}
+	});
+
+	//敷地権追加
+	$('#shikichi_new').click(function(){
+		$(".shikichihyoji:last").clone().appendTo('.shikichiwrap');
+	});
+
+	//敷地権削除
+	$('#shikichi_remove').click(function(){
+//		if($('.tatemono_fuzokuhyoji').length != 1){
+		$('.shikichihyoji:last-child').remove();
+//		}
+	});
+
 	//附属建物編集追加
 	$('#tatemono_fuzoku_edit').click(function(){
 		var fuzoku = '<div class="tatemono_fuzokuhyoji">' +
@@ -39,13 +58,6 @@ $(document).ready(function(){
 							'<input type="text" name="fuzokubiko" class="form-control" value=" "/>' +
 						'</div>'
 		$(".tatemono_edit").append(fuzoku);
-	});
-
-	//建物附属建物削除
-	$('#tatemono_fuzoku_remove').click(function(){
-//		if($('.tatemono_fuzokuhyoji').length != 1){
-			$('.tatemono_fuzokuhyoji:last-child').remove();
-//		}
 	});
 
 	//一棟の建物物件追加

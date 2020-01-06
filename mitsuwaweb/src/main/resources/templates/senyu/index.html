@@ -46,12 +46,12 @@
 	<td th:text="${senyu.yukamenseki}"></td>
 	<td>
 		<ul th:each="fuzoku : ${senyu.fuzokuTatemono}">
-			<li th:text="${fuzoku.fugo}"></li>
+			<li th:text="${fuzoku.fuzokufugo}"></li>
 		</ul>
 	</td>
 	<td>
 		<ul th:each="shikichi : ${senyu.shikichiken}">
-			<li th:text="${shikichi.fugo}"></li>
+			<li th:text="${shikichi.shikichifugo}"></li>
 		</ul>
 	</td>
 

@@ -12,6 +12,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light mt-2 mb-4">
 	<a class="btn btn-sm btn-primary mr-4" th:href="@{/soft/tatemono/{id}/edit(id=${tatemono.id})}" th:text="編集"></a>
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/soft/tatemono/{id}/fuzokuadd(id=${tatemono.id})}" th:text="附属追加"></a>
 	<form th:action="@{/soft/tatemono/{id}/delete(id=${tatemono.id})}" method="post">
 		<input class="btn btn-sm btn-danger text-white mr-4" type="submit" value="削除"
 		onclick="return confirm('削除します。よろしいですか？')" />
@@ -57,7 +58,14 @@
 				</tr>
 				<tr th:each="fuzoku : *{fuzokuTatemono}">
 					<th scope="row" th:text="|附属建物${fuzoku.fuzokufugo}|"></th>
-					<td th:text="|${fuzoku.fuzokusyurui}　${fuzoku.fuzokukozo}　${fuzoku.fuzokuyukamenseki}　${fuzoku.fuzokubiko}|"></td>
+					<td th:text="|${fuzoku.fuzokusyurui}　${fuzoku.fuzokukozo}　${fuzoku.fuzokuyukamenseki}　${fuzoku.fuzokubiko}|">
+					</td>
+					<td>
+						<form th:action="@{/soft/tatemono/{tid}/fuzokudelete/{fid}(tid=${tatemono.id}, fid=${fuzoku.id})}" method="post">
+								<input class="btn btn-danger btn-sm text-white m-1 p-1" type="submit"
+								value="附属削除" onclick="return confirm('削除します。よろしいですか？')" />
+						</form>
+					</td>
 				</tr>
 	</table>
 		</div>

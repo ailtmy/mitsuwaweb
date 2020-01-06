@@ -147,7 +147,7 @@ public class TatemonoController {
 			) {
 		if(fuzokus.getFuzokufugo() != null) {
 			List<FuzokuTatemono> fuzokuTatemono = tatemonoService.find(id).getFuzokuTatemono();
-			if(fuzokus.getFuzokufugo() != null){
+//			if(fuzokus.getFuzokufugo() != null){
 				for(int i = 0; i < fuzokus.getFuzokufugo().length(); i++) {
 					FuzokuTatemono fuzoku;
 					if(fuzokuTatemono.isEmpty() || fuzokuTatemono == null){
@@ -164,7 +164,7 @@ public class TatemonoController {
 					fuzokuService.saveFuzoku(fuzoku);
 				}
 				tatemono.setFuzokuTatemono(fuzokuTatemono);
-			}
+//			}
 		}
 		tatemonoService.saveTatemono(tatemono);
 		return new ModelAndView("redirect:/soft/tatemono/" + tatemono.getId());
@@ -179,7 +179,69 @@ public class TatemonoController {
 		return new ModelAndView("redirect:/soft/tatemono");
 	}
 
+	/**
+	 * 附属建物追加
+	 * @param id
+	 * @param mav
+	 * @return
+	 */
+	@GetMapping("/soft/tatemono/{id}/fuzokuadd")
+	public ModelAndView fuzokuNew(
+			@PathVariable Integer id,
+			ModelAndView mav
+			) {
+		mav.setViewName("layout");
+		mav.addObject("contents", "tatemono/fuzokuadd::tatemono_contents");
+		mav.addObject("title", "附属建物追加");
+		mav.addObject("tatemono", tatemonoService.find(id));
+		return mav;
+	}
 
+	/**
+	 * 附属建物追加
+	 * @param mav
+	 * @param id
+	 * @param fuzoku
+	 * @return
+	 */
+	@PostMapping("/soft/tatemono/{id}/fuzokuadd")
+	public ModelAndView fuzokuCreate(
+			ModelAndView mav,
+			@PathVariable Integer id,
+ 			@ModelAttribute("FuzokuTatemono") FuzokuTatemono fuzoku
+			) {
+		Tatemono tatemono = tatemonoService.find(id);
+		List<FuzokuTatemono> fuzokus = tatemono.getFuzokuTatemono();
+		FuzokuTatemono fuzokuTatemono = new FuzokuTatemono(fuzoku);
+		fuzokuService.saveFuzoku(fuzokuTatemono);
+		fuzokus.add(fuzokuTatemono);
+		tatemono.setFuzokuTatemono(fuzokus);
+		tatemonoService.saveTatemono(tatemono);
+		return new ModelAndView("redirect:/soft/tatemono/{id}") ;
+	}
+
+	/**
+	 * 附属建物削除
+	 * @param tid
+	 * @param fid
+	 * @param mav
+	 * @return
+	 */
+	@PostMapping("/soft/tatemono/{tid}/fuzokudelete/{fid}")
+	public ModelAndView fuzokuDeleted(
+			@PathVariable Integer tid,
+			@PathVariable Integer fid,
+			ModelAndView mav
+			) {
+		Tatemono tatemono = tatemonoService.find(tid);
+		List<FuzokuTatemono> fuzokus = tatemono.getFuzokuTatemono();
+		FuzokuTatemono fuzoku = fuzokuService.findById(fid);
+		fuzokus.remove(fuzoku);
+		tatemono.setFuzokuTatemono(fuzokus);
+		tatemonoService.saveTatemono(tatemono);
+		fuzokuService.delete(fuzoku);
+		return new ModelAndView("redirect:/soft/tatemono/{tid}");
+	}
 
 
 }

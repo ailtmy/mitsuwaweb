@@ -60,6 +60,7 @@ public class SenyuTatemono extends ShinseiBukken {
 	 * 敷地権
 	 */
 	@OneToMany
+	@JoinColumn(name = "bukken_id")
 	private List<Shikichiken> shikichiken;
 
 	/**

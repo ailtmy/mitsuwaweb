@@ -43,4 +43,16 @@ public class FuzokuTatemono {
 	 * 備考
 	 */
 	private String fuzokubiko;
+
+	public FuzokuTatemono() {
+		super();
+	}
+
+	public FuzokuTatemono(FuzokuTatemono fuzoku) {
+		this.fuzokufugo = fuzoku.fuzokufugo;
+		this.fuzokusyurui = fuzoku.fuzokusyurui;
+		this.fuzokukozo = fuzoku.fuzokukozo;
+		this.fuzokuyukamenseki = fuzoku.fuzokuyukamenseki;
+		this.fuzokubiko = fuzoku.fuzokubiko;
+	}
 }
