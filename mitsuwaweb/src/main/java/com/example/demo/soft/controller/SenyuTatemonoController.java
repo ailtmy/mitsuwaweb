@@ -88,7 +88,7 @@ public class SenyuTatemonoController {
 			List<FuzokuTatemono> fuzokuTatemono = new ArrayList<FuzokuTatemono>();
 			if(fuzokus.getFuzokufugo().isEmpty()){
 			} else {
-				for(int i = 0; i < fuzokus.getFuzokufugo().length(); i++) {
+				for(int i = 0; i < fuzokus.getFuzokufugo().split(",").length; i++) {
 					FuzokuTatemono fuzoku = new FuzokuTatemono();
 					fuzoku.setFuzokufugo(fuzokus.getFuzokufugo().split(",")[i]);
 					fuzoku.setFuzokusyurui(fuzokus.getFuzokusyurui().split(",")[i]);
@@ -106,7 +106,7 @@ public class SenyuTatemonoController {
 			List<Shikichiken> shikichiList = new ArrayList<Shikichiken>();
 			if(shikichis.getShikichifugo().isEmpty()) {
 			} else {
-				for(int i = 0; i < shikichis.getShikichifugo().length(); i++) {
+				for(int i = 0; i < shikichis.getShikichifugo().split(",").length; i++) {
 					Shikichiken shikichi = new Shikichiken();
 					shikichi.setShikichifugo(shikichis.getShikichifugo().split(",")[i]);
 					shikichi.setShikichisyozaichiban(shikichis.getShikichisyozaichiban().split(",")[i]);
@@ -182,7 +182,7 @@ public class SenyuTatemonoController {
 			) {
 		if(fuzokus.getFuzokufugo() != null) {
 			List<FuzokuTatemono> fuzokuTatemono = senyuService.find(id).getFuzokuTatemono();
-			for(int i = 0; i < fuzokus.getFuzokufugo().length(); i++) {
+			for(int i = 0; i < fuzokus.getFuzokufugo().split(",").length; i++) {
 				FuzokuTatemono fuzoku;
 				if(fuzokuTatemono.isEmpty() || fuzokuTatemono == null) {
 					fuzoku = new FuzokuTatemono();
@@ -202,7 +202,7 @@ public class SenyuTatemonoController {
 
 		if(shikichis.getShikichifugo() != null) {
 			List<Shikichiken> shikichiList = senyuService.find(id).getShikichiken();
-			for(int i = 0; i < shikichis.getShikichifugo().length(); i++) {
+			for(int i = 0; i < shikichis.getShikichifugo().split(",").length; i++) {
 				Shikichiken shikichi;
 				if(shikichiList.isEmpty() || shikichiList == null) {
 					shikichi = new Shikichiken();
