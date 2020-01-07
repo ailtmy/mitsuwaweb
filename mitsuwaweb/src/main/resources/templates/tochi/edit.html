@@ -20,7 +20,7 @@
 		<input type="text" name="syozai" class="form-control" th:field="*{syozai}"/>
 		<span class="text-danger" th:if="${#fields.hasErrors('syozai')}" th:errors="*{syozai}">所在エラー</span>
 	</div>
-	<div class="form-group" th:classappend="${#fields.hasErrors('syozai')}? 'has-error'">
+	<div class="form-group" th:classappend="${#fields.hasErrors('chiban')}? 'has-error'">
 		<label for="chiban">地番</label>
 		<input type="text" name="chiban" class="form-control" th:field="*{chiban}"/>
 		<span class="text-danger" th:if="${#fields.hasErrors('chiban')}" th:errors="*{chiban}">地番エラー</span>

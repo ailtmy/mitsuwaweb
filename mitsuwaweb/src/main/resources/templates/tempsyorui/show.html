@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="UTF-8">
+<title th:text="|${title}|"></title>
+</head>
+<body >
+<div class="container-fluid" th:fragment="tempsyorui_contents">
+<h4 th:text="${title}"></h4>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light mt-2 mb-4">
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/soft/tempsyorui/{id}/edit(id=${tempsyorui.id})}" th:text="編集"></a>
+	<form th:action="@{/soft/tempsyorui/{id}/delete(id=${tempsyorui.id})}" method="post">
+		<input class="btn btn-sm btn-danger text-white mr-4" type="submit" value="削除"
+		onclick="return confirm('削除します。よろしいですか？')" />
+	</form>
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/soft/tempsyorui}" >戻る</a>
+</nav>
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-10">
+			<table th:object="${tempsyorui}" class="table table-hover">
+				<tr>
+					<th scope="row">ＩＤ</th>
+					<td th:text="*{id}"></td>
+				</tr>
+				<tr>
+					<th scope="row">パターン</th>
+					<td th:text="*{pattern}"></td>
+				</tr>
+				<tr>
+					<th scope="row">書類</th>
+					<td>
+						<div th:each="syorui : *{syoruis}">
+							<p th:text="${syorui}"></p>
+						</div>
+					</td>
+				</tr>
+	</table>
+		</div>
+		<div class="co-sm-2">
+
+		</div>
+	</div>
+</div>
+</div>

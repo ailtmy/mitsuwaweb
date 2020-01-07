@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+</head>
+<body >
+
+<div th:fragment="tempsyorui_contents">
+<h4 th:text="${title}"></h4>
+
+<p th:text="|${list.getTotalElements()}件のデータが存在します。|"></p>
+<table class="table table-bordered text-center table-hover table-sm">
+<tr>
+	<th class="m-1 p-1"><a class="btn btn-info btn-sm text-white ml-1 p-1" th:href="@{/soft/tempsyorui/new}">新規作成</a></th>
+	<th>ID</th>
+	<th>パターン</th>
+	<th>添付書類</th>
+	<th colspan="2"></th>
+</tr>
+
+<tr th:each="temp : ${list}">
+	<td class="m-1 p-1">
+	<form th:action="@{/soft/tempsyorui/{id}/delete(id=${temp.id})}" method="post">
+		<a class="btn btn-primary btn-sm text-white ml-1 p-1" th:href="@{/soft/tempsyorui/{id}/edit(id=${temp.id})}">編集</a>
+		<input class="btn btn-danger btn-sm text-white m-1 p-1" type="submit" value="削除"
+		onclick="return confirm('削除します。よろしいですか？')" sec:authorize="hasRole('ADMIN')"/>
+	</form>
+	</td>
+	<td th:text="${temp.id}"></td>
+	<td><a th:href="@{/soft/tempsyorui/{id}(id=${temp.id})}" th:text="${temp.pattern}"></a></td>
+	<td>
+		<ul th:each="syorui : ${temp.syoruis}" class="list-group">
+			<li th:text="*{syorui}" class="list-group-item m-0 p-0"></li>
+		</ul>
+	</td>
+</tr>
+</table>
+<nav aria-label="Page navigation">
+<ul class="pagination">
+
+   <li class="page-item">
+      <a class="page-link" th:href="@{?page={num}&name={param}(num=0, param=${param.name})}" aria-label="Previous">
+        <span aria-hidden="true">先頭</span>
+        <span class="sr-only">Previous</span>
+      </a>
+    </li>
+
+    <li th:if="${list.getNumber() != 0}"class="page-item">
+    	<a class="page-link" th:href="${param.name}? @{?page={num}&name={param}(num=${list.getNumber()} - 1, param=${param.name})}
+    	 : @{?page={num}(num=${list.getNumber()} - 1)}" th:text="${list.getNumber()}"></a>
+    </li>
+
+    <li class="page-item">
+    	<a class="page-link" href="#" th:text="${list.getNumber()} + 1"></a>
+    </li>
+
+    <li th:if="${list.getNumber() + 1} != ${list.getTotalPages()}" class="page-item">
+    	<a class="page-link" th:href="${param.name}? @{?page={num}&name={param}(num=${list.getNumber()} + 1, param=${param.name})}
+    	 : @{?page={num}(num=${list.getNumber()} + 1)}" th:text="${list.getNumber()} + 2"></a>
+    </li>
+
+    <li class="page-item">
+      <a class="page-link" th:href="${param.name}? @{?page={num}&name={param}(num=${list.getTotalPages()} - 1, param=${param.name})}
+      : @{?page={num}(num=${list.getTotalPages()} - 1)}" aria-label="Next">
+        <span aria-hidden="true">最後</span>
+        <span class="sr-only">Next</span>
+      </a>
+    </li>
+
+  </ul>
+</nav>
+</div>
+</body>
+</html>

@@ -29,127 +29,42 @@ $(document).ready(function(){
 
 	//敷地権削除
 	$('#shikichi_remove').click(function(){
-//		if($('.tatemono_fuzokuhyoji').length != 1){
 		$('.shikichihyoji:last-child').remove();
-//		}
 	});
 
-	//附属建物編集追加
-	$('#tatemono_fuzoku_edit').click(function(){
-		var fuzoku = '<div class="tatemono_fuzokuhyoji">' +
-						'<div class="form-group">' +
-							'<label for="fuzokufugo">附属建物符号</label>' +
-							'<input type="text" name="fuzokufugo" class="form-control"/>' +
-						'</div>' +
-						'<div class="form-group">' +
-							'<label for="fuzokusyurui">附属建物種類</label>' +
-							'<input type="text" name="fuzokusyurui" class="form-control"/>' +
-						'</div>' +
-						'<div class="form-group">' +
-							'<label for="fuzokukozo">附属建物構造</label>' +
-							'<input type="text" name="fuzokukozo" class="form-control"/>' +
-						'</div>' +
-						'<div class="form-group">' +
-						'<label for="fuzokuyukamenseki">附属建物床面積</label>' +
-							'<input type="text" name="fuzokuyukamenseki" class="form-control"/>' +
-						'</div>' +
-						'<div class="form-group">' +
-							'<label for="fuzokubiko">附属建物備考</label>' +
-							'<input type="text" name="fuzokubiko" class="form-control" value=" "/>' +
-						'</div>'
-		$(".tatemono_edit").append(fuzoku);
+	//権利者追加
+	$('#kenrisya_add').click(function(){
+		$('.kenrisya_hyouji:last').clone().appendTo('.kenrisya_wrap');
 	});
 
-	//一棟の建物物件追加
-	$('#ittou_tatemono_hyouji').click(function(){
-		var html = '<div class="ittou_tatemono">' +
-						'<div class="form-group">' +
-							'<label for="chibanKaokubango">一棟地番家屋番号情報</label>' +
-							'<input type="text" name="chibanKaokubango" class="form-control"/>' +
-						'</div>' +
-						'<div class="form-group">' +
-							'<label for="shikucyoson">地番区域市区町村</label>' +
-							'<input type="text" name="shikucyoson" class="form-control"/>' +
-						'</div>' +
-						'<div class="form-group">' +
-							'<label for="ooaza">地番区域大字</label>' +
-							'<input type="text" name="ooaza" class="form-control"/>' +
-						'</div>' +
-						'<div class="form-group">' +
-							'<label for="shikichiban">敷地番</label>' +
-							'<input type="text" name="shikichiban" class="form-control"/>' +
-						'</div>' +
-						'<div class="form-group">' +
-							'<label for="kanchi">換地等の記載</label>' +
-							'<input type="text" name="kanchi" class="form-control"/>' +
-						'</div>' +
-						'<div class="form-group">' +
-							'<label for="tatemonoBango">建物番号</label>' +
-							'<input type="text" name="tatemonoBango" class="form-control"/>' +
-						'</div>' +
-						'<div class="form-group">' +
-							'<label for="kozo">構造</label>' +
-							'<input type="text" name="kozo" class="form-control"/>' +
-						'</div>' +
-						'<div class="form-group">' +
-							'<label for="yukamenseki">床面積</label>' +
-							'<input type="text" name="yukamenseki" class="form-control"/>' +
-						'</div>' +
-							'<div class="form-group">' +
-							'<label for="biko">備考</label>' +
-							'<input type="text" name="biko" class="form-control"/>' +
-						'</div>' +
-					'</div>';
-
-		$('.shinseibukken_hyouji').append(html);
+	//権利者削除
+	$('#kenrisya_remove').click(function(){
+		if($('.kenrisya_hyouji').length != 1){
+			$('.kenrisya_hyouji:last-child').remove();
+		}
 	});
 
-	//一棟の建物削除
-	$('#ittou_tatemono_remove').click(function(){
-		$('.ittou_tatemono:last-child').remove();
+	//物件追加
+	$('#bukken_add').click(function(){
+		$('.shinseiBukken_hyouji:last').clone().appendTo('.shinseiBukken_wrap');
 	});
 
-	//専有部分建物追加
-	$('#senyu_tatemono_hyouji').click(function(){
-		var html = '<div class="senyu_tatemono">' +
-						'<div class="form-group">' +
-							'<label for="chibanKaokubango">一棟地番家屋番号情報</label>' +
-							'<input type="text" name="chibanKaokubango" class="form-control"/>' +
-						'</div>' +
-						'<div class="form-group">' +
-							'<label for="shikucyoson">地番区域市区町村</label>' +
-							'<input type="text" name="shikucyoson" class="form-control"/>' +
-						'</div>' +
-						'<div class="form-group">' +
-							'<label for="ooaza">地番区域大字</label>' +
-							'<input type="text" name="ooaza" class="form-control"/>' +
-						'</div>' +
-						'<div class="form-group">' +
-							'<label for="shikichiban">敷地番</label>' +
-							'<input type="text" name="shikichiban" class="form-control"/>' +
-						'</div>' +
-						'<div class="form-group">' +
-							'<label for="kanchi">換地等の記載</label>' +
-							'<input type="text" name="kanchi" class="form-control"/>' +
-						'</div>' +
-						'<div class="form-group">' +
-							'<label for="tatemonoBango">建物番号</label>' +
-							'<input type="text" name="tatemonoBango" class="form-control"/>' +
-						'</div>' +
-						'<div class="form-group">' +
-							'<label for="kozo">構造</label>' +
-							'<input type="text" name="kozo" class="form-control"/>' +
-						'</div>' +
-						'<div class="form-group">' +
-							'<label for="yukamenseki">床面積</label>' +
-							'<input type="text" name="yukamenseki" class="form-control"/>' +
-						'</div>' +
-							'<div class="form-group">' +
-							'<label for="biko">備考</label>' +
-							'<input type="text" name="biko" class="form-control"/>' +
-						'</div>' +
-					'</div>';
-		$('.shinseibukken_hyouji').append(html);
+	//物件削除
+	$('#bukken_remove').click(function(){
+		if($('.shinseiBukken_hyouji').length != 1){
+			$('.shinseiBukken_hyouji:last-child').remove();
+		}
 	});
 
+	//書類追加
+	$('#syorui_add').click(function(){
+		$('.syorui_hyouji:last').clone().appendTo('.syorui_wrap');
+	});
+
+	//書類削除
+	$('#syorui_remove').click(function(){
+		if($('.syorui_hyouji').length != 1){
+			$('.syorui_hyouji:last-child').remove();
+		}
+	});
 });
