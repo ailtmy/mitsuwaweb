@@ -38,7 +38,7 @@
 		<td th:text="${hozon.tokisyo.tokisyoCode}"></td>
 		<td >
 			<ul th:each="bukken : ${hozon.shinseiBukkenList}" class="list-group">
-				<li th:text="|${bukken.chibanKuiki}${bukken.chibanKaokuBango}|" class="list-group-item"></li>
+				<li th:text="|${bukken.getChibanKuikiJyoho()}${bukken.getChibanKaokubangoJyoho()}|" class="list-group-item"></li>
 			</ul>
 		</td>
 	</tr>

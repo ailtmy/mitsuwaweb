@@ -41,7 +41,7 @@ public class Hozon extends Audit {
 	 * 所有者
 	 */
 	@OneToMany
-	@JoinColumn(name = "Kenrisya_id")
+	@JoinColumn(name = "Shinsei_id")
 	private List<Kenrisya> syoyusya;
 
 	/**
@@ -65,16 +65,28 @@ public class Hozon extends Audit {
 	/**
 	 * 課税価格
 	 */
-	@OneToOne
-	@JoinColumn(name = "kazeikakaku_id")
-	private Kazeikakaku kazeikakaku;
+	private long kazeiGoukei;
 
-	@OneToOne
-	@JoinColumn(name = "tourokumenkyozei_id")
 	/**
-	 * 登録免許税
+	 * 課税価格内訳
 	 */
-	private Tourokumenkyozei tourokumenkyozei;
+	private String kazeiUchiwake;
+
+	/**
+	 * 登録免許税合計
+	 */
+	private long toumenGoukei;
+
+	/**
+	 * 登録免許税内訳
+	 */
+	private String toumenUchiwake;
+
+	/**
+	 * 減税根拠条文
+	 */
+
+	private String jyobun;
 
 	/**
 	 * 対象物件
