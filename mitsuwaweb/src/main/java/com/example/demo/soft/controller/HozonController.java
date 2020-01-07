@@ -10,6 +10,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -66,6 +67,12 @@ public class HozonController {
 		return mav;
 	}
 
+	/**
+	 * ２項保存新規作成
+	 * @param hozon
+	 * @param mav
+	 * @return
+	 */
 	@GetMapping("/soft/hozon/new")
 	public ModelAndView hozonNew(
 			@ModelAttribute Hozon hozon,
@@ -95,7 +102,7 @@ public class HozonController {
 			Kenrisya kenrisya = new Kenrisya();
 			Customer customer = customerService.find(customers[i]);
 			kenrisya.setCustomer(customer);
-			if(mochibuns[i] != null || mochibuns[i].isEmpty()) {
+			if(mochibuns[i] != null || !mochibuns[i].isEmpty()) {
 				kenrisya.setMochibun(mochibuns[i]);
 			}
 			kenrisyaService.saveKenrisya(kenrisya);
@@ -112,5 +119,17 @@ public class HozonController {
 
 		hozonService.saveHozon(hozon);
 		return new ModelAndView("redirect:/soft/hozon");
+	}
+
+	@GetMapping("/soft/hozon/{id}")
+	public ModelAndView show(
+			@PathVariable Integer id,
+			ModelAndView mav
+			) {
+		mav.setViewName("layout");
+		mav.addObject("contents", "hozon/show::hozon_contents");
+		mav.addObject("title", "２項保存詳細");
+		mav.addObject("hozon", hozonService.find(id));
+		return mav;
 	}
 }

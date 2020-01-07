@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="UTF-8">
+<title th:text="|${title}|"></title>
+</head>
+<body >
+<div class="container-fluid" th:fragment="hozon_contents">
+<h4 th:text="${title}"></h4>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light mt-2 mb-4">
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/soft/hozon/{id}/edit(id=${hozon.id})}" th:text="編集"></a>
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/soft/hozon/{id}/create(id=${hozon.id})}" th:text="申請ファイル作成"></a>
+	<form th:action="@{/soft/hozon/{id}/delete(id=${hozon.id})}" method="post">
+		<input class="btn btn-sm btn-danger text-white mr-4" type="submit" value="削除"
+		onclick="return confirm('削除します。よろしいですか？')" />
+	</form>
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/soft/hozon}" >戻る</a>
+</nav>
+<div th:if="${createMessage}">
+	<p th:text="${createMessage}" class="bg-info text-light"></p>
+</div>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-10">
+			<table th:object="${hozon}" class="table table-hover">
+				<tr>
+					<th scope="row">ＩＤ</th>
+					<td th:text="*{id}"></td>
+				</tr>
+				<tr>
+					<th scope="row">件名</th>
+					<td th:text="*{kenmei}"></td>
+				</tr>
+				<tr>
+					<th scope="row">原因</th>
+					<td th:text="*{genin}"></td>
+				</tr>
+				<tr>
+					<th scope="row">所有者</th>
+					<td>
+						<p th:each="kenrisya : *{syoyusya}">
+							<span th:text="|${kenrisya.mochibun}　${kenrisya.customer.name}|"></span>
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">添付書類</th>
+					<td>
+						<div th:each="syorui : *{tempsyorui.syoruis}">
+							<p th:text="${syorui}"></p>
+						</div>
+					</td>
+				<tr>
+					<th scope="row">申請年月日</th>
+					<td th:text="*{date}"></td>
+				</tr>
+				<tr>
+					<th scope="row">登記所</th>
+					<td th:text="|*{tokisyo.tokisyoName}(*{tokisyo.tokisyoCode})|"></td>
+				</tr>
+				<tr>
+					<th scope="row">課税価格合計</th>
+					<td th:text="*{kazeiGoukei}"></td>
+				</tr>
+				<tr>
+					<th scope="row">課税価格内訳</th>
+					<td th:text="*{kazeiUchiwake}"></td>
+				</tr>
+				<tr>
+					<th scope="row">登録免許税合計</th>
+					<td th:text="*{toumenGoukei}"></td>
+				</tr>
+				<tr>
+					<th scope="row">登録免許税内訳</th>
+					<td th:text="*{toumenUchiwake}"></td>
+				</tr>
+				<tr>
+					<th scope="row">減税根拠条文</th>
+					<td th:text="*{jyobun}"></td>
+				</tr>
+				<tr>
+					<th scope="row">物件</th>
+					<td  >
+						<ul th:each="bukken : *{shinseiBukkenList}"  class="list-group">
+							<li class="list-group-item">
+								<p th:text="|${bukken.fudosanBango}　${bukken.getBukkenSyubetsu()}　
+								${bukken.getChibanKuikiJyoho()}　${bukken.getChibanKaokubangoJyoho()}(${bukken.getBukkenKubun()})|"></p>
+							</li>
+						</ul>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="co-sm-2">
+
+		</div>
+	</div>
+
+</div>
+</div>
