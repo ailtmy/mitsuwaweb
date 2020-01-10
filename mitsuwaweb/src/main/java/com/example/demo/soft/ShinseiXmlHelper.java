@@ -67,6 +67,24 @@ public class ShinseiXmlHelper {
 	}
 
 	/**
+	 * タグ作成
+	 * @param document
+	 * @param parentElement
+	 * @param childTagName
+	 * @param textContent
+	 */
+	public static void elementCreateSet(
+			 Document document, Element parentElement, String childTagName, String textContent) {
+		Element childElement = document.createElement(childTagName);
+		if(textContent == null || textContent.isEmpty()) {
+			childElement.setTextContent("");
+		}else {
+			childElement.setTextContent(textContent);
+		}
+		parentElement.appendChild(childElement);
+	}
+
+	/**
 	 * 指定タグ内の子要素を含めてクローン作成
 	 * @param element
 	 * @param findTagName 指定タグ

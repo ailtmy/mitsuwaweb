@@ -1,7 +1,10 @@
 package com.example.demo.soft.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.xml.sax.SAXException;
 
 import com.example.demo.entity.customer.Customer;
 import com.example.demo.service.customer.CustomerService;
@@ -91,7 +95,7 @@ public class HozonController {
 	public ModelAndView hozonCreate(
 			ModelAndView mav,
 			@ModelAttribute Hozon hozon,
-			@RequestParam("mochibun") String[] mochibuns,
+			@RequestParam(name="mochibun", defaultValue=" ") String[] mochibuns,
 			@RequestParam("customer") Integer[] customers,
 			@RequestParam("shinseiBukken") Integer[] bukkens,
 			@RequestParam("tokisyo") Integer tokisyo
@@ -102,7 +106,7 @@ public class HozonController {
 			Kenrisya kenrisya = new Kenrisya();
 			Customer customer = customerService.find(customers[i]);
 			kenrisya.setCustomer(customer);
-			if(mochibuns[i] != null || !mochibuns[i].isEmpty()) {
+			if(mochibuns[i] != null || !(mochibuns[i].isEmpty())) {
 				kenrisya.setMochibun(mochibuns[i]);
 			}
 			kenrisyaService.saveKenrisya(kenrisya);
@@ -121,6 +125,12 @@ public class HozonController {
 		return new ModelAndView("redirect:/soft/hozon");
 	}
 
+	/**
+	 * ２項保存詳細
+	 * @param id
+	 * @param mav
+	 * @return
+	 */
 	@GetMapping("/soft/hozon/{id}")
 	public ModelAndView show(
 			@PathVariable Integer id,
@@ -130,6 +140,93 @@ public class HozonController {
 		mav.addObject("contents", "hozon/show::hozon_contents");
 		mav.addObject("title", "２項保存詳細");
 		mav.addObject("hozon", hozonService.find(id));
+		return mav;
+	}
+
+	/**
+	 * ２項保存編集
+	 * @param id
+	 * @param mav
+	 * @return
+	 */
+	@GetMapping("/soft/hozon/{id}/edit")
+	public ModelAndView edit(
+			@PathVariable Integer id,
+			ModelAndView mav
+			) {
+		mav.setViewName("layout");
+		mav.addObject("contents", "hozon/edit::hozon_contents");
+		mav.addObject("title", "２項保存編集");
+		mav.addObject("hozon", hozonService.find(id));
+		mav.addObject("tokisyo", tokisyoService.findAll());
+		mav.addObject("customer", customerService.allget());
+		mav.addObject("shinseiBukken", bukkenService.allget());
+		mav.addObject("tempsyorui", tempService.allget());
+		return mav;
+	}
+
+	@PostMapping("/soft/hozon/{id}/edit")
+	public ModelAndView update(
+			@PathVariable Integer id,
+			@ModelAttribute("Hozon") Hozon hozon,
+			@RequestParam(name="mochibun", defaultValue=" ") String[] mochibuns,
+			@RequestParam("customer") Integer[] customers,
+			@RequestParam("shinseiBukken") Integer[] bukkens,
+			@RequestParam("tokisyo") Integer tokisyo,
+			ModelAndView mav
+			) {
+
+		List<Kenrisya> syoyusyaList = new ArrayList<Kenrisya>();
+		for(int i = 0; i < customers.length; i++) {
+			Kenrisya kenrisya = new Kenrisya();
+			Customer customer = customerService.find(customers[i]);
+			kenrisya.setCustomer(customer);
+			if(mochibuns[i] != null || !(mochibuns[i].isEmpty())) {
+				kenrisya.setMochibun(mochibuns[i]);
+			}
+			kenrisyaService.saveKenrisya(kenrisya);
+			syoyusyaList.add(kenrisya);
+		}
+		hozon.setSyoyusya(syoyusyaList);
+
+		List<ShinseiBukken> bukkenList = new ArrayList<ShinseiBukken>();
+		for(Integer bukkenid : bukkens) {
+			ShinseiBukken bukken = bukkenService.find(bukkenid);
+			bukkenList.add(bukken);
+		}
+		hozon.setShinseiBukkenList(bukkenList);
+		hozonService.saveHozon(hozon);
+
+		return new ModelAndView("redirect:/soft/hozon/{id}");
+	}
+
+	/**
+	 * ２項保存削除
+	 * @param id
+	 * @param mav
+	 * @return
+	 */
+	@PostMapping("/soft/hozon/{id}/delete")
+	public ModelAndView delete(
+			@PathVariable Integer id,
+			ModelAndView mav
+			) {
+		hozonService.delete(id);
+		return new ModelAndView("redirect:/soft/hozon");
+	}
+
+	@GetMapping("/soft/hozon/{id}/create")
+	public ModelAndView hozon(
+			@PathVariable Integer id,
+			ModelAndView mav
+			) throws ParserConfigurationException, SAXException, IOException {
+		Hozon hozon = hozonService.find(id);
+		mav.setViewName("layout");
+		mav.addObject("contents", "hozon/show::hozon_contents");
+		String message = hozonService.xmlFileGet("HM0501200320001", hozon);
+		mav.addObject("createMessage", message);
+		mav.addObject("title", "２項保存作成");
+		mav.addObject("hozon", hozon);
 		return mav;
 	}
 }

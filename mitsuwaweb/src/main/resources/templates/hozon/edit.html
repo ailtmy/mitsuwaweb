@@ -8,40 +8,43 @@
 <body >
 <div th:fragment="hozon_contents">
 <h4 th:text="${title}"></h4>
-<form th:action="@{/soft/hozon/new}" method="post" th:object="${hozon}">
+<form th:action="@{/soft/hozon/{id}/edit(id=${hozon.id})}" method="post" th:object="${hozon}">
+	<input type="hidden" name="id" th:value="*{id}"/>
 	<div class="form-group" th:classappend="${#fields.hasErrors('kenmei')}? 'has-error'">
 		<label for="kenmei">件名</label>
 		<input type="text" name="kenmei" class="form-control" th:field="*{kenmei}" />
 		<span class="text-danger" th:if="${#fields.hasErrors('kenmei')}" th:errors="*{kenmei}">件名エラー</span>
 	</div>
-	<div class="form-group" th:classappend="${#fields.hasErrors('genin')}? 'has-error'" >
+	<div class="form-group" th:classappend="${#fields.hasErrors('genin')}? 'has-error'">
 		<label for="genin">原因</label>
 		<input type="text" name="genin" class="form-control" th:field="*{genin}" />
 		<span class="text-danger" th:if="${#fields.hasErrors('genin')}" th:errors="*{genin}">原因エラー</span>
 	</div>
-	<div class="kenrisya_wrap">
+	<div th:each="kenrisya : *{syoyusya}" class="kenrisya_wrap">
 		<div class="kenrisya_hyouji">
 			<div class="form-group">
 				<label for="mochibun">権利者持分</label>
-				<input type="text" name="mochibun" class="form-control" value=" "/>
+				<input type="text" name="mochibun" class="form-control" th:value="${kenrisya.mochibun}"/>
 			</div>
 			<div class="form-group">
 				<label for="customer">権利者</label>
 				<select id="customer" name="customer" class="form-control">
-					<option th:selected="${''}"/>
+					<option th:selected="${kenrisya.customer.id}" th:value="${kenrisya.customer.id}" th:text="${kenrisya.customer.name}"/>
 					<option th:each="cus : ${customer}" th:value="${cus.id}" th:text="${cus.name}" />
 				</select>
 			</div>
 		</div>
 	</div>
+<!--
 	<div class="mb-2">
 		<button type="button" class="btn btn-primary mr-4" id="kenrisya_add">権利者追加</button>
 		<button type="button" class="btn btn-danger mr-4" id="kenrisya_remove">権利者削除</button>
 	</div>
+ -->
 	<div class="form-group">
 		<label for="tempsyorui">添付書類</label>
 		<select id="tempsyorui" name="tempsyorui" class="form-control">
-			<option th:selected="${''}"/>
+			<option th:selected="*{tempsyorui.id}" th:value=*{tempsyorui.id} th:text="*{tempsyorui.pattern}"/>
 			<option th:each="temp : ${tempsyorui}" th:value="${temp.id}" th:text="${temp.pattern}" />
 		</select>
 	</div>
@@ -53,50 +56,52 @@
 	<div class="form-group" th:classappend="${#fields.hasErrors('tokisyo')}? 'has-error'">
 		<label for="tokisyo">登記所</label>
 		<select id="tokisyo" name="tokisyo" class="form-control">
-			<option th:selected="${''}"/>
-			<option th:each="tks : ${tokisyo}" th:value="${tks.id}" th:text="${tks.tokisyoName}"/>
-		</select>
+		<option th:selected="*{tokisyo.id}" th:value="*{tokisyo.id}" th:text="*{tokisyo.tokisyoName}"/>
+		<option th:each="tks : ${tokisyo}" th:value="${tks.id}" th:text="${tks.tokisyoName}"/>
+	</select>
 	</div>
 	<div class="form-group">
 		<label for="kazeiGoukei">課税価格合計</label>
-		<input type="text" name="kazeiGoukei" class="form-control"/>
+		<input type="text" name="kazeiGoukei" th:value="*{kazeiGoukei}" class="form-control"/>
 	</div>
 	<div class="form-group">
 		<label for="kazeiUchiwake">課税価格内訳</label>
-		<input type="text" name="kazeiUchiwake" class="form-control"/>
+		<input type="text" name="kazeiUchiwake" th:value="*{kazeiUchiwake}" class="form-control"/>
 	</div>
 	<div class="form-group">
 		<label for="toumenGoukei">登録免許税合計</label>
-		<input type="text" name="toumenGoukei" class="form-control"/>
+		<input type="text" name="toumenGoukei" th:value="*{toumenGoukei}" class="form-control"/>
 	</div>
 	<div class="form-group">
 		<label for="toumenUchiwake">登録免許税内訳</label>
-		<input type="text" name="toumenUchiwake" class="form-control"/>
+		<input type="text" name="toumenUchiwake" th:value="*{toumenUchiwake}" class="form-control"/>
 	</div>
 	<div class="form-group">
 		<label for="jyobun">減税根拠条文</label>
-		<input type="text" name="jyobun" class="form-control"/>
+		<input type="text" name="jyobun" th:value="*{jyobun}" class="form-control"/>
 	</div>
 	<div class="shinseiBukken_wrap">
-		<div class="shinseiBukken_hyouji">
+		<div th:each="shinseiBukken : *{shinseiBukkenList}" class="shinseiBukken_hyouji">
 			<div class="form-group">
 				<label for="shinseiBukken">物件</label>
 				<select id="shinseiBukken" name="shinseiBukken" class="form-control">
-					<option th:selected="${''}"/>
+					<option th:selected="${shinseiBukken.id}" th:value="${shinseiBukken.id}"
+					th:text="|${shinseiBukken.getChibanKuikiJyoho()}${shinseiBukken.getChibanKaokubangoJyoho()}(${shinseiBukken.getBukkenSyubetsu()})|"/>
 					<option th:each="bukken : ${shinseiBukken}" th:value="${bukken.id}"
 					th:text="|${bukken.getChibanKuikiJyoho()}${bukken.getChibanKaokubangoJyoho()}(${bukken.getBukkenSyubetsu()})|" />
 				</select>
 			</div>
 		</div>
 	</div>
+<!--
 	<div class="mb-2">
 		<button type="button" class="btn btn-primary mr-4" id="bukken_add">物件追加</button>
-		<button type="button" class="btn btn-danger mr-4" id="bukken_remove">物件削除</button>
+		<button type="button" class="btn btn-danger mr-4" id="hozon_bukken_remove">物件削除</button>
 	</div>
+ -->
 	<div>
-		<button type="submit" class="btn btn-primary mr-4">登録</button>
+		<button type="submit" class="btn btn-primary mr-4">更新</button>
 		<button type="button" onclick="history.back()" class="btn btn-primary ml-4">戻る</button>
 	</div>
 </form>
 </div>
-</body>
