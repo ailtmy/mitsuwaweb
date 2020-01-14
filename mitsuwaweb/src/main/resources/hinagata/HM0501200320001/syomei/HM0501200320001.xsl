@@ -3,6 +3,21 @@
 <xsl:output method="html" />
 	<xsl:variable name="申請種別" select="/登記申請書/申請書区分/申請種別"/>
 	<xsl:variable name="補正有無" select="/登記申請書/制御情報/補正有無='有'"/>
+	<!-- 2018-10-01 修正 -->
+	<xsl:variable name="移行区分">
+		<xsl:choose>
+			<xsl:when test="/登記申請書/申請情報/テンプレートバージョン&gt;=8">
+				<xsl:value-of select="2"/>
+			</xsl:when>
+			<xsl:when test="/登記申請書/申請情報/テンプレートバージョン&gt;=7">
+				<xsl:value-of select="1"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="0"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+	<!-- 2018-10-01 修正 EOL -->
 	<!--##################################################################-->
 	<xsl:template match="登記申請書">
 		<HTML>
@@ -208,12 +223,66 @@
 	<!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 	<xsl:template match="添付書類">
 		<xsl:if test="not(.='')">
-			<TABLE ALIGN="CENTER" BORDER="0" WIDTH="100%">
-				<TR>
-					<TD ALIGN="LEFT" WIDTH="25%" VALIGN="TOP">添付情報</TD>
-					<TD ALIGN="LEFT" WIDTH="75%"><SPAN><xsl:call-template name="print-kanji-image"/></SPAN></TD>
-				</TR>
-			</TABLE>
+			<xsl:choose>
+				<xsl:when test="count(./添付情報)=0 and count(./会社法人等番号付添付情報)=0">
+					<TABLE ALIGN="CENTER" BORDER="0" WIDTH="100%">
+						<TR>
+							<TD ALIGN="LEFT" WIDTH="25%" VALIGN="TOP">添付情報</TD>
+							<TD ALIGN="LEFT" WIDTH="75%"><SPAN><xsl:call-template name="print-kanji-image"/></SPAN></TD>
+						</TR>
+					</TABLE>
+				</xsl:when>
+				<xsl:when test="count(./添付情報)&gt;0 and not(./添付情報='')">
+					<TABLE ALIGN="CENTER" BORDER="0" WIDTH="100%">
+						<TR>
+							<TD ALIGN="LEFT" WIDTH="25%" VALIGN="TOP">添付情報</TD>
+							<TD ALIGN="LEFT" WIDTH="75%"><SPAN><xsl:apply-templates select="./添付情報"/></SPAN></TD>
+						</TR>
+						<xsl:if test="count(./会社法人等番号付添付情報)&gt;0 and count(./会社法人等番号付添付情報/*[.!=''])&gt;0">
+							<xsl:apply-templates select="./会社法人等番号付添付情報"/>
+						</xsl:if>
+					</TABLE>
+				</xsl:when>
+				<xsl:when test="count(./会社法人等番号付添付情報)&gt;0 and count(./会社法人等番号付添付情報/*[.!=''])&gt;0">
+					<TABLE ALIGN="CENTER" BORDER="0" WIDTH="100%">
+						<TR>
+							<TD ALIGN="LEFT" WIDTH="25%" VALIGN="TOP">添付情報</TD>
+							<TD ALIGN="LEFT" WIDTH="75%"></TD>
+						</TR>
+						<xsl:apply-templates select="./会社法人等番号付添付情報"/>
+					</TABLE>
+				</xsl:when>
+			</xsl:choose>
+		</xsl:if>
+	</xsl:template>
+	<!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+	<xsl:template match="添付情報">
+		<xsl:call-template name="print-kanji-image"/>
+	</xsl:template>
+	<!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+	<xsl:template match="会社法人等番号付添付情報">
+		<xsl:if test="count(./*[.!=''])&gt;0">
+			<TR>
+				<TD ALIGN="LEFT" WIDTH="25%" VALIGN="TOP"></TD>
+				<TD ALIGN="LEFT">
+					<xsl:apply-templates select="./添付書類名"/>
+					<xsl:apply-templates select="./添付書類の会社法人等番号"/>
+				</TD>
+			</TR>
+		</xsl:if>
+	</xsl:template>
+	<!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+	<xsl:template match="添付書類名">
+		<xsl:if test="not(.='')">
+			<xsl:call-template name="print-kanji-image"/>
+		</xsl:if>
+	</xsl:template>
+	<!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+	<xsl:template match="添付書類の会社法人等番号">
+		<xsl:if test="not(.='')">
+			<xsl:text>(会社法人等番号　</xsl:text>
+			<xsl:apply-templates/>
+			<xsl:text>）</xsl:text>
 		</xsl:if>
 	</xsl:template>
 	<!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
@@ -468,6 +537,27 @@
 		</xsl:if>
 	</xsl:template>
 	<!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+	<!-- 2018-10-01 修正 -->
+	<xsl:template match="土地の表示/対象登記">
+		<xsl:if test="count(./対象登記の順位番号/*[.!=''])&gt;0">
+			<TABLE ALIGN="CENTER" BORDER="0" WIDTH="100%">
+				<TR>
+					<TD ALIGN="LEFT" WIDTH="30%">　対象登記の順位番号</TD>
+					<TD ALIGN="LEFT" WIDTH="70%"><xsl:apply-templates/></TD>
+				</TR>
+			</TABLE>
+		</xsl:if>
+	</xsl:template>
+	<!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+	<xsl:template match="土地の表示/対象登記/対象登記の順位番号">
+    <xsl:if test="not(./主登記の順位番号='') or not(./同順位付記情報='')">
+	    <xsl:if test="not(./主登記の順位番号='')"><xsl:value-of select="./主登記の順位番号"/>番</xsl:if>
+	    <xsl:if test="not(./同順位付記情報='')"><xsl:value-of select="./同順位付記情報"/></xsl:if>
+	    <br/>
+	  </xsl:if>
+	</xsl:template>
+	<!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+	<!-- 2018-10-01 修正 EOL -->
 	<xsl:template match="備考">
 		<xsl:if test="not(.='')">
 			<TABLE ALIGN="CENTER" BORDER="0" WIDTH="100%">
@@ -612,6 +702,25 @@
 			</TR>
 		</xsl:if>
 	</xsl:template>
+	<!-- 2018-10-01 修正 -->
+	<!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+	<xsl:template match="建物の表示履歴欄/対象登記">
+		<xsl:if test="count(./対象登記の順位番号/*[.!=''])&gt;0">
+			<TR>
+				<TD ALIGN="LEFT" WIDTH="30%">　対象登記の順位番号</TD>
+				<TD ALIGN="LEFT" WIDTH="70%"><xsl:apply-templates/></TD>
+			</TR>
+		</xsl:if>
+	</xsl:template>
+	<!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+	<xsl:template match="建物の表示履歴欄/対象登記/対象登記の順位番号">
+		<xsl:if test="not(./主登記の順位番号='') or not(./同順位付記情報='')">
+			<xsl:if test="not(./主登記の順位番号='')"><xsl:value-of select="./主登記の順位番号"/>番</xsl:if>
+			<xsl:if test="not(./同順位付記情報='')"><xsl:value-of select="./同順位付記情報"/></xsl:if>
+			<br/>
+		</xsl:if>
+	</xsl:template>
+	<!-- 2018-10-01 修正 EOL -->
 	<!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 	<xsl:template match="建物の表示履歴欄/備考">
 		<xsl:if test="not(.='')">
@@ -914,6 +1023,25 @@
 			</TR>
 		</xsl:if>
 	</xsl:template>
+	<!-- 2018-10-01 修正 -->
+	<!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+	<xsl:template match="専有部分の表示履歴欄/対象登記">
+		<xsl:if test="count(./対象登記の順位番号/*[.!=''])&gt;0">
+			<TR>
+				<TD ALIGN="LEFT" WIDTH="30%">　対象登記の順位番号</TD>
+				<TD ALIGN="LEFT" WIDTH="70%"><xsl:apply-templates/></TD>
+			</TR>
+		</xsl:if>
+	</xsl:template>
+	<!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+	<xsl:template match="専有部分の表示履歴欄/対象登記/対象登記の順位番号">
+		<xsl:if test="not(./主登記の順位番号='') or not(./同順位付記情報='')">
+			<xsl:if test="not(./主登記の順位番号='')"><xsl:value-of select="./主登記の順位番号"/>番</xsl:if>
+			<xsl:if test="not(./同順位付記情報='')"><xsl:value-of select="./同順位付記情報"/></xsl:if>
+			<br/>
+		</xsl:if>
+	</xsl:template>
+	<!-- 2018-10-01 修正 EOL -->
 	<!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 	<xsl:template match="専有部分の表示履歴欄/備考">
 		<xsl:if test="not(.='')">
@@ -2135,12 +2263,59 @@
 						</xsl:choose>
 					</TD>
 					<TD ALIGN="LEFT" WIDTH="75%">
-						<SPAN><xsl:call-template name="print-kanji-image"/></SPAN>
+					<!-- 2018-10-01 修正 -->
+						<xsl:choose>
+							<xsl:when test="local-name()='抹消すべき登記' and $移行区分&gt;=2">
+								<TABLE ALIGN="CENTER" BORDER="0" WIDTH="100%">
+									<xsl:apply-templates/>
+								</TABLE>
+							</xsl:when>
+							<xsl:otherwise><SPAN><xsl:call-template name="print-kanji-image"/></SPAN></xsl:otherwise>
+						</xsl:choose>
+					<!-- 2018-10-01 修正 EOL -->
 					</TD>
 				</TR>
 			</TABLE>
 		</xsl:if>
 	</xsl:template>
+	<!-- 2018-10-01 修正 -->
+	<!--*****************************************************************-->
+	<xsl:template match="受付情報">
+		<TR>
+			<TD ALIGN="LEFT">
+				<xsl:apply-templates/>
+			</TD>
+		</TR>
+	</xsl:template>
+	<!--*****************************************************************-->
+	<xsl:template match="受付情報/受付年月日">
+	<xsl:if test="not(./元号='') or not(./年='') or not(./月='') or not(./日='')">
+		<TABLE ALIGN="CENTER" BORDER="0" WIDTH="100%">
+			<TR>
+				<TD ALIGN="LEFT">
+					<xsl:if test="not(./元号='')"><xsl:value-of select="./元号"/></xsl:if>
+					<xsl:if test="not(./年='')"><xsl:value-of select="./年"/>年</xsl:if>
+					<xsl:if test="not(./月='')"><xsl:value-of select="./月"/>月</xsl:if>
+					<xsl:if test="not(./日='')"><xsl:value-of select="./日"/>日</xsl:if>
+					受付
+				</TD>
+			</TR>
+		</TABLE>
+	</xsl:if>
+	</xsl:template>
+	<!--*****************************************************************-->
+	<xsl:template match="受付情報/受付番号">
+		<xsl:if test="not(.='')">
+			  <TABLE ALIGN="CENTER" BORDER="0" WIDTH="100%">
+				<TR>
+					<TD ALIGN="LEFT">
+						第 <xsl:value-of select="."/> 号
+					</TD>
+				</TR>
+			</TABLE>
+		</xsl:if>
+	</xsl:template>
+	<!-- 2018-10-01 修正 EOL -->
 	<!--*****************************************************************-->
 	<xsl:template match="登記の目的"><xsl:call-template name="General_TAG"/></xsl:template>
 	<xsl:template match="原因"><xsl:call-template name="General_TAG"/></xsl:template>
@@ -2269,7 +2444,13 @@
 	<xsl:template match="利息支払方法"><xsl:call-template name="General_TAG"/></xsl:template>
 	<xsl:template match="元利金支払場所"><xsl:call-template name="General_TAG"/></xsl:template>
 	<xsl:template match="敷金"><xsl:call-template name="General_TAG"/></xsl:template>
-	<xsl:template match="抹消すべき登記"><xsl:call-template name="General_TAG"/></xsl:template>
+	<xsl:template match="抹消すべき登記">
+		<!-- 2018-10-01 修正 -->
+		<xsl:if test="$移行区分&lt;2 or (count(./受付情報/受付年月日/*[.!=''])&gt;0 or count(./受付情報/受付番号[.!=''])&gt;0)">
+			<xsl:call-template name="General_TAG"/>
+		</xsl:if>
+		<!-- 2018-10-01 修正 EOL -->
+	</xsl:template>
 	<!--*****************************************************************-->
 	<!--##################################################################-->
 	<!--### 名義人情報要素                                             ###-->
@@ -2552,13 +2733,46 @@
 	<!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 	<xsl:template match="代">
 		<xsl:if test="not(.='')">
-			<TABLE ALIGN="CENTER" BORDER="0" WIDTH="100%">
-				<TR>
-					<TD ALIGN="LEFT">
-						<xsl:call-template name="print-kanji-image"/>
-					</TD>
-				</TR>
-			</TABLE>
+			<xsl:choose>
+				<xsl:when test="count(./資格)=0 and count(./代表者氏名)=0">
+					<TABLE ALIGN="CENTER" BORDER="0" WIDTH="100%">
+						<TR>
+							<TD ALIGN="LEFT">
+								<xsl:call-template name="print-kanji-image"/>
+							</TD>
+						</TR>
+					</TABLE>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:if test="count(./*[(local-name()='資格' or local-name()='代表者氏名' or local-name()='職務執行者等') and .!=''])&gt;0">
+						<TABLE ALIGN="CENTER" BORDER="0" WIDTH="100%">
+							<TR>
+								<TD ALIGN="LEFT">
+									<xsl:apply-templates select="資格"/><xsl:apply-templates select="代表者氏名"/><xsl:apply-templates select="職務執行者等"/>
+								</TD>
+							</TR>
+						</TABLE>
+					</xsl:if>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:if>
+	</xsl:template>
+	<!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+	<xsl:template match="資格">
+		<xsl:if test="not(.='')">
+			<xsl:call-template name="print-kanji-image"/>　
+		</xsl:if>
+	</xsl:template>
+	<!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+	<xsl:template match="代表者氏名">
+		<xsl:if test="not(.='')">
+			<xsl:call-template name="print-kanji-image"/>　
+		</xsl:if>
+	</xsl:template>
+	<!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+	<xsl:template match="職務執行者等">
+		<xsl:if test="not(.='')">
+			<xsl:call-template name="print-kanji-image"/>
 		</xsl:if>
 	</xsl:template>
 	<!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->

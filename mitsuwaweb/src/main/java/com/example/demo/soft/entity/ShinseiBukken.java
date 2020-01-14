@@ -42,6 +42,14 @@ public class ShinseiBukken {
 	}
 
 	/**
+	 * 地番区域市区町村
+	 * @return
+	 */
+	public String getShikucyoson() {
+		return "";
+	}
+
+	/**
 	 * 地番家屋番号情報
 	 * @return
 	 */
@@ -56,4 +64,5 @@ public class ShinseiBukken {
 	public String getBukkenKubun() {
 		return "";
 	}
+
 }

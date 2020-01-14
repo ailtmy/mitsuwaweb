@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -219,7 +220,7 @@ public class HozonController {
 	public ModelAndView hozon(
 			@PathVariable Integer id,
 			ModelAndView mav
-			) throws ParserConfigurationException, SAXException, IOException {
+			) throws ParserConfigurationException, SAXException, IOException, TransformerException {
 		Hozon hozon = hozonService.find(id);
 		mav.setViewName("layout");
 		mav.addObject("contents", "hozon/show::hozon_contents");
