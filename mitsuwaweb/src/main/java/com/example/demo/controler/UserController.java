@@ -18,6 +18,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.UnexpectedRollbackException;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,12 +29,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.example.demo.entity.user.Mailaddress;
-import com.example.demo.entity.user.Telephone;
+import com.example.demo.entity.MailAudit;
+import com.example.demo.entity.TelAudit;
 import com.example.demo.entity.user.User;
-import com.example.demo.entity.user.User.Role;
-import com.example.demo.service.user.MailaddressService;
-import com.example.demo.service.user.TelephoneService;
+import com.example.demo.service.MailAuditService;
+import com.example.demo.service.TelAuditService;
 import com.example.demo.service.user.UserService;
 
 @Controller
@@ -43,10 +43,10 @@ public class UserController {
 	UserService userService;
 
 	@Autowired
-	TelephoneService telephoneService;
+	TelAuditService telService;
 
 	@Autowired
-	MailaddressService mailaddressService;
+	MailAuditService mailService;
 
 	@Autowired
     ResourceLoader resourceLoader;
@@ -76,14 +76,14 @@ public class UserController {
 	}
 
 //  <<------------ユーザー新規作成----------------->>
-//	@Transactional(readOnly = false)
+	@Transactional(readOnly = false)
 	@PostMapping("users/new")
 	public ModelAndView save(
 			MultipartFile file,
-			@RequestParam("mailKind") String mailKind,
-			@RequestParam("mailAddr") String mailAddr,
-			@RequestParam("phoneKind") String phoneKind,
-			@RequestParam("phoneNumber") String phoneNumber,
+			@RequestParam("mailKind") String[] mailKinds,
+			@RequestParam("mailAddr") String[] mailAddrs,
+			@RequestParam("phoneKind") String[] phoneKinds,
+			@RequestParam("phoneNumber") String[] phoneNumbers,
 			@ModelAttribute("user")
 			@Validated User user,
 			BindingResult result,
@@ -98,21 +98,28 @@ public class UserController {
 			user.setFilename(file.getOriginalFilename());
 			user.setImage(bytefile);
 		}
-		List<Telephone> list = new ArrayList<Telephone>();
-		Telephone telephone = new Telephone();
-		telephone.setPhoneKind(phoneKind);
-		telephone.setPhoneNumber(phoneNumber);
-		list.add(telephone);
+
+		List<TelAudit> list = new ArrayList<TelAudit>();
+		for(int i = 0; i < phoneNumbers.length; i++) {
+			TelAudit telephone = new TelAudit();
+			telephone.setPhoneKind(phoneKinds[i]);
+			telephone.setPhoneNumber(phoneNumbers[i]);
+			telService.saveTel(telephone);
+			list.add(telephone);
+		}
 		user.setTelephoneList(list);
-		userService.saveUser(user);
-		List<Mailaddress> maillist = new ArrayList<Mailaddress>();
-		Mailaddress mailAddress = new Mailaddress();
-		mailAddress.setMailKind(mailKind);
-		mailAddress.setMailAddr(mailAddr);
-		mailAddress.setUser(user);
-		mailaddressService.saveMailaddress(mailAddress);
-		maillist.add(mailAddress);
+
+		List<MailAudit> maillist = new ArrayList<MailAudit>();
+		for(int i = 0; i < mailAddrs.length; i++) {
+			MailAudit mail = new MailAudit();
+			mail.setMailKind(mailKinds[i]);
+			mail.setMailAddr(mailAddrs[i]);
+			mailService.saveMail(mail);
+			maillist.add(mail);
+		}
 		user.setMailList(maillist);
+
+		userService.saveUser(user);
 		res = new ModelAndView("redirect:/users/" + user.getId());
 	} else {
 		mav.setViewName("layout");
@@ -180,49 +187,49 @@ public class UserController {
     }
 
 // <<----------ユーザー編集--------------------->>
-	@PostMapping("/users/{id}/edit")
-	public ModelAndView edited(@PathVariable Integer id,
-			@RequestParam("role") Role role,
-			@RequestParam("name") String name,
-			@RequestParam("password") String password,
-			@RequestParam(name = "mailKind", required = false) String[] mailKinds,
-			@RequestParam(name = "mailAddr", required = false) String[] mailAddrs,
-			@RequestParam(name = "phoneKind", required = false) String[] phoneKinds,
-			@RequestParam(name = "phoneNumber", required = false) String[] phoneNumbers,
-			@Validated User user,
-			BindingResult result,
-			ModelAndView mav) throws IOException {
-		if(!result.hasErrors()) {
-			user = userService.find(id);
-			user.setId(id);
-			user.setRole(role);
-			user.setName(name);
-			user.setPassword(password);
-			if(!user.getMailList().isEmpty()) {
-				List<Mailaddress> mails = user.getMailList();
-				for(int i = 0; i < mails.size(); i++) {
-					mails.get(i).setMailKind(mailKinds[i]);
-					mails.get(i).setMailAddr(mailAddrs[i]);
-				}
-			}
-			if(!user.getTelephoneList().isEmpty()) {
-				List<Telephone> tels = user.getTelephoneList();
-				for(int i = 0; i < tels.size(); i++) {
-					tels.get(i).setPhoneKind(phoneKinds[i]);
-					tels.get(i).setPhoneNumber(phoneNumbers[i]);
-				}
-			}
-		} else {
-			mav.setViewName("layout");
-			mav.addObject("contents", "user/edit::user_contents");
-			mav.addObject("title", "ユーザー編集");
-			mav.addObject("user", userService.find(id));
-			return mav;
-		}
-		userService.saveUser(user);
-
-		return new ModelAndView("redirect:/users/" + user.getId());
-	}
+//	@PostMapping("/users/{id}/edit")
+//	public ModelAndView edited(@PathVariable Integer id,
+//			@RequestParam("role") Role role,
+//			@RequestParam("name") String name,
+//			@RequestParam("password") String password,
+//			@RequestParam(name = "mailKind", required = false) String[] mailKinds,
+//			@RequestParam(name = "mailAddr", required = false) String[] mailAddrs,
+//			@RequestParam(name = "phoneKind", required = false) String[] phoneKinds,
+//			@RequestParam(name = "phoneNumber", required = false) String[] phoneNumbers,
+//			@Validated User user,
+//			BindingResult result,
+//			ModelAndView mav) throws IOException {
+//		if(!result.hasErrors()) {
+//			user = userService.find(id);
+//			user.setId(id);
+//			user.setRole(role);
+//			user.setName(name);
+//			user.setPassword(password);
+//			if(!user.getMailList().isEmpty()) {
+//				List<Mailaddress> mails = user.getMailList();
+//				for(int i = 0; i < mails.size(); i++) {
+//					mails.get(i).setMailKind(mailKinds[i]);
+//					mails.get(i).setMailAddr(mailAddrs[i]);
+//				}
+//			}
+//			if(!user.getTelephoneList().isEmpty()) {
+//				List<Telephone> tels = user.getTelephoneList();
+//				for(int i = 0; i < tels.size(); i++) {
+//					tels.get(i).setPhoneKind(phoneKinds[i]);
+//					tels.get(i).setPhoneNumber(phoneNumbers[i]);
+//				}
+//			}
+//		} else {
+//			mav.setViewName("layout");
+//			mav.addObject("contents", "user/edit::user_contents");
+//			mav.addObject("title", "ユーザー編集");
+//			mav.addObject("user", userService.find(id));
+//			return mav;
+//		}
+//		userService.saveUser(user);
+//
+//		return new ModelAndView("redirect:/users/" + user.getId());
+//	}
 
 // <<-----------ユーザーイメージ編集画面表示------------->>
 	@GetMapping("/users/{id}/imgedit")
@@ -290,27 +297,27 @@ public class UserController {
 	}
 
 // <<-----------ユーザーメールアドレス新規作成------------->>
-	@PostMapping("/users/{id}/mailnew")
-	public ModelAndView usermailaddresssave(@PathVariable Integer id,
-		@RequestParam(name = "mailKind", required = false) String mailKind,
-		@RequestParam(name = "mailAddr", required = false) String mailAddr,
-		ModelAndView mav) {
-			User user = userService.find(id);
-			Mailaddress mailAddress = new Mailaddress();
-			List<Mailaddress> mails = user.getMailList();
-			mailAddress.setMailKind(mailKind);
-			mailAddress.setMailAddr(mailAddr);
-			mailAddress.setUser(user);
-			mails.add(mailAddress);
-			mailaddressService.saveMailaddress(mailAddress);
-			user.setMailList(mails);
-			userService.saveUserImage(user);
-			mav.setViewName("layout");
-			mav.addObject("contents", "mailaddress/usermailaddressnew::mailaddress_contents");
-			mav.addObject("title", "ユーザーメールアドレス新規登録");
-			mav.addObject("user", user);
-			return new ModelAndView("redirect:/users/{id}");
-	}
+//	@PostMapping("/users/{id}/mailnew")
+//	public ModelAndView usermailaddresssave(@PathVariable Integer id,
+//		@RequestParam(name = "mailKind", required = false) String mailKind,
+//		@RequestParam(name = "mailAddr", required = false) String mailAddr,
+//		ModelAndView mav) {
+//			User user = userService.find(id);
+//			Mailaddress mailAddress = new Mailaddress();
+//			List<Mailaddress> mails = user.getMailList();
+//			mailAddress.setMailKind(mailKind);
+//			mailAddress.setMailAddr(mailAddr);
+//			mailAddress.setUser(user);
+//			mails.add(mailAddress);
+//			mailaddressService.saveMailaddress(mailAddress);
+//			user.setMailList(mails);
+//			userService.saveUserImage(user);
+//			mav.setViewName("layout");
+//			mav.addObject("contents", "mailaddress/usermailaddressnew::mailaddress_contents");
+//			mav.addObject("title", "ユーザーメールアドレス新規登録");
+//			mav.addObject("user", user);
+//			return new ModelAndView("redirect:/users/{id}");
+//	}
 
 // <<-----------ユーザー電話新規画面------------->>
 	@GetMapping("users/{id}/telnew")
@@ -324,57 +331,57 @@ public class UserController {
 	}
 
 // <<-----------ユーザー電話新規作成------------->>
-	@PostMapping("/users/{id}/telnew")
-	public ModelAndView usertelephonesave(@PathVariable Integer id,
-		@RequestParam(name = "phoneKind", required = false) String phoneKind,
-		@RequestParam(name = "phoneNumber", required = false) String phoneNumber,
-		ModelAndView mav) {
-			User user = userService.find(id);
-			Telephone tel = new Telephone();
-			List<Telephone> tels = user.getTelephoneList();
-			tel.setPhoneKind(phoneKind);
-			tel.setPhoneNumber(phoneNumber);
-			tels.add(tel);
-			user.setTelephoneList(tels);
-			userService.saveUserImage(user);
-			mav.setViewName("layout");
-			mav.addObject("contents", "telephone/usertelephonenew::telephone_contents");
-			mav.addObject("title", "ユーザー連絡先新規登録");
-			mav.addObject("user", user);
-			return new ModelAndView("redirect:/users/{id}");
-	}
+//	@PostMapping("/users/{id}/telnew")
+//	public ModelAndView usertelephonesave(@PathVariable Integer id,
+//		@RequestParam(name = "phoneKind", required = false) String phoneKind,
+//		@RequestParam(name = "phoneNumber", required = false) String phoneNumber,
+//		ModelAndView mav) {
+//			User user = userService.find(id);
+//			Telephone tel = new Telephone();
+//			List<Telephone> tels = user.getTelephoneList();
+//			tel.setPhoneKind(phoneKind);
+//			tel.setPhoneNumber(phoneNumber);
+//			tels.add(tel);
+//			user.setTelephoneList(tels);
+//			userService.saveUserImage(user);
+//			mav.setViewName("layout");
+//			mav.addObject("contents", "telephone/usertelephonenew::telephone_contents");
+//			mav.addObject("title", "ユーザー連絡先新規登録");
+//			mav.addObject("user", user);
+//			return new ModelAndView("redirect:/users/{id}");
+//	}
 
 // <<------------ユーザー電話削除---------------->>
-	@PostMapping("/users/{uid}/teldelete/{tid}")
-	public ModelAndView usertelephonedeleted(
-			@PathVariable Integer uid,
-			@PathVariable int tid,
-			ModelAndView mav) {
-		User user = userService.find(uid);
-		List<Telephone> tels = user.getTelephoneList();
-		Telephone tel = telephoneService.find(tid);
-		tels.remove(tel);
-		user.setTelephoneList(tels);
-		userService.saveUserImage(user);
-		telephoneService.delete(tid);
-		return new ModelAndView("redirect:/users/{uid}");
-	}
+//	@PostMapping("/users/{uid}/teldelete/{tid}")
+//	public ModelAndView usertelephonedeleted(
+//			@PathVariable Integer uid,
+//			@PathVariable int tid,
+//			ModelAndView mav) {
+//		User user = userService.find(uid);
+//		List<Telephone> tels = user.getTelephoneList();
+//		Telephone tel = telephoneService.find(tid);
+//		tels.remove(tel);
+//		user.setTelephoneList(tels);
+//		userService.saveUserImage(user);
+//		telephoneService.delete(tid);
+//		return new ModelAndView("redirect:/users/{uid}");
+//	}
 
 // <<------------ユーザーメール削除---------------->>
-	@PostMapping("/users/{uid}/maildelete/{mid}")
-	public ModelAndView userMaildeleted(
-			@PathVariable Integer uid,
-			@PathVariable int mid,
-			ModelAndView mav) {
-		User user = userService.find(uid);
-		List<Mailaddress> mails = user.getMailList();
-		Mailaddress mailAddress = mailaddressService.find(mid);
-		mails.remove(mailAddress);
-		user.setMailList(mails);
-		userService.saveUserImage(user);
-		mailaddressService.delete(mid);
-		return new ModelAndView("redirect:/users/{uid}");
-	}
+//	@PostMapping("/users/{uid}/maildelete/{mid}")
+//	public ModelAndView userMaildeleted(
+//			@PathVariable Integer uid,
+//			@PathVariable int mid,
+//			ModelAndView mav) {
+//		User user = userService.find(uid);
+//		List<Mailaddress> mails = user.getMailList();
+//		Mailaddress mailAddress = mailaddressService.find(mid);
+//		mails.remove(mailAddress);
+//		user.setMailList(mails);
+//		userService.saveUserImage(user);
+//		mailaddressService.delete(mid);
+//		return new ModelAndView("redirect:/users/{uid}");
+//	}
 
 // <<-----------マイアカウント表示------------------>>
 	@GetMapping("/users/myaccount")
@@ -408,50 +415,50 @@ public class UserController {
 	}
 
 // <<----------マイアカウント編集--------------------->>
-	@PostMapping("/users/myaccountedit")
-	public ModelAndView myaccountedited(
-			@AuthenticationPrincipal Principal principal,
-			@RequestParam("id") Integer id,
-			@RequestParam("role") Role role,
-			@RequestParam("name") String name,
-			@RequestParam("password") String password,
-			@RequestParam(name = "mailKind", required = false) String[] mailKinds,
-			@RequestParam(name = "mailAddr", required = false) String[] mailAddrs,
-			@RequestParam(name = "phoneKind", required = false) String[] phoneKinds,
-			@RequestParam(name = "phoneNumber", required = false) String[] phoneNumbers,
-			@Validated User user,
-			BindingResult result,
-			ModelAndView mav) throws IOException {
-		if(!result.hasErrors()) {
-			user = userService.findByName(principal.getName());
-			user.setId(id);
-			user.setRole(role);
-			user.setName(name);
-			user.setPassword(password);
-			if(!user.getMailList().isEmpty()) {
-				List<Mailaddress> mails = user.getMailList();
-				for(int i = 0; i < mails.size(); i++) {
-					mails.get(i).setMailKind(mailKinds[i]);
-					mails.get(i).setMailAddr(mailAddrs[i]);
-				}
-			}
-			if(!user.getTelephoneList().isEmpty()) {
-				List<Telephone> tels = user.getTelephoneList();
-				for(int i = 0; i < tels.size(); i++) {
-					tels.get(i).setPhoneKind(phoneKinds[i]);
-					tels.get(i).setPhoneNumber(phoneNumbers[i]);
-				}
-			}
-		} else {
-			mav.setViewName("layout");
-			mav.addObject("contents", "user/edit::user_contents");
-			mav.addObject("title", "ユーザー編集");
-			mav.addObject("user", userService.find(id));
-			return mav;
-		}
-		userService.saveUser(user);
-
-		return new ModelAndView("redirect:/users/myaccount");
-	}
+//	@PostMapping("/users/myaccountedit")
+//	public ModelAndView myaccountedited(
+//			@AuthenticationPrincipal Principal principal,
+//			@RequestParam("id") Integer id,
+//			@RequestParam("role") Role role,
+//			@RequestParam("name") String name,
+//			@RequestParam("password") String password,
+//			@RequestParam(name = "mailKind", required = false) String[] mailKinds,
+//			@RequestParam(name = "mailAddr", required = false) String[] mailAddrs,
+//			@RequestParam(name = "phoneKind", required = false) String[] phoneKinds,
+//			@RequestParam(name = "phoneNumber", required = false) String[] phoneNumbers,
+//			@Validated User user,
+//			BindingResult result,
+//			ModelAndView mav) throws IOException {
+//		if(!result.hasErrors()) {
+//			user = userService.findByName(principal.getName());
+//			user.setId(id);
+//			user.setRole(role);
+//			user.setName(name);
+//			user.setPassword(password);
+//			if(!user.getMailList().isEmpty()) {
+//				List<Mailaddress> mails = user.getMailList();
+//				for(int i = 0; i < mails.size(); i++) {
+//					mails.get(i).setMailKind(mailKinds[i]);
+//					mails.get(i).setMailAddr(mailAddrs[i]);
+//				}
+//			}
+//			if(!user.getTelephoneList().isEmpty()) {
+//				List<Telephone> tels = user.getTelephoneList();
+//				for(int i = 0; i < tels.size(); i++) {
+//					tels.get(i).setPhoneKind(phoneKinds[i]);
+//					tels.get(i).setPhoneNumber(phoneNumbers[i]);
+//				}
+//			}
+//		} else {
+//			mav.setViewName("layout");
+//			mav.addObject("contents", "user/edit::user_contents");
+//			mav.addObject("title", "ユーザー編集");
+//			mav.addObject("user", userService.find(id));
+//			return mav;
+//		}
+//		userService.saveUser(user);
+//
+//		return new ModelAndView("redirect:/users/myaccount");
+//	}
 
 }

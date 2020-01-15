@@ -5,19 +5,18 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.example.demo.entity.Audit;
+import com.example.demo.entity.MailAudit;
+import com.example.demo.entity.TelAudit;
 import com.example.demo.entity.honninkakunin.HonninKakunin;
 
 import lombok.Getter;
@@ -28,10 +27,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Customer extends Audit {
-
-	public static enum PersonDivision {
-		個人, 法人
-	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,27 +49,18 @@ public class Customer extends Audit {
 	private LocalDate birthday;
 
 	/**
-	 * 個人・法人区分　ラジオボタン実装
-	 */
-	@Enumerated(EnumType.STRING)
-	private PersonDivision person;
-
-	/**
-	 * 会社法人等番号
-	 */
-	private String houjinbango;
-
-	/**
 	 * メール（ユニーク）
 	 */
-	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-	private List<CustomerMail> mailList;
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "mail_id")
+	private List<MailAudit> mailList;
 
 	/**
 	 * 電話！！manytomanyである
 	 */
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<CustomerTel> telephoneList;
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "tel_id")
+	private List<TelAudit> telephoneList;
 
 	/**
 	 * ファイル
@@ -97,11 +83,6 @@ public class Customer extends Audit {
 	 */
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
 	private List<HonninKakunin> honninKakuninList;
-
-	/**
-	 * 支店。営業所リスト　onetomany
-	 */
-//  private List<Branch> branchList;
 
 	/**
 	 * 代理人・代表者リスト　manytomany

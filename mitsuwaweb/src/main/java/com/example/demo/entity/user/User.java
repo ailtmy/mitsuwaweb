@@ -7,16 +7,17 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
 import com.example.demo.entity.Audit;
+import com.example.demo.entity.MailAudit;
+import com.example.demo.entity.TelAudit;
 import com.example.demo.entity.honninkakunin.HonninKakunin;
 
 import lombok.Getter;
@@ -39,11 +40,13 @@ public class User extends Audit {
 	@Column(name="name", nullable= false, unique=true)
 	private String name;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private List<Mailaddress> mailList;
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "mail_id")
+	private List<MailAudit> mailList;
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Telephone> telephoneList;
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "tel_id")
+	private List<TelAudit> telephoneList;
 
 	private byte[] image;
 
