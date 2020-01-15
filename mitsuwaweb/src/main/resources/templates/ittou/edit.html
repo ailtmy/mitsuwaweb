@@ -42,7 +42,7 @@
 	</div>
 	<div class="form-group" th:classappend="${#fields.hasErrors('yukamenseki')}? 'has-error'">
 		<label for="yukamenseki">床面積</label>
-		<input type="text" name="yukamenseki" class="form-control" th:field="*{yukamenseki}"/>
+		<textarea name="yukamenseki" rows="20" cols="30" class="form-control" th:field="*{yukamenseki}"></textarea>
 		<span class="text-danger" th:if="${#fields.hasErrors('yukamenseki')}" th:errors="*{yukamenseki}">床面積エラー</span>
 	</div>
 	<div class="form-group" th:classappend="${#fields.hasErrors('biko')}? 'has-error'">

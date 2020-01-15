@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.example.demo.soft.ShinseiXmlHelper;
@@ -76,7 +77,8 @@ public class HozonService {
 		ShinseiXmlHelper.elementTextset(hozonElement, "原因", hozon.getGenin(),0);
 		//所有者セット
 		Element syoyusyaElement = docList.get(0).createElement("所有者");
-//		hozonElement.getAttributeNode("申請事項").appendChild(syoyusyaElement);
+		NodeList shinseijiko = docList.get(0).getElementsByTagName("申請事項");
+		shinseijiko.item(0).appendChild(syoyusyaElement);
 		for(Kenrisya kenrisya : hozon.getSyoyusya()) {
 			Element meigininElement = docList.get(0).createElement("名義人情報");
 			syoyusyaElement.appendChild(meigininElement);
@@ -85,24 +87,30 @@ public class HozonService {
 			addrElement.setTextContent("住所");
 			meigininElement.appendChild(addrElement);
 
-			Element mochiElement = docList.get(0).createElement("持");
-			mochiElement.setTextContent(kenrisya.getMochibun());
-			meigininElement.appendChild(mochiElement);
+			if(kenrisya.getMochibun().isEmpty() || kenrisya.getMochibun() == null) {
 
+			} else {
+				Element mochiElement = docList.get(0).createElement("持");
+				mochiElement.setTextContent(kenrisya.getMochibun());
+				meigininElement.appendChild(mochiElement);
+				}
 			Element nameElement = docList.get(0).createElement("氏");
 			nameElement.setTextContent(kenrisya.getCustomer().getName());
 			meigininElement.appendChild(nameElement);
 
-			Element daitoriElement = docList.get(0).createElement("代");
-			daitoriElement.setTextContent("代表取締役");
-			meigininElement.appendChild(daitoriElement);
+//			代表者実装！！！
+//			Element daitoriElement = docList.get(0).createElement("代");
+//			daitoriElement.setTextContent("代表取締役");
+//			meigininElement.appendChild(daitoriElement);
 		}
 
+		String tempsyorui = "";
 		for(String syorui : hozon.getTempsyorui().getSyoruis()) {
-			ShinseiXmlHelper.elementTextset(hozonElement, "添付書類", syorui, 0);
+			tempsyorui += syorui + "\n";
 		}
+		ShinseiXmlHelper.elementTextset(hozonElement, "添付情報", tempsyorui, 0);
 
-		ShinseiXmlHelper.elementTextset(hozonElement, "申請年月日", hozon.getDate() + "法第７４条第２項申請",0);
+		ShinseiXmlHelper.elementTextset(hozonElement, "申請年月日", hozon.getDate() + "法第７４条第２項",0);
 		ShinseiXmlHelper.elementTextset(hozonElement, "宛先登記所名", hozon.getTokisyo().getTokisyoName(), 0);
 		ShinseiXmlHelper.elementTextset(hozonElement, "提出先名称", hozon.getTokisyo().getTokisyoName(), 0);
 		ShinseiXmlHelper.elementTextset(hozonElement, "登記所コード", hozon.getTokisyo().getTokisyoCode().toString(), 0);
@@ -120,13 +128,14 @@ public class HozonService {
 		ShinseiXmlHelper.elementTextset(hozonExportElement, "ファイル名", hozon.getKenmei() + ".zip", 0);
 
 		//物件セット
-//		Element shinseiBukkenJyohoElement = docList.get(0).createElement("申請物件情報");
-//		hozonElement.getAttributeNode("申請書情報").appendChild(shinseiBukkenJyohoElement);
+		Element shinseiBukkenJyohoElement = docList.get(0).createElement("申請物件情報");
+		NodeList shinseisyojyoho = docList.get(0).getElementsByTagName("申請書情報");
+		shinseisyojyoho.item(0).appendChild(shinseiBukkenJyohoElement);
 		for(ShinseiBukken bukken : hozon.getShinseiBukkenList()) {
 			if(bukken instanceof IttouTatemono) {
 				IttouTatemono ittoubukken = (IttouTatemono) bukken;
 				Element shinseiBukkenElement = docList.get(0).createElement("申請物件");
-
+				shinseiBukkenJyohoElement.appendChild(shinseiBukkenElement);
 				Element bukkenTokuteiJyohoElement = docList.get(0).createElement("物件特定情報");
 				shinseiBukkenElement.appendChild(bukkenTokuteiJyohoElement);
 
@@ -173,7 +182,7 @@ public class HozonService {
 			if(bukken instanceof SenyuTatemono) {
 				SenyuTatemono senyubukken = (SenyuTatemono) bukken;
 				Element shinseiBukkenElement = docList.get(0).createElement("申請物件");
-
+				shinseiBukkenJyohoElement.appendChild(shinseiBukkenElement);
 				Element bukkenTokuteiJyohoElement = docList.get(0).createElement("物件特定情報");
 				shinseiBukkenElement.appendChild(bukkenTokuteiJyohoElement);
 
@@ -254,7 +263,7 @@ public class HozonService {
 			if(bukken instanceof Tochi) {
 				Tochi tochibukken = (Tochi) bukken;
 				Element shinseiBukkenElement = docList.get(0).createElement("申請物件");
-
+				shinseiBukkenJyohoElement.appendChild(shinseiBukkenElement);
 				Element bukkenTokuteiJyohoElement = docList.get(0).createElement("物件特定情報");
 				shinseiBukkenElement.appendChild(bukkenTokuteiJyohoElement);
 
@@ -299,7 +308,7 @@ public class HozonService {
 			if(bukken instanceof Tatemono) {
 				Tatemono Tatemonobukken = (Tatemono) bukken;
 				Element shinseiBukkenElement = docList.get(0).createElement("申請物件");
-
+				shinseiBukkenJyohoElement.appendChild(shinseiBukkenElement);
 				Element bukkenTokuteiJyohoElement = docList.get(0).createElement("物件特定情報");
 				shinseiBukkenElement.appendChild(bukkenTokuteiJyohoElement);
 
