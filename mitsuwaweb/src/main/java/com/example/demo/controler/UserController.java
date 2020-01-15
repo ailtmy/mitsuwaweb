@@ -32,6 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.example.demo.entity.MailAudit;
 import com.example.demo.entity.TelAudit;
 import com.example.demo.entity.user.User;
+import com.example.demo.entity.user.User.Role;
 import com.example.demo.service.MailAuditService;
 import com.example.demo.service.TelAuditService;
 import com.example.demo.service.user.UserService;
@@ -187,49 +188,49 @@ public class UserController {
     }
 
 // <<----------ユーザー編集--------------------->>
-//	@PostMapping("/users/{id}/edit")
-//	public ModelAndView edited(@PathVariable Integer id,
-//			@RequestParam("role") Role role,
-//			@RequestParam("name") String name,
-//			@RequestParam("password") String password,
-//			@RequestParam(name = "mailKind", required = false) String[] mailKinds,
-//			@RequestParam(name = "mailAddr", required = false) String[] mailAddrs,
-//			@RequestParam(name = "phoneKind", required = false) String[] phoneKinds,
-//			@RequestParam(name = "phoneNumber", required = false) String[] phoneNumbers,
-//			@Validated User user,
-//			BindingResult result,
-//			ModelAndView mav) throws IOException {
-//		if(!result.hasErrors()) {
-//			user = userService.find(id);
-//			user.setId(id);
-//			user.setRole(role);
-//			user.setName(name);
-//			user.setPassword(password);
-//			if(!user.getMailList().isEmpty()) {
-//				List<Mailaddress> mails = user.getMailList();
-//				for(int i = 0; i < mails.size(); i++) {
-//					mails.get(i).setMailKind(mailKinds[i]);
-//					mails.get(i).setMailAddr(mailAddrs[i]);
-//				}
-//			}
-//			if(!user.getTelephoneList().isEmpty()) {
-//				List<Telephone> tels = user.getTelephoneList();
-//				for(int i = 0; i < tels.size(); i++) {
-//					tels.get(i).setPhoneKind(phoneKinds[i]);
-//					tels.get(i).setPhoneNumber(phoneNumbers[i]);
-//				}
-//			}
-//		} else {
-//			mav.setViewName("layout");
-//			mav.addObject("contents", "user/edit::user_contents");
-//			mav.addObject("title", "ユーザー編集");
-//			mav.addObject("user", userService.find(id));
-//			return mav;
-//		}
-//		userService.saveUser(user);
-//
-//		return new ModelAndView("redirect:/users/" + user.getId());
-//	}
+	@PostMapping("/users/{id}/edit")
+	public ModelAndView edited(@PathVariable Integer id,
+			@RequestParam("role") Role role,
+			@RequestParam("name") String name,
+			@RequestParam("password") String password,
+			@RequestParam(name = "mailKind", required = false) String[] mailKinds,
+			@RequestParam(name = "mailAddr", required = false) String[] mailAddrs,
+			@RequestParam(name = "phoneKind", required = false) String[] phoneKinds,
+			@RequestParam(name = "phoneNumber", required = false) String[] phoneNumbers,
+			@Validated User user,
+			BindingResult result,
+			ModelAndView mav) throws IOException {
+		if(!result.hasErrors()) {
+			user = userService.find(id);
+			user.setId(id);
+			user.setRole(role);
+			user.setName(name);
+			user.setPassword(password);
+			if(!user.getMailList().isEmpty()) {
+				List<MailAudit> mails = user.getMailList();
+				for(int i = 0; i < mails.size(); i++) {
+					mails.get(i).setMailKind(mailKinds[i]);
+					mails.get(i).setMailAddr(mailAddrs[i]);
+				}
+			}
+			if(!user.getTelephoneList().isEmpty()) {
+				List<TelAudit> tels = user.getTelephoneList();
+				for(int i = 0; i < tels.size(); i++) {
+					tels.get(i).setPhoneKind(phoneKinds[i]);
+					tels.get(i).setPhoneNumber(phoneNumbers[i]);
+				}
+			}
+		} else {
+			mav.setViewName("layout");
+			mav.addObject("contents", "user/edit::user_contents");
+			mav.addObject("title", "ユーザー編集");
+			mav.addObject("user", userService.find(id));
+			return mav;
+		}
+		userService.saveUser(user);
+
+		return new ModelAndView("redirect:/users/" + user.getId());
+	}
 
 // <<-----------ユーザーイメージ編集画面表示------------->>
 	@GetMapping("/users/{id}/imgedit")
