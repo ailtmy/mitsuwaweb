@@ -13,13 +13,21 @@
 	<label for="name">名前</label>
 	<input type="text" name="name" class="form-control" th:value="${user.name}" disabled="disabled" />
 </div>
-<div class="form-group">
-	<label for="mailKind">メール種類</label>
-	<input type="text" name="mailKind" class="form-control" />
+<div class="new_mailwrap">
+	<div class="mail_hyouji">
+		<div class="form-group">
+			<label for="mailKind">メール種類</label>
+			<input type="text" name="mailKind" class="form-control" />
+		</div>
+		<div class="form-group">
+			<label for="mailAddr">メールアドレス</label>
+			<input type="text" name="mailAddr" class="form-control" />
+		</div>
+	</div>
 </div>
-<div class="form-group">
-	<label for="mailAddr">メールアドレス</label>
-	<input type="text" name="mailAddr" class="form-control" />
+<div class=mb-2>
+	<button type="button" id="mail_new" class="btn btn-primary mr-4">メール追加</button>
+	<button type="button" id="mail_remove" class="btn btn-danger ml-4">メール削除</button>
 </div>
 <div>
 	<button type="submit" class="btn btn-primary mr-4">登録</button>

@@ -7,7 +7,9 @@ $(document).ready(function(){
 
 	//メールアドレス削除
 	$('#mail_remove').click(function(){
-		$('.mail_hyouji:last-child').remove();
+		if($('.mail_hyouji').length != 1){
+			$('.mail_hyouji:last-child').remove();
+		}
 	});
 
 	//電話追加
@@ -17,7 +19,9 @@ $(document).ready(function(){
 
 	//電話削除
 	$('#tel_remove').click(function(){
-		$('.tel_hyouji:last-child').remove();
+		if($('.tel_hyouji').length != 1){
+			$('.tel_hyouji:last-child').remove();
+		}
 	});
 
 	//未失効物件追加

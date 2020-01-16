@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+</head>
+<body >
+<div th:fragment="person_contents">
+<h4 th:text="${title}"></h4>
+<form th:action="@{/people/new}" method="post" enctype="multipart/form-data" th:object="${person}">
+<div class="form-group">
+	<label for="file">ファイル</label>
+	<input type="file" name="file" class="form-control" multiple="multiple"/>
+</div>
+<div class="form-group" th:classappend="${#fields.hasErrors('name')}? 'has-error'">
+	<label for="name">名前</label>
+	<input type="text" name="name" class="form-control" th:field="*{name}"/>
+	<span class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">名前エラー</span>
+</div>
+<div class="form-group" th:classappend="${#fields.hasErrors('kana')}? 'has-error'">
+	<label for="kana">カナ</label>
+	<input type="text" name="kana" class="form-control" th:field="*{kana}"/>
+	<span class="text-danger" th:if="${#fields.hasErrors('kana')}" th:errors="*{kana}">カナエラー</span>
+</div>
+<div class="form-group" th:classappend="${#fields.hasErrors('birthday')} ? 'has-error'">
+	<label for="birthday">生年月日(yyyy-mm-dd)</label>
+	<input type="date" name="birthday" class="form-control" th:field="*{birthday}"/>
+	<span class="text-danger" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}">生年月日エラー</span>
+</div>
+<div class="new_mailwrap">
+	<div class="mail_hyouji">
+		<div class="form-group">
+			<label for="mailKind">メール種類</label>
+			<input type="text" name="mailKind" class="form-control" />
+		</div>
+		<div class="form-group">
+			<label for="mailAddr">メールアドレス</label>
+			<input type="text" name="mailAddr" class="form-control" />
+		</div>
+	</div>
+</div>
+<div class=mb-2>
+	<button type="button" id="mail_new" class="btn btn-primary mr-4">メール追加</button>
+	<button type="button" id="mail_remove" class="btn btn-danger ml-4">メール削除</button>
+</div>
+<div class="new_telwrap">
+	<div class="tel_hyouji">
+		<div class="form-group">
+			<label for="phoneKind">電話種類</label>
+			<input type="text" name="phoneKind" class="form-control" />
+		</div>
+		<div class="form-group">
+			<label for="phoneNumber">電話番号</label>
+			<input type="text" name="phoneNumber" class="form-control" />
+		</div>
+	</div>
+</div>
+<div class=mb-2>
+	<button type="button" id="tel_new" class="btn btn-primary mr-4">電話追加</button>
+	<button type="button" id="tel_remove" class="btn btn-danger ml-4">電話削除</button>
+</div>
+<div class="form-group">
+	<label for="memo">備考</label>
+	<textarea name=memo rows="5" cols="20" class="form-control" placeholder="注意点等ひと口メモ"></textarea>
+</div>
+<div>
+	<button type="submit" class="btn btn-primary mr-4">登録</button>
+	<button type="button" onclick="history.back()" class="btn btn-primary ml-4">戻る</button>
+</div>
+</form>
+</div>
