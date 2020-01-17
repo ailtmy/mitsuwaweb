@@ -20,8 +20,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.demo.entity.MailAudit;
+import com.example.demo.entity.TelAudit;
 import com.example.demo.entity.customer.Customer;
 import com.example.demo.entity.customer.CustomerFile;
+import com.example.demo.entity.customer.Person;
 import com.example.demo.service.MailAuditService;
 import com.example.demo.service.TelAuditService;
 import com.example.demo.service.customer.CustomerFileService;
@@ -267,7 +270,11 @@ public class CustomerController {
 		customer.setCustomerFileList(customerFiles);
 		customerService.saveCustomer(customer);
 
-		return new ModelAndView("redirect:./");
+		if(customer instanceof Person) {
+			return new ModelAndView("redirect:/people/{id}");
+		} else {
+			return new ModelAndView("redirect:/customers/{id}");
+		}
 	}
 
 	/**
@@ -285,7 +292,11 @@ public class CustomerController {
 		customer.setCustomerFileList(files);
 		customerService.saveCustomer(customer);
 		fileService.delete(fid);
-		return new ModelAndView("redirect:/customers/" + customer.getId());
+		if(customer instanceof Person) {
+			return new ModelAndView("redirect:/people/" + customer.getId());
+		} else {
+			return new ModelAndView("redirect:/customers/" + customer.getId());
+		}
 	}
 
 	/**
@@ -310,103 +321,103 @@ public class CustomerController {
 		mav.addObject("customer", customerService.find(id));
 		return mav;
 	}
-//
-//	/**
-//	 * 顧客メールアドレス新規作成
-//	 */
-//	@PostMapping("/customers/{id}/mailnew")
-//	public ModelAndView usermailaddresssave(@PathVariable Integer id,
-//		@RequestParam(name = "mailKind", required = false) String mailKind,
-//		@RequestParam(name = "mailAddr", required = false) String mailAddr,
-//		ModelAndView mav) {
-//			Customer customer = customerService.find(id);
-//			CustomerMail mailAddress = new CustomerMail();
-//			List<CustomerMail> mails = customer.getMailList();
-//			mailAddress.setMailKind(mailKind);
-//			mailAddress.setMailAddr(mailAddr);
-//			mailAddress.setCustomer(customer);
-//			mails.add(mailAddress);
-//			mailaddressService.saveCustomerMail(mailAddress);
-//			customer.setMailList(mails);
-//			customerService.saveCustomer(customer);
-//			mav.setViewName("layout");
-//			mav.addObject("contents", "mailaddress/customermailaddressnew::customermailaddress_contents");
-//			mav.addObject("title", "顧客メールアドレス新規登録");
-//			mav.addObject("customer", customer);
-//			return new ModelAndView("redirect:/customers/{id}");
-//	}
-//
-//	/**
-//	 * 顧客電話新規画面
-//	 */
-//	@GetMapping("customers/{id}/telnew")
-//	public ModelAndView customertelephonenew(@PathVariable Integer id,
-//			ModelAndView mav) {
-//		mav.setViewName("layout");
-//		mav.addObject("contents", "telephone/customertelephonenew::customertelephone_contents");
-//		mav.addObject("title", "顧客連絡先新規登録");
-//		mav.addObject("customer", customerService.find(id));
-//		return mav;
-//	}
-//
-//	/**
-//	 * 顧客電話新規作成
-//	 */
-//	@PostMapping("/customers/{id}/telnew")
-//	public ModelAndView usertelephonesave(@PathVariable Integer id,
-//		@RequestParam(name = "phoneKind", required = false) String phoneKind,
-//		@RequestParam(name = "phoneNumber", required = false) String phoneNumber,
-//		ModelAndView mav) {
-//			Customer customer = customerService.find(id);
-//			CustomerTel tel = new CustomerTel();
-//			List<CustomerTel> tels = customer.getTelephoneList();
-//			tel.setPhoneKind(phoneKind);
-//			tel.setPhoneNumber(phoneNumber);
-//			tels.add(tel);
-//			customer.setTelephoneList(tels);
-//			customerService.saveCustomer(customer);
-//			mav.setViewName("layout");
-//			mav.addObject("contents", "telephone/customertelephonenew::customertelephone_contents");
-//			mav.addObject("title", "顧客連絡先新規登録");
-//			mav.addObject("customer", customer);
-//			return new ModelAndView("redirect:/customers/{id}");
-//	}
-//
-//	/**
-//	 * 顧客メール削除
-//	 */
-//	@PostMapping("/customers/{uid}/maildelete/{mid}")
-//	public ModelAndView customerMaildeleted(
-//			@PathVariable Integer uid,
-//			@PathVariable int mid,
-//			ModelAndView mav) {
-//		Customer customer = customerService.find(uid);
-//		List<CustomerMail> mails = customer.getMailList();
-//		CustomerMail mailAddress = mailaddressService.find(mid);
-//		mails.remove(mailAddress);
-//		customer.setMailList(mails);
-//		customerService.saveCustomer(customer);
-//		mailaddressService.delete(mid);
-//		return new ModelAndView("redirect:/customers/{uid}");
-//	}
-//
-//	/**
-//	 * 顧客電話削除
-//	 */
-//	@PostMapping("/customers/{uid}/teldelete/{tid}")
-//	public ModelAndView customertelephonedeleted(
-//			@PathVariable Integer uid,
-//			@PathVariable int tid,
-//			ModelAndView mav) {
-//		Customer customer = customerService.find(uid);
-//		List<CustomerTel> tels = customer.getTelephoneList();
-//		CustomerTel tel = telephoneService.find(tid);
-//		tels.remove(tel);
-//		customer.setTelephoneList(tels);
-//		customerService.saveCustomer(customer);
-//		telephoneService.delete(tid);
-//		return new ModelAndView("redirect:/customers/{uid}");
-//	}
+
+	/**
+	 * 顧客メールアドレス新規作成
+	 */
+	@PostMapping("/customers/{id}/mailnew")
+	public ModelAndView usermailaddresssave(@PathVariable Integer id,
+		@RequestParam(name = "mailKind", required = false) String mailKind,
+		@RequestParam(name = "mailAddr", required = false) String mailAddr,
+		ModelAndView mav) {
+			Customer customer = customerService.find(id);
+			MailAudit mailAddress = new MailAudit();
+			List<MailAudit> mails = customer.getMailList();
+			mailAddress.setMailKind(mailKind);
+			mailAddress.setMailAddr(mailAddr);
+			mailaddressService.saveMail(mailAddress);
+			mails.add(mailAddress);
+			customer.setMailList(mails);
+			customerService.saveCustomer(customer);
+			mav.setViewName("layout");
+			mav.addObject("contents", "mailaddress/customermailaddressnew::customermailaddress_contents");
+			mav.addObject("title", "顧客メールアドレス新規登録");
+			mav.addObject("customer", customer);
+			return new ModelAndView("redirect:/customers/{id}");
+	}
+
+	/**
+	 * 顧客電話新規画面
+	 */
+	@GetMapping("customers/{id}/telnew")
+	public ModelAndView customertelephonenew(@PathVariable Integer id,
+			ModelAndView mav) {
+		mav.setViewName("layout");
+		mav.addObject("contents", "telephone/customertelephonenew::customertelephone_contents");
+		mav.addObject("title", "顧客連絡先新規登録");
+		mav.addObject("customer", customerService.find(id));
+		return mav;
+	}
+
+	/**
+	 * 顧客電話新規作成
+	 */
+	@PostMapping("/customers/{id}/telnew")
+	public ModelAndView usertelephonesave(@PathVariable Integer id,
+		@RequestParam(name = "phoneKind", required = false) String phoneKind,
+		@RequestParam(name = "phoneNumber", required = false) String phoneNumber,
+		ModelAndView mav) {
+			Customer customer = customerService.find(id);
+			TelAudit tel = new TelAudit();
+			List<TelAudit> tels = customer.getTelephoneList();
+			tel.setPhoneKind(phoneKind);
+			tel.setPhoneNumber(phoneNumber);
+			telephoneService.saveTel(tel);
+			tels.add(tel);
+			customer.setTelephoneList(tels);
+			customerService.saveCustomer(customer);
+			mav.setViewName("layout");
+			mav.addObject("contents", "telephone/customertelephonenew::customertelephone_contents");
+			mav.addObject("title", "顧客連絡先新規登録");
+			mav.addObject("customer", customer);
+			return new ModelAndView("redirect:/customers/{id}");
+	}
+
+	/**
+	 * 顧客メール削除
+	 */
+	@PostMapping("/customers/{uid}/maildelete/{mid}")
+	public ModelAndView customerMaildeleted(
+			@PathVariable Integer uid,
+			@PathVariable int mid,
+			ModelAndView mav) {
+		Customer customer = customerService.find(uid);
+		List<MailAudit> mails = customer.getMailList();
+		MailAudit mailAddress = mailaddressService.find(mid);
+		mails.remove(mailAddress);
+		customer.setMailList(mails);
+		customerService.saveCustomer(customer);
+		mailaddressService.delete(mid);
+		return new ModelAndView("redirect:/customers/{uid}");
+	}
+
+	/**
+	 * 顧客電話削除
+	 */
+	@PostMapping("/customers/{uid}/teldelete/{tid}")
+	public ModelAndView customertelephonedeleted(
+			@PathVariable Integer uid,
+			@PathVariable int tid,
+			ModelAndView mav) {
+		Customer customer = customerService.find(uid);
+		List<TelAudit> tels = customer.getTelephoneList();
+		TelAudit tel = telephoneService.find(tid);
+		tels.remove(tel);
+		customer.setTelephoneList(tels);
+		customerService.saveCustomer(customer);
+		telephoneService.delete(tid);
+		return new ModelAndView("redirect:/customers/{uid}");
+	}
 
 	/**
 	 * 顧客検索

@@ -15,8 +15,8 @@
 	<a class="btn btn-sm btn-primary mr-4" th:href="@{/people/{id}/edit(id=${person.id})}">顧客編集</a>
 	<a class="btn btn-sm btn-primary mr-4" th:href="@{/customers/{id}/idents(id=${person.id})}">本人確認記録作成</a>
 	<a class="btn btn-sm btn-primary mr-4" th:href="@{/customers/{id}/fileedit(id=${person.id})}">顧客ファイル追加</a>
-	<a class="btn btn-sm btn-info mr-4" th:href="@{/people/{id}/mailnew(id=${person.id})}">メール新規登録</a>
-	<a class="btn btn-sm btn-info mr-4" th:href="@{/people/{id}/telnew(id=${person.id})}">電話新規登録</a>
+	<a class="btn btn-sm btn-info mr-4" th:href="@{/customers/{id}/mailnew(id=${person.id})}">メール新規登録</a>
+	<a class="btn btn-sm btn-info mr-4" th:href="@{/customers/{id}/telnew(id=${person.id})}">電話新規登録</a>
 	<form th:action="@{/people/{id}/delete(id=${person.id})}" method="post">
 		<input class="btn btn-sm btn-danger text-white mr-4" type="submit" value="削除"
 		onclick="return confirm('削除します。よろしいですか？')" sec:authorize="hasRole('ADMIN')"/>
@@ -50,7 +50,7 @@
 
 							<span th:text="${mail.mailKind} + ':'" class="col-sm-3 m-2"></span>
 							<a th:href="'mailto:' + ${mail.mailAddr}" th:text="${mail.mailAddr}" class="col-sm-5 m-2"></a>
-							<form th:action="@{/people/{uid}/maildelete/{mid}(uid=${person.id}, mid=${mail.id})}" method="post" class="col-sm-2 m-2">
+							<form th:action="@{/customers/{uid}/maildelete/{mid}(uid=${person.id}, mid=${mail.id})}" method="post" class="col-sm-2 m-2">
 								<input class="btn btn-sm btn-danger text-white mr-2" type="submit" value="メール削除"
 									onclick="return confirm('削除します。よろしいですか？')" />
 							</form>
@@ -62,7 +62,7 @@
 						<td th:each="tel : ${person.telephoneList}" class="row">
 							<span th:text="${tel.phoneKind} + ':'" class="col-sm-3 m-2"></span>
 							<span th:text="${tel.phoneNumber}" class="col-sm-5 m-2"></span>
-							<form th:action="@{/people/{uid}/teldelete/{tid}(uid=${person.id},tid=${tel.id})}" method="post" class="col-sm-2 m-2">
+							<form th:action="@{/customers/{uid}/teldelete/{tid}(uid=${person.id},tid=${tel.id})}" method="post" class="col-sm-2 m-2">
 								<input class="btn btn-sm btn-danger text-white mr-2" type="submit" value="電話削除"
 									onclick="return confirm('削除します。よろしいですか？')"/>
 							</form>
