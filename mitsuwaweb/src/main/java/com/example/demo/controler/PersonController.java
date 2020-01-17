@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -131,7 +132,7 @@ public class PersonController {
 
 			personService.savePerson(person);
 
-			res = new ModelAndView("redirect:/people");
+			res = new ModelAndView("redirect:/people/" + person.getId());
 		} else {
 			mav.setViewName("layout");
 			mav.addObject("msg", "エラー発生");
@@ -142,5 +143,99 @@ public class PersonController {
 		return res;
 	}
 
+	/**
+	 * 個人顧客詳細
+	 * @param id
+	 * @param mav
+	 * @return
+	 */
+	@GetMapping("/people/{id}")
+	public ModelAndView show(
+			@PathVariable Integer id,
+			ModelAndView mav
+			) {
+		Person person = personService.find(id);
+		mav.setViewName("layout");
+		mav.addObject("contents", "person/show::person_contents");
+		mav.addObject("person", person);
+		mav.addObject("title", "顧客詳細");
+		return mav;
+	}
+
+	/**
+	 * 個人顧客編集
+	 * @param id
+	 * @param mav
+	 * @return
+	 */
+	@GetMapping("/people/{id}/edit")
+	public ModelAndView edit(
+			@PathVariable Integer id,
+			ModelAndView mav
+			) {
+		mav.setViewName("layout");
+		mav.addObject("contents", "person/edit::person_contents");
+		mav.addObject("title", "個人顧客編集");
+		mav.addObject("person", personService.find(id));
+		return mav;
+	}
+
+	@PostMapping("/people/{id}/edit")
+	public ModelAndView uodate(
+			@PathVariable Integer id,
+			@RequestParam(name = "mailKind", required = false) String[] mailKinds,
+			@RequestParam(name = "mailAddr", required = false) String[] mailAddrs,
+			@RequestParam(name = "phoneKind", required = false) String[] phoneKinds,
+			@RequestParam(name = "phoneNumber", required = false) String[] phoneNumbers,
+			@ModelAttribute("person")
+			@Validated Person person,
+			BindingResult result,
+			ModelAndView mav
+			) {
+		if(!result.hasErrors()) {
+			Person editperson = personService.find(id);
+			editperson.setId(id);
+			editperson.setName(person.getName());
+			editperson.setKana(person.getKana());
+			editperson.setBirthday(person.getBirthday());
+			editperson.setMemo(person.getMemo());
+
+			if(!editperson.getMailList().isEmpty()) {
+				List<MailAudit> mails = editperson.getMailList();
+				for(int i = 0; i < mails.size(); i++) {
+					mails.get(i).setMailKind(mailKinds[i]);
+					mails.get(i).setMailAddr(mailAddrs[i]);
+				}
+			}
+
+			if(!editperson.getTelephoneList().isEmpty()) {
+				List<TelAudit> tels = editperson.getTelephoneList();
+				for(int i = 0; i < tels.size(); i++) {
+					tels.get(i).setPhoneKind(phoneKinds[i]);
+					tels.get(i).setPhoneNumber(phoneNumbers[i]);
+				}
+			}
+
+			personService.savePerson(editperson);
+
+		} else {
+			mav.setViewName("layout");
+			mav.addObject("contents", "person/edit::person_contents");
+			mav.addObject("title", "個人顧客編集");
+			mav.addObject("person", personService.find(id));
+			return mav;
+		}
+
+		return new ModelAndView("redirect:/people/{id}");
+	}
+
+	@PostMapping("/people/{id}/delete")
+	public ModelAndView delete(
+			@PathVariable Integer id,
+			ModelAndView mav
+			) {
+		personService.delete(id);
+		return new ModelAndView("redirect:/people");
+	}
 
 }

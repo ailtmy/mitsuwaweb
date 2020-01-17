@@ -22,4 +22,12 @@ public class PersonService {
 		return repository.saveAndFlush(person);
 	}
 
+	public Person find(Integer id) {
+		return repository.findById(id).orElse(new Person());
+	}
+
+	public void delete(Integer id) {
+		repository.deleteById(id);
+	}
+
 }

@@ -22,10 +22,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.entity.customer.Customer;
 import com.example.demo.entity.customer.CustomerFile;
+import com.example.demo.service.MailAuditService;
+import com.example.demo.service.TelAuditService;
 import com.example.demo.service.customer.CustomerFileService;
-import com.example.demo.service.customer.CustomerMailService;
 import com.example.demo.service.customer.CustomerService;
-import com.example.demo.service.customer.CustomerTelService;
 import com.example.demo.service.honninkakunin.HonninKakuninService;
 
 @Controller
@@ -35,10 +35,10 @@ public class CustomerController {
 	CustomerService customerService;
 
 	@Autowired
-	CustomerTelService telephoneService;
+	TelAuditService telephoneService;
 
 	@Autowired
-	CustomerMailService mailaddressService;
+	MailAuditService mailaddressService;
 
 	@Autowired
 	CustomerFileService fileService;

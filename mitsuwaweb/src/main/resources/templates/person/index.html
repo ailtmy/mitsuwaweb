@@ -46,7 +46,7 @@
 	<td th:text="${#temporals.format(person.birthday, 'yyyy年MM月dd日')}"></td>
 	<td class="m-0 p-0">
 		<ul class="list-group list-group-flush m-1 p-1">
-			<li th:each="mail : ${person.mailList}" class="list-group-item m-0 p-0">
+			<li th:each="mail : ${person.getMailList()}" class="list-group-item m-0 p-0">
 				<span th:text="${mail.mailKind}"></span>
 				<span> : </span>
 				<a th:href="'mailto:' + ${mail.mailAddr}" th:text="${mail.mailAddr}"></a>

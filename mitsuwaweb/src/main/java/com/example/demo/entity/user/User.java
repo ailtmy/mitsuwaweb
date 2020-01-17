@@ -10,7 +10,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
@@ -41,11 +40,11 @@ public class User extends Audit {
 	private String name;
 
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "mail_id")
+//	@JoinColumn(name = "mail_id")
 	private List<MailAudit> mailList;
 
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "tel_id")
+//	@JoinColumn(name = "tel_id")
 	private List<TelAudit> telephoneList;
 
 	private byte[] image;

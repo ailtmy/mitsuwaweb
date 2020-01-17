@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -52,14 +51,13 @@ public class Customer extends Audit {
 	 * メール（ユニーク）
 	 */
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "mail_id")
 	private List<MailAudit> mailList;
 
 	/**
-	 * 電話！！manytomanyである
+	 * 電話
 	 */
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "tel_id")
+//	@JoinColumn(name = "customerTel_id")
 	private List<TelAudit> telephoneList;
 
 	/**
