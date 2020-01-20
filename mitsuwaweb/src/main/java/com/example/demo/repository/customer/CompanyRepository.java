@@ -1,19 +1,14 @@
 package com.example.demo.repository.customer;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.entity.customer.Person;
+import com.example.demo.entity.customer.Company;
 
 @Repository
-public interface PersonRepository extends JpaRepository<Person, Integer> {
+public interface CompanyRepository extends JpaRepository<Company, Integer> {
 
-	Page<Person> findAllByOrderById(Pageable pageable);
-
-	List<Person> findAllByOrderByKana();
-
+	Page<Company> findAllByOrderById(Pageable pageable);
 }

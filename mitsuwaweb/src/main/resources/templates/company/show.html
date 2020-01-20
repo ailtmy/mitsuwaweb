@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="UTF-8">
+<title th:text="|${title}|"></title>
+</head>
+<body >
+<div class="container-fluid" th:fragment="company_contents">
+<h4 th:text="${title}"></h4>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light mt-2 mb-4">
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/companies?size=5&page=0}">顧客一覧</a>
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/companies/{id}/edit(id=${company.id})}">顧客編集</a>
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/customers/{id}/idents(id=${company.id})}">本人確認記録作成</a>
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/customers/{id}/fileedit(id=${company.id})}">顧客ファイル追加</a>
+	<a class="btn btn-sm btn-info mr-4" th:href="@{/customers/{id}/mailnew(id=${company.id})}">メール新規登録</a>
+	<a class="btn btn-sm btn-info mr-4" th:href="@{/customers/{id}/telnew(id=${company.id})}">電話新規登録</a>
+	<form th:action="@{/companies/{id}/delete(id=${company.id})}" method="post">
+		<input class="btn btn-sm btn-danger text-white mr-4" type="submit" value="削除"
+		onclick="return confirm('削除します。よろしいですか？')" sec:authorize="hasRole('ADMIN')"/>
+	</form>
+	<a class="btn btn-sm btn-primary mr-4" onclick="history.back()" href="#" >戻る</a>
+</nav>
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-8">
+				<table th:object="${company}" class="table table-hover">
+					<tr>
+						<th scope="row">ＩＤ</th>
+						<td th:text="*{id}"></td>
+					</tr>
+					<tr>
+						<th scope="row">商号</th>
+						<td th:text="*{name}"></td>
+					</tr>
+					<tr>
+						<th scope="row">カナ</th>
+						<td th:text="*{kana}"></td>
+					</tr>
+					<tr>
+						<th scope="row">設立年月日</th>
+						<td th:text="*{birthday}"></td>
+					</tr>
+					<tr>
+						<th scope="row">会社法人等番号</th>
+						<td th:text="*{houjinbango}"></td>
+					</tr>
+					<tr>
+						<th scope="row">代表者等</th>
+						<td>
+							<div th:each="daihyo : *{daihyosya}">
+								<span th:text="${daihyo.getKatagaki()}"></span>
+								<a th:href="@{/people/{id}(id=${daihyo.getDaitori().getId()})}"
+								th:text="${daihyo.getDaitori().getName()}"></a>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">次回商業申請期限</th>
+						<td th:text="*{nextSyogyoToki}"></td>
+					</tr>
+					<tr>
+						<th scope="row">メール</th>
+						<td th:each="mail : ${company.mailList}" class="row">
+
+							<span th:text="${mail.mailKind} + ':'" class="col-sm-3 m-2"></span>
+							<a th:href="'mailto:' + ${mail.mailAddr}" th:text="${mail.mailAddr}" class="col-sm-5 m-2"></a>
+							<form th:action="@{/customers/{uid}/maildelete/{mid}(uid=${company.id}, mid=${mail.id})}" method="post" class="col-sm-2 m-2">
+								<input class="btn btn-sm btn-danger text-white mr-2" type="submit" value="メール削除"
+									onclick="return confirm('削除します。よろしいですか？')" />
+							</form>
+						</td>
+					</tr>
+
+					<tr>
+						<th scope="row">電話番号</th>
+						<td th:each="tel : ${company.telephoneList}" class="row">
+							<span th:text="${tel.phoneKind} + ':'" class="col-sm-3 m-2"></span>
+							<span th:text="${tel.phoneNumber}" class="col-sm-5 m-2"></span>
+							<form th:action="@{/customers/{uid}/teldelete/{tid}(uid=${company.id},tid=${tel.id})}" method="post" class="col-sm-2 m-2">
+								<input class="btn btn-sm btn-danger text-white mr-2" type="submit" value="電話削除"
+									onclick="return confirm('削除します。よろしいですか？')"/>
+							</form>
+						</td>
+					</tr>
+
+					<tr>
+						<th scope="row">ファイル</th>
+						<td th:each="file : *{customerFileList}" class="row">
+							<a th:href="@{/customers/{cid}/download/{fid}(cid=${company.id}, fid=${file.id})}" th:text="${file.fileName}" class="col-sm-8"></a>
+							<form th:action="@{/customers/{cid}/filedelete/{fid}(cid=${company.id},fid=${file.id})}" method="post" class="col-sm-2 m-2">
+								<input class="btn btn-sm btn-danger text-white mr-2" type="submit" value="ファイル削除"
+									onclick="return confirm('削除します。よろしいですか？')"/>
+							</form>
+						</td>
+					</tr>
+
+					<tr>
+						<th scope="row">備考</th>
+						<td th:text="*{memo}"></td>
+					</tr>
+
+				</table>
+		</div>
+	</div>
+</div>
+</div>

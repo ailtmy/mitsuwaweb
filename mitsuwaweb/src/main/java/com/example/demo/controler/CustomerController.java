@@ -273,7 +273,7 @@ public class CustomerController {
 		if(customer instanceof Person) {
 			return new ModelAndView("redirect:/people/{id}");
 		} else {
-			return new ModelAndView("redirect:/customers/{id}");
+			return new ModelAndView("redirect:/companies/{id}");
 		}
 	}
 
@@ -295,7 +295,7 @@ public class CustomerController {
 		if(customer instanceof Person) {
 			return new ModelAndView("redirect:/people/" + customer.getId());
 		} else {
-			return new ModelAndView("redirect:/customers/" + customer.getId());
+			return new ModelAndView("redirect:/companies/" + customer.getId());
 		}
 	}
 
@@ -339,11 +339,11 @@ public class CustomerController {
 			mails.add(mailAddress);
 			customer.setMailList(mails);
 			customerService.saveCustomer(customer);
-			mav.setViewName("layout");
-			mav.addObject("contents", "mailaddress/customermailaddressnew::customermailaddress_contents");
-			mav.addObject("title", "顧客メールアドレス新規登録");
-			mav.addObject("customer", customer);
-			return new ModelAndView("redirect:/customers/{id}");
+			if(customer instanceof Person) {
+				return new ModelAndView("redirect:/people/{id}");
+			} else {
+				return new ModelAndView("redirect:/companies/{id}");
+			}
 	}
 
 	/**
@@ -376,11 +376,11 @@ public class CustomerController {
 			tels.add(tel);
 			customer.setTelephoneList(tels);
 			customerService.saveCustomer(customer);
-			mav.setViewName("layout");
-			mav.addObject("contents", "telephone/customertelephonenew::customertelephone_contents");
-			mav.addObject("title", "顧客連絡先新規登録");
-			mav.addObject("customer", customer);
-			return new ModelAndView("redirect:/customers/{id}");
+			if(customer instanceof Person) {
+				return new ModelAndView("redirect:/people/{id}");
+			} else {
+				return new ModelAndView("redirect:/companies/{id}");
+			}
 	}
 
 	/**
@@ -398,7 +398,11 @@ public class CustomerController {
 		customer.setMailList(mails);
 		customerService.saveCustomer(customer);
 		mailaddressService.delete(mid);
-		return new ModelAndView("redirect:/customers/{uid}");
+		if(customer instanceof Person) {
+			return new ModelAndView("redirect:/people/{uid}");
+		} else {
+			return new ModelAndView("redirect:/companies/{uid}");
+		}
 	}
 
 	/**
@@ -416,7 +420,11 @@ public class CustomerController {
 		customer.setTelephoneList(tels);
 		customerService.saveCustomer(customer);
 		telephoneService.delete(tid);
-		return new ModelAndView("redirect:/customers/{uid}");
+		if(customer instanceof Person) {
+			return new ModelAndView("redirect:/people/{uid}");
+		} else {
+			return new ModelAndView("redirect:/companies/{uid}");
+		}
 	}
 
 	/**
