@@ -279,6 +279,12 @@ public class CompanyController {
 		return new ModelAndView("redirect:/companies");
 	}
 
+	/**
+	 * 代表者等新規作成
+	 * @param id
+	 * @param mav
+	 * @return
+	 */
 	@GetMapping("/companies/{id}/daihyonew")
 	public ModelAndView daihyoNew(
 			@PathVariable Integer id,
@@ -323,5 +329,28 @@ public class CompanyController {
 
 		return new ModelAndView("redirect:/companies/{id}");
 
+	}
+
+	/**
+	 * 代表者等削除
+	 * @param cid
+	 * @param did
+	 * @param mav
+	 * @return
+	 */
+	@PostMapping("/companies/{cid}/daihyodelete/{did}")
+	public ModelAndView daihyoDelete(
+			@PathVariable Integer cid,
+			@PathVariable Integer did,
+			ModelAndView mav
+			) {
+		Company company = companyService.find(cid);
+		List<Daihyo> daihyos = company.getDaihyosya();
+		Daihyo daihyo = daihyoService.find(did);
+		daihyos.remove(daihyo);
+		company.setDaihyosya(daihyos);
+		companyService.saveCompany(company);
+		daihyoService.delete(did);
+		return new ModelAndView("redirect:/companies/{cid}");
 	}
 }

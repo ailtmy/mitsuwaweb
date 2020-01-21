@@ -16,4 +16,12 @@ public class DaihyoService {
 		return repository.saveAndFlush(dai);
 
 	}
+
+	public void delete(Integer id) {
+		repository.deleteById(id);
+	}
+
+	public Daihyo find(Integer id) {
+		return repository.findById(id).orElse(new Daihyo());
+	}
 }
