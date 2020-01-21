@@ -1,5 +1,8 @@
 package com.example.demo.soft.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -39,5 +42,10 @@ public class Shinseisyo extends Audit {
 	@OneToOne
 	@JoinColumn(name = "tokisyo_id")
 	private Tokisyo tokisyo;
+
+	public List<ShinseiBukken> getShinseiBukkenList() {
+		// TODO 自動生成されたメソッド・スタブ
+		return new ArrayList<ShinseiBukken>();
+	}
 
 }

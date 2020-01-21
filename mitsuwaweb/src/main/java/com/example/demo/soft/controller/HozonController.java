@@ -107,6 +107,7 @@ public class HozonController {
 			Kenrisya kenrisya = new Kenrisya();
 			Customer customer = customerService.find(customers[i]);
 			kenrisya.setCustomer(customer);
+			kenrisya.setAddr();
 			if(mochibuns[i] != null || !(mochibuns[i].isEmpty())) {
 				kenrisya.setMochibun(mochibuns[i]);
 			}
@@ -182,6 +183,7 @@ public class HozonController {
 			Kenrisya kenrisya = new Kenrisya();
 			Customer customer = customerService.find(customers[i]);
 			kenrisya.setCustomer(customer);
+			kenrisya.setAddr();
 			if(mochibuns[i] != null || !(mochibuns[i].isEmpty())) {
 				kenrisya.setMochibun(mochibuns[i]);
 			}
@@ -230,4 +232,5 @@ public class HozonController {
 		mav.addObject("hozon", hozon);
 		return mav;
 	}
+
 }
