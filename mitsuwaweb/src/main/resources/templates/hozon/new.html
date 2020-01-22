@@ -31,12 +31,20 @@
 					<option th:selected="${''}"/>
 					<option th:each="cus : ${customer}" th:value="${cus.id}" th:text="${cus.name}" />
 				</select>
+				<label for="addr">住所</label>
+				<select id="addr" name="addr" class="form-control">
+					<option value=""></option>
+				</select>
+				<label for="daihyo">代表者</label>
+				<select id="daihyo" name="daihyo" class="form-control">
+					<option value=""></option>
+				</select>
 			</div>
 		</div>
 	</div>
 	<div class="mb-2">
-		<button type="button" class="btn btn-primary mr-4" id="kenrisya_add">権利者追加</button>
-		<button type="button" class="btn btn-danger mr-4" id="kenrisya_remove">権利者削除</button>
+		<button type="button" class="btn btn-primary mr-4" id="kenrisya_ajax_add">権利者追加</button>
+		<button type="button" class="btn btn-danger mr-4" id="kenrisya_ajax_remove">権利者削除</button>
 	</div>
 	<div class="form-group">
 		<label for="tempsyorui">添付書類</label>

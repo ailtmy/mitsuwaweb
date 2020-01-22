@@ -20,6 +20,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.example.demo.entity.customer.Person;
 import com.example.demo.soft.ShinseiXmlHelper;
 import com.example.demo.soft.ZipCreate;
 import com.example.demo.soft.entity.Hozon;
@@ -91,10 +92,24 @@ public class HozonService {
 			nameElement.setTextContent(kenrisya.getCustomer().getName());
 			meigininElement.appendChild(nameElement);
 
-//			代表者実装！！！
-//			Element daitoriElement = docList.get(0).createElement("代");
-//			daitoriElement.setTextContent("代表取締役");
-//			meigininElement.appendChild(daitoriElement);
+			if(kenrisya.getCustomer() instanceof Person) {
+
+			} else {
+				Element daitoriElement = docList.get(0).createElement("代");
+				meigininElement.appendChild(daitoriElement);
+				Element nyuryokuhouhouElement = docList.get(0).createElement("入力方法");
+				nyuryokuhouhouElement.setTextContent("その他");
+				daitoriElement.appendChild(nyuryokuhouhouElement);
+
+				Element shikakuElement = docList.get(0).createElement("資格");
+				shikakuElement.setTextContent(kenrisya.getDaihyo().split("/")[0]);
+				daitoriElement.appendChild(shikakuElement);
+
+				Element daihyosyashimeiElement = docList.get(0).createElement("代表者氏名");
+				daihyosyashimeiElement.setTextContent(kenrisya.getDaihyo().split("/")[1]);
+				daitoriElement.appendChild(daihyosyashimeiElement);
+			}
+
 		}
 
 		String tempsyorui = "";

@@ -109,7 +109,9 @@ public class HozonController {
 			@RequestParam(name="mochibun", defaultValue=" ") String[] mochibuns,
 			@RequestParam("customer") Integer[] customers,
 			@RequestParam("shinseiBukken") Integer[] bukkens,
-			@RequestParam("tokisyo") Integer tokisyo
+			@RequestParam("tokisyo") Integer tokisyo,
+			@RequestParam("addr") String[] addrs,
+			@RequestParam("daihyo") String[] daihyos
 			) {
 
 		List<Kenrisya> syoyusyaList = new ArrayList<Kenrisya>();
@@ -117,7 +119,8 @@ public class HozonController {
 			Kenrisya kenrisya = new Kenrisya();
 			Customer customer = customerService.find(customers[i]);
 			kenrisya.setCustomer(customer);
-			kenrisya.setAddr();
+			kenrisya.setAddr(addrs[i]);
+			kenrisya.setDaihyo(daihyos[i]);
 			if(mochibuns[i] != null || !(mochibuns[i].isEmpty())) {
 				kenrisya.setMochibun(mochibuns[i]);
 			}
@@ -185,6 +188,8 @@ public class HozonController {
 			@RequestParam("customer") Integer[] customers,
 			@RequestParam("shinseiBukken") Integer[] bukkens,
 			@RequestParam("tokisyo") Integer tokisyo,
+			@RequestParam("addr") String[] addrs,
+			@RequestParam("daihyo") String[] daihyos,
 			ModelAndView mav
 			) {
 
@@ -193,7 +198,8 @@ public class HozonController {
 			Kenrisya kenrisya = new Kenrisya();
 			Customer customer = customerService.find(customers[i]);
 			kenrisya.setCustomer(customer);
-			kenrisya.setAddr();
+			kenrisya.setAddr(addrs[i]);
+			kenrisya.setDaihyo(daihyos[i]);
 			if(mochibuns[i] != null || !(mochibuns[i].isEmpty())) {
 				kenrisya.setMochibun(mochibuns[i]);
 			}

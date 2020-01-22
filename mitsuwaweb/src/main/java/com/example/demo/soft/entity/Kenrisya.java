@@ -33,14 +33,6 @@ public class Kenrisya {
 
 	private String daihyo;
 
-	public void setAddr() {
-		int honninkakuninsize = this.getCustomer().getHonninKakuninList().size();
-		int addresssize = this.getCustomer().getHonninKakuninList().get(honninkakuninsize - 1)
-				.getAddressList().size();
-		String address = this.getCustomer().getHonninKakuninList().get(honninkakuninsize - 1)
-				.getAddressList().get(addresssize - 1).getAddr();
-		this.addr = address;
-	}
 
 
 }

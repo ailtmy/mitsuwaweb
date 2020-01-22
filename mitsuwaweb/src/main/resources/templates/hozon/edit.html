@@ -32,6 +32,16 @@
 					<option th:selected="${kenrisya.customer.id}" th:value="${kenrisya.customer.id}" th:text="${kenrisya.customer.name}"/>
 					<option th:each="cus : ${customer}" th:value="${cus.id}" th:text="${cus.name}" />
 				</select>
+				<label for="addr">住所</label>
+				<select id="addr" name="addr" class="form-control">
+					<option th:selected="${kenrisya.getAddr()}" th:value="${kenrisya.getAddr()}" th:text="${kenrisya.getAddr()}"/>
+					<option value=""></option>
+				</select>
+				<label for="daihyo">代表者</label>
+				<select id="daihyo" name="daihyo" class="form-control">
+					<option th:selected="${kenrisya.getDaihyo()}" th:value="${kenrisya.getDaihyo()}" th:text="${kenrisya.getDaihyo()}"/>
+					<option value=""></option>
+				</select>
 			</div>
 		</div>
 	</div>
