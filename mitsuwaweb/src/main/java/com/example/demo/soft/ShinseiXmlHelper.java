@@ -134,6 +134,13 @@ public class ShinseiXmlHelper {
 
 	}
 
+	/**
+	 * 申請物件作成
+	 * @param doc
+	 * @param fileName
+	 * @param folderName
+	 * @throws TransformerException
+	 */
 	public static void makeShinseiFile(List<Document> doc, String fileName, String folderName) throws TransformerException {
 
 		TransformerFactory tfFactory = TransformerFactory.newInstance();

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.xml.sax.SAXException;
 
@@ -233,4 +234,28 @@ public class HozonController {
 		return mav;
 	}
 
+	@GetMapping("/soft/hozon/test")
+	public  ModelAndView ajaxtest(
+			ModelAndView mav) {
+
+		mav.setViewName("layout");
+		mav.addObject("contents", "hozon/ajax::hozon_contents");
+		mav.addObject("customer", customerService.allget());
+		return mav;
+	}
+
+	@GetMapping("/soft/hozon/select")
+	@ResponseBody
+	public String getSelectData(@RequestParam("id") Integer id) {
+		System.out.println(id);
+		StringBuilder sb = new StringBuilder("<option value=\"nothing\">-</option>");
+		List<String> selectDataList = new ArrayList<String>();
+		String addr = customerService.find(id).getHonninKakuninList().get(0).getAddressList().get(0).getAddr();
+		selectDataList.add(addr);
+        selectDataList.stream()
+            .map(value -> String.format("<option value=\"%s\">%s</option>", value, value))
+            .forEach(option -> sb.append(option));
+
+        return sb.toString();
+	}
 }

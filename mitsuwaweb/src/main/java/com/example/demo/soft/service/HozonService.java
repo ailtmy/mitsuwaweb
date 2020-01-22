@@ -144,7 +144,6 @@ public class HozonService {
      	// 圧縮実行
      	ZipCreate.compressDirectory(destination2, dir);
 
-
 		return "２項保存外部ファイルを作成しました。";
 	}
 

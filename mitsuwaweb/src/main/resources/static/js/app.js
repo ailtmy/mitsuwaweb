@@ -91,4 +91,44 @@ $(document).ready(function(){
 			$('.syorui_hyouji:last-child').remove();
 		}
 	});
+
+	$(function(){
+		$('[id^="customer"]').change(function(){
+			var idname = $(this).attr("id");
+			$.ajax({
+				type: "GET",
+				url: "/soft/hozon/select",
+				data: {id: $("#" + idname).val()},
+				dataType: "text",
+				success: function(msg){
+					$("#" + idname).next('select').html(msg);
+//					$("#daihyosya").html(msg);
+				}
+			});
+		});
+	});
+
+	$(document).on("change", '[id^="customer"]', function(){
+		var idname = $(this).attr("id");
+		$.ajax({
+			type: "GET",
+			url: "/soft/hozon/select",
+			data: {id: $("#" + idname).val()},
+			dataType: "text",
+			success: function(msg){
+				$("#" + idname).next('select').html(msg);
+//				$("#daihyosya").html(msg);
+			}
+		});
+	});
+
+
+	//権利者ajax追加
+	$('#kenrisya_ajax_add').click(function(){
+		var cnt = Math.floor(Math.random() * 100);
+		var newcid = "customer" + cnt
+		$('.kenrisya_hyouji:first').clone().appendTo('.kenrisya_wrap').
+		find("#customer").attr("id", newcid);
+		$("#" + newcid).next("select").attr("id", "daihyosya" + cnt);
+	});
 });
