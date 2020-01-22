@@ -18,8 +18,12 @@
 					<option th:selected="${''}"/>
 					<option th:each="cus : ${customer}" th:value="${cus.id}" th:text="${cus.name}" />
 				</select>
-
-				<select id="daihyosya" name="daihyosya" class="form-control">
+				<label for="addr">住所</label>
+				<select id="addr" name="addr" class="form-control">
+					<option value="nothing">---</option>
+				</select>
+				<label for="daihyo">代表者</label>
+				<select id="daihyo" name="daihyo" class="form-control">
 					<option value="nothing">---</option>
 				</select>
 			</div>

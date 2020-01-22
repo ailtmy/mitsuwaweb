@@ -22,6 +22,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.xml.sax.SAXException;
 
 import com.example.demo.entity.customer.Customer;
+import com.example.demo.entity.honninkakunin.CustomerAddress;
+import com.example.demo.entity.honninkakunin.HonninKakunin;
 import com.example.demo.service.customer.CustomerService;
 import com.example.demo.soft.entity.Hozon;
 import com.example.demo.soft.entity.Kenrisya;
@@ -246,13 +248,20 @@ public class HozonController {
 
 	@GetMapping("/soft/hozon/select")
 	@ResponseBody
-	public String getSelectData(@RequestParam("id") Integer id) {
+	public String getAddressData(Integer id) {
 		System.out.println(id);
 		StringBuilder sb = new StringBuilder("<option value=\"nothing\">-</option>");
-		List<String> selectDataList = new ArrayList<String>();
-		String addr = customerService.find(id).getHonninKakuninList().get(0).getAddressList().get(0).getAddr();
-		selectDataList.add(addr);
-        selectDataList.stream()
+		List<String> selectAddressList = new ArrayList<String>();
+		List<HonninKakunin> honninkakuninList = customerService.find(id).getHonninKakuninList();
+		for(HonninKakunin honninkakunin : honninkakuninList) {
+			List<CustomerAddress> addressList = honninkakunin.getAddressList();
+			for(CustomerAddress address : addressList) {
+				String addr = address.getAddr();
+				selectAddressList.add(addr);
+			}
+		}
+//		String addr = customerService.find(id).getHonninKakuninList().get(0).getAddressList().get(0).getAddr();
+        selectAddressList.stream()
             .map(value -> String.format("<option value=\"%s\">%s</option>", value, value))
             .forEach(option -> sb.append(option));
 

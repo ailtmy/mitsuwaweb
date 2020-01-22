@@ -31,6 +31,8 @@ public class Kenrisya {
 
 	private String addr;
 
+	private String daihyo;
+
 	public void setAddr() {
 		int honninkakuninsize = this.getCustomer().getHonninKakuninList().size();
 		int addresssize = this.getCustomer().getHonninKakuninList().get(honninkakuninsize - 1)
