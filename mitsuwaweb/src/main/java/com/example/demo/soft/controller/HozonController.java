@@ -21,9 +21,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.xml.sax.SAXException;
 
+import com.example.demo.entity.customer.Company;
 import com.example.demo.entity.customer.Customer;
+import com.example.demo.entity.customer.Daihyo;
 import com.example.demo.entity.honninkakunin.CustomerAddress;
 import com.example.demo.entity.honninkakunin.HonninKakunin;
+import com.example.demo.service.customer.CompanyService;
 import com.example.demo.service.customer.CustomerService;
 import com.example.demo.soft.entity.Hozon;
 import com.example.demo.soft.entity.Kenrisya;
@@ -44,7 +47,11 @@ public class HozonController {
 	TokisyoService tokisyoService;
 
 	@Autowired
+
 	CustomerService customerService;
+
+	@Autowired
+	CompanyService companyService;
 
 	@Autowired
 	ShinseiBukkenService bukkenService;
@@ -246,11 +253,15 @@ public class HozonController {
 		return mav;
 	}
 
-	@GetMapping("/soft/hozon/select")
+	/**
+	 * 権利者住所選択Ajax
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("/soft/hozon/addr")
 	@ResponseBody
 	public String getAddressData(Integer id) {
-		System.out.println(id);
-		StringBuilder sb = new StringBuilder("<option value=\"nothing\">-</option>");
+		StringBuilder sb = new StringBuilder("<option value=\"\"></option>");
 		List<String> selectAddressList = new ArrayList<String>();
 		List<HonninKakunin> honninkakuninList = customerService.find(id).getHonninKakuninList();
 		for(HonninKakunin honninkakunin : honninkakuninList) {
@@ -260,11 +271,33 @@ public class HozonController {
 				selectAddressList.add(addr);
 			}
 		}
-//		String addr = customerService.find(id).getHonninKakuninList().get(0).getAddressList().get(0).getAddr();
+
         selectAddressList.stream()
             .map(value -> String.format("<option value=\"%s\">%s</option>", value, value))
             .forEach(option -> sb.append(option));
 
         return sb.toString();
+	}
+
+	@GetMapping("/soft/hozon/daihyo")
+	@ResponseBody
+	public String getDaihyoData(Integer id) {
+		StringBuilder sb = new StringBuilder("<option value=\"\"></option>");
+		List<String> selectDaihyoList = new ArrayList<String>();
+		Customer customer = customerService.find(id);
+		if(customer instanceof Company) {
+			Company company = (Company) customer;
+			List<Daihyo> daihyoList = company.getDaihyosya();
+			for(Daihyo daihyo : daihyoList) {
+				String daitoriName = daihyo.getKatagaki();
+				daitoriName += "/" + daihyo.getDaitori().getName();
+				selectDaihyoList.add(daitoriName);
+			}
+		}
+		selectDaihyoList.stream()
+		.map(value -> String.format("<option value=\"%s\">%s</option>", value, value))
+		.forEach(option -> sb.append(option));
+
+		return sb.toString();
 	}
 }

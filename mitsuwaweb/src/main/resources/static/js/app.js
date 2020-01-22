@@ -92,30 +92,46 @@ $(document).ready(function(){
 		}
 	});
 
-	$(function(){
-		$('[id^="customer"]').change(function(){
-			var idname = $(this).attr("id");
-			$.ajax({
-				type: "GET",
-				url: "/soft/hozon/select",
-				data: {id: $("#" + idname).val()},
-				dataType: "text",
-				success: function(msg){
-					$("#" + idname).next('select').html(msg);
-				}
-			});
-		});
-	});
+	//住所セレクトオプション追加
+//	$(function(){
+//		$('[id^="customer"]').change(function(){
+//			var idname = $(this).attr("id");
+//			$.ajax({
+//				type: "GET",
+//				url: "/soft/hozon/addr",
+//				data: {id: $("#" + idname).val()},
+//				dataType: "text",
+//				success: function(msg){
+//					$("#" + idname).next('select').html(msg);
+//				}
+//			});
+//		});
+//	});
 
+	//住所追加要素イベント発火
 	$(document).on("change", '[id^="customer"]', function(){
 		var idname = $(this).attr("id");
 		$.ajax({
 			type: "GET",
-			url: "/soft/hozon/select",
+			url: "/soft/hozon/addr",
 			data: {id: $("#" + idname).val()},
 			dataType: "text",
 			success: function(msg){
 				$("#" + idname).next().next('select').html(msg);
+			}
+		});
+	});
+
+	//代表者追加要素イベント発火
+	$(document).on("change", '[id^="customer"]', function(){
+		var idname = $(this).attr("id");
+		$.ajax({
+			type: "GET",
+			url: "/soft/hozon/daihyo",
+			data: {id: $("#" + idname).val()},
+			dataType: "text",
+			success: function(msg){
+				$("#" + idname).next().next().next().next('select').html(msg);
 			}
 		});
 	});
@@ -129,5 +145,12 @@ $(document).ready(function(){
 		find("#customer").attr("id", newcid);
 		$("#" + newcid).next().next("select").attr("id", "addr" + cnt);
 		$("#" + newcid).next().next().next().next("select").attr("id", "daihyo" + cnt);
+	});
+
+	//権利者削除
+	$('#kenrisya_ajax_remove').click(function(){
+		if($('.kenrisya_hyouji').length != 1){
+			$('.kenrisya_hyouji:last-child').remove();
+		}
 	});
 });
