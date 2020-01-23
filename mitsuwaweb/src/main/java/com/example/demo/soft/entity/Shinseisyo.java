@@ -44,7 +44,6 @@ public class Shinseisyo extends Audit {
 	private Tokisyo tokisyo;
 
 	public List<ShinseiBukken> getShinseiBukkenList() {
-		// TODO 自動生成されたメソッド・スタブ
 		return new ArrayList<ShinseiBukken>();
 	}
 

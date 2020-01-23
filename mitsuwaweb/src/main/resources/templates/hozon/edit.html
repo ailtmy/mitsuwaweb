@@ -28,7 +28,7 @@
 			</div>
 			<div class="form-group">
 				<label for="customer">権利者</label>
-				<select id="customer" name="customer" class="form-control">
+				<select th:id="|customer${kenrisya.id}|" name="customer" class="form-control">
 					<option th:selected="${kenrisya.customer.id}" th:value="${kenrisya.customer.id}" th:text="${kenrisya.customer.name}"/>
 					<option th:each="cus : ${customer}" th:value="${cus.id}" th:text="${cus.name}" />
 				</select>
@@ -91,12 +91,12 @@
 		<textarea name="jyobun" rows="5" cols="30" th:field="*{jyobun}" class="form-control"></textarea>
 	</div>
 	<div class="shinseiBukken_wrap">
-		<div th:each="shinseiBukken : *{shinseiBukkenList}" class="shinseiBukken_hyouji">
+		<div th:each="sb : *{shinseiBukkenList}" class="shinseiBukken_hyouji">
 			<div class="form-group">
 				<label for="shinseiBukken">物件</label>
 				<select id="shinseiBukken" name="shinseiBukken" class="form-control">
-					<option th:selected="${shinseiBukken.id}" th:value="${shinseiBukken.id}"
-					th:text="|${shinseiBukken.getChibanKuikiJyoho()}${shinseiBukken.getChibanKaokubangoJyoho()}(${shinseiBukken.getBukkenSyubetsu()})|"/>
+					<option th:selected="${sb.id}" th:value="${sb.id}"
+					th:text="|${sb.getChibanKuikiJyoho()}${sb.getChibanKaokubangoJyoho()}(${sb.getBukkenSyubetsu()})|"/>
 					<option th:each="bukken : ${shinseiBukken}" th:value="${bukken.id}"
 					th:text="|${bukken.getChibanKuikiJyoho()}${bukken.getChibanKaokubangoJyoho()}(${bukken.getBukkenSyubetsu()})|" />
 				</select>

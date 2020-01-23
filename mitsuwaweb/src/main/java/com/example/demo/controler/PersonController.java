@@ -181,7 +181,7 @@ public class PersonController {
 	}
 
 	@PostMapping("/people/{id}/edit")
-	public ModelAndView uodate(
+	public ModelAndView update(
 			@PathVariable Integer id,
 			@RequestParam(name = "mailKind", required = false) String[] mailKinds,
 			@RequestParam(name = "mailAddr", required = false) String[] mailAddrs,

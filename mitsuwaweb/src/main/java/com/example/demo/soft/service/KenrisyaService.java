@@ -15,4 +15,13 @@ public class KenrisyaService {
 	public Kenrisya saveKenrisya(Kenrisya kenrisya) {
 		return repository.saveAndFlush(kenrisya);
 	}
+
+	public Kenrisya find(Integer id) {
+		return repository.findById(id).orElse(new Kenrisya());
+	}
+
+	public void delete(Integer id) {
+		repository.deleteById(id);
+
+	}
 }

@@ -12,7 +12,10 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light mt-2 mb-4">
 	<a class="btn btn-sm btn-primary mr-4" th:href="@{/soft/hozon/{id}/edit(id=${hozon.id})}" th:text="編集"></a>
-	<a class="btn btn-sm btn-primary mr-4" th:href="@{/soft/hozon/{id}/create(id=${hozon.id})}" th:text="申請ファイル作成"></a>
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/soft/shinseisyo/{id}/kenrisyanew(id=${hozon.id})}" th:text="所有者追加"></a>
+	<a class="btn btn-sm btn-primary mr-4" href="" th:text="物件追加"></a>
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/soft/hozon/{id}/create(id=${hozon.id})}" th:text="特例申請ファイル作成"></a>
+	<a class="btn btn-sm btn-primary mr-4" href="" th:text="QR申請ファイル作成"></a>
 	<form th:action="@{/soft/hozon/{id}/delete(id=${hozon.id})}" method="post">
 		<input class="btn btn-sm btn-danger text-white mr-4" type="submit" value="削除"
 		onclick="return confirm('削除します。よろしいですか？')" />
@@ -45,6 +48,12 @@
 							<p th:text="${kenrisya.getAddr()}"></p>
 							<p th:text="|${kenrisya.mochibun}　${kenrisya.customer.name}|"></p>
 							<p th:text="${kenrisya.getDaihyo()}"></p>
+							<form
+								th:action="@{/soft/shinseisyo/{sid}/kenrisyadelete/{kid}(sid=${hozon.id},kid=${kenrisya.id})}"
+								 method="post" class="col-sm-2 m-2">
+								<input class="btn btn-sm btn-danger text-white mr-2" type="submit" value="所有者削除"
+									onclick="return confirm('削除します。よろしいですか？')"/>
+							</form>
 						</div>
 					</td>
 				</tr>

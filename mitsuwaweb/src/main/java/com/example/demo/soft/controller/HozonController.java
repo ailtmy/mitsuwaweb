@@ -193,18 +193,32 @@ public class HozonController {
 			ModelAndView mav
 			) {
 
-		List<Kenrisya> syoyusyaList = new ArrayList<Kenrisya>();
-		for(int i = 0; i < customers.length; i++) {
-			Kenrisya kenrisya = new Kenrisya();
-			Customer customer = customerService.find(customers[i]);
-			kenrisya.setCustomer(customer);
-			kenrisya.setAddr(addrs[i]);
-			kenrisya.setDaihyo(daihyos[i]);
-			if(mochibuns[i] != null || !(mochibuns[i].isEmpty())) {
-				kenrisya.setMochibun(mochibuns[i]);
+		Hozon edithozon = hozonService.find(id);
+		edithozon.setDate(hozon.getDate());
+		edithozon.setGenin(hozon.getGenin());
+		edithozon.setJyobun(hozon.getJyobun());
+		edithozon.setKazeiGoukei(hozon.getKazeiGoukei());
+		edithozon.setKazeiUchiwake(hozon.getKazeiUchiwake());
+		edithozon.setKenmei(hozon.getKenmei());
+		edithozon.setTempsyorui(hozon.getTempsyorui());
+		edithozon.setTokisyo(hozon.getTokisyo());
+		edithozon.setToumenGoukei(hozon.getToumenGoukei());
+		edithozon.setToumenUchiwake(hozon.getToumenUchiwake());
+
+		List<Kenrisya> syoyusyaList = edithozon.getSyoyusya();
+		if(!syoyusyaList.isEmpty()) {
+			for(int i = 0; i < customers.length; i++) {
+				Kenrisya kenrisya = syoyusyaList.get(i);
+				Customer customer = customerService.find(customers[i]);
+				kenrisya.setCustomer(customer);
+				kenrisya.setAddr(addrs[i]);
+				kenrisya.setDaihyo(daihyos[i]);
+				if(mochibuns[i] != null || !(mochibuns[i].isEmpty())) {
+					kenrisya.setMochibun(mochibuns[i]);
+				}
+				kenrisyaService.saveKenrisya(kenrisya);
+				syoyusyaList.add(kenrisya);
 			}
-			kenrisyaService.saveKenrisya(kenrisya);
-			syoyusyaList.add(kenrisya);
 		}
 		hozon.setSyoyusya(syoyusyaList);
 
@@ -234,6 +248,83 @@ public class HozonController {
 		return new ModelAndView("redirect:/soft/hozon");
 	}
 
+	/**
+	 * 所有者追加
+	 * @param id
+	 * @param mav
+	 * @return
+	 */
+	@GetMapping("/soft/shinseisyo/{id}/kenrisyanew")
+	public ModelAndView syoyusyanew(
+			@PathVariable Integer id,
+			ModelAndView mav
+			) {
+		mav.setViewName("layout");
+		mav.addObject("contents", "kenrisya/kenrisyanew::kenrisya_contents");
+		mav.addObject("title", "所有者追加");
+		mav.addObject("kenrisya", hozonService.find(id));
+		mav.addObject("customer", customerService.allget());
+		return mav;
+	}
+
+	@PostMapping("/soft/shinseisyo/{id}/kenrisyanew")
+	public ModelAndView syosyusyacreate(
+			@PathVariable Integer id,
+			@RequestParam(name = "addr", required=false) String addr,
+			@RequestParam(name = "mochibun", required=false, defaultValue=" ") String mochibun,
+			@RequestParam(name = "customer") Customer customer,
+			@RequestParam(name = "daihyo", required=false) String daihyo,
+			ModelAndView mav
+			) {
+		Hozon hozon = hozonService.find(id);
+		List<Kenrisya> syoyusya = hozon.getSyoyusya();
+		Kenrisya kenrisya = new Kenrisya();
+		kenrisya.setAddr(addr);
+		kenrisya.setCustomer(customer);
+		kenrisya.setDaihyo(daihyo);
+		kenrisya.setMochibun(mochibun);
+		kenrisyaService.saveKenrisya(kenrisya);
+		syoyusya.add(kenrisya);
+		hozon.setSyoyusya(syoyusya);
+		hozonService.saveHozon(hozon);
+
+		return new ModelAndView("redirect:/soft/hozon/{id}");
+	}
+
+	/**
+	 * 所有者削除
+	 * @param sid
+	 * @param kid
+	 * @param mav
+	 * @return
+	 */
+	@PostMapping("/soft/shinseisyo/{sid}/kenrisyadelete/{kid}")
+	public ModelAndView kenrisyadelete(
+			@PathVariable Integer sid,
+			@PathVariable Integer kid,
+			ModelAndView mav
+			) {
+		Hozon hozon = hozonService.find(sid);
+		List<Kenrisya> kenrisyas = hozon.getSyoyusya();
+		Kenrisya kenrisya = kenrisyaService.find(kid);
+		kenrisyas.remove(kenrisya);
+		hozon.setSyoyusya(kenrisyas);
+		hozonService.saveHozon(hozon);
+		kenrisyaService.delete(kid);
+
+		return new ModelAndView("redirect:/soft/hozon/{sid}");
+	}
+
+	/**
+	 * オンライン特例申請ファイル作成
+	 * @param id
+	 * @param mav
+	 * @return
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws TransformerException
+	 */
 	@GetMapping("/soft/hozon/{id}/create")
 	public ModelAndView hozon(
 			@PathVariable Integer id,
@@ -249,6 +340,12 @@ public class HozonController {
 		return mav;
 	}
 
+
+	/**
+	 * ajax テスト
+	 * @param mav
+	 * @return
+	 */
 	@GetMapping("/soft/hozon/test")
 	public  ModelAndView ajaxtest(
 			ModelAndView mav) {
@@ -285,6 +382,11 @@ public class HozonController {
         return sb.toString();
 	}
 
+	/**
+	 * 代表者選択Ajax
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/soft/hozon/daihyo")
 	@ResponseBody
 	public String getDaihyoData(Integer id) {
