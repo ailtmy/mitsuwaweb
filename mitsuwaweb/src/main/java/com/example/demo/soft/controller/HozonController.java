@@ -315,6 +315,60 @@ public class HozonController {
 		return new ModelAndView("redirect:/soft/hozon/{sid}");
 	}
 
+	@GetMapping("/soft/shinseibukken/{id}/bukkennew")
+	public ModelAndView bukkennew(
+			@PathVariable Integer id,
+			ModelAndView mav
+			) {
+		mav.setViewName("layout");
+		mav.addObject("contents", "bukken/bukkennew::bukken_contents");
+		mav.addObject("title", "物件追加");
+		mav.addObject("shinseisyo", hozonService.find(id));
+		mav.addObject("shinseiBukken", bukkenService.allget());
+		return mav;
+	}
+
+	@PostMapping("/soft/shinseibukken/{id}/bukkennew")
+	public ModelAndView bukkencreate(
+			@PathVariable Integer id,
+			@RequestParam(name = "bukken") Integer bid,
+			ModelAndView mav
+			) {
+		Hozon hozon = hozonService.find(id);
+		List<ShinseiBukken> bukkens = hozon.getShinseiBukkenList();
+		ShinseiBukken bukken = bukkenService.find(bid);
+		bukkens.add(bukken);
+		hozon.setShinseiBukkenList(bukkens);
+		hozonService.saveHozon(hozon);
+
+		return new ModelAndView("redirect:/soft/hozon/{id}");
+	}
+
+	/**
+	 * 申請書物件削除
+	 * @param sid
+	 * @param bid
+	 * @param mav
+	 * @return
+	 */
+	@PostMapping("/soft/shinseibukken/{sid}/bukkendelete/{bid}")
+	public ModelAndView bukkendelete(
+			@PathVariable Integer sid,
+			@PathVariable Integer bid,
+			ModelAndView mav
+			) {
+		Hozon hozon = hozonService.find(sid);
+		List<ShinseiBukken> bukkens = hozon.getShinseiBukkenList();
+		ShinseiBukken bukken = bukkenService.find(bid);
+		bukkens.remove(bukken);
+		hozon.setShinseiBukkenList(bukkens);
+		hozonService.saveHozon(hozon);
+		bukkenService.delete(bid);
+
+		return new ModelAndView("redirect:/soft/hozon/{sid}");
+	}
+
+
 	/**
 	 * オンライン特例申請ファイル作成
 	 * @param id
@@ -336,6 +390,21 @@ public class HozonController {
 		String message = hozonService.xmlFileGet("HM0501200320001", hozon);
 		mav.addObject("createMessage", message);
 		mav.addObject("title", "２項保存作成");
+		mav.addObject("hozon", hozon);
+		return mav;
+	}
+
+	@GetMapping("/soft/hozon/{id}/qrcreate")
+	public ModelAndView qrhozon(
+			@PathVariable Integer id,
+			ModelAndView mav
+			) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+		Hozon hozon = hozonService.find(id);
+		mav.setViewName("layout");
+		mav.addObject("contents", "hozon/show::hozon_contents");
+		String message = hozonService.xmlFileGet("HM0508200320001", hozon);
+		mav.addObject("createMessage", message);
+		mav.addObject("title", "２項保存QR作成");
 		mav.addObject("hozon", hozon);
 		return mav;
 	}

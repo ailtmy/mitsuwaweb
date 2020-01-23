@@ -110,6 +110,10 @@ public class HozonService {
 				daitoriElement.appendChild(daihyosyashimeiElement);
 			}
 
+			Element shikibetsuhakkoElement = docList.get(0).createElement("識別情報発行区分");
+			shikibetsuhakkoElement.setTextContent("送付の方法による交付を希望する");
+			meigininElement.appendChild(shikibetsuhakkoElement);
+
 		}
 
 		String tempsyorui = "";
@@ -118,7 +122,7 @@ public class HozonService {
 		}
 		ShinseiXmlHelper.elementTextset(hozonElement, "添付情報", tempsyorui, 0);
 
-		ShinseiXmlHelper.elementTextset(hozonElement, "申請年月日", hozon.getDate() + "法第７４条第２項",0);
+		ShinseiXmlHelper.elementTextset(hozonElement, "申請年月日", hozon.getDate() + "　法７４条２項",0);
 		ShinseiXmlHelper.elementTextset(hozonElement, "宛先登記所名", hozon.getTokisyo().getTokisyoName(), 0);
 		ShinseiXmlHelper.elementTextset(hozonElement, "提出先名称", hozon.getTokisyo().getTokisyoName(), 0);
 		ShinseiXmlHelper.elementTextset(hozonElement, "登記所コード", hozon.getTokisyo().getTokisyoCode().toString(), 0);

@@ -175,7 +175,11 @@ public class ShinseiXmlHelper {
 				ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "物件指定", "所在");
 				ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "地番区域情報", ittoubukken.getChibanKuikiJyoho());
 				ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "地番家屋番号情報", ittoubukken.getChibanKaokubangoJyoho());
-				ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "不動産番号", ittoubukken.getFudosanBango());
+				if(ittoubukken.getChibanKaokubangoJyoho().isEmpty() || ittoubukken.getChibanKaokubangoJyoho() == null) {
+					ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "不動産番号", ittoubukken.getFudosanBango());
+				} else {
+					ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "不動産番号", "");
+				}
 				ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "物件区分", ittoubukken.getBukkenKubun());
 				ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "物件状態", "既存");
 
@@ -222,7 +226,11 @@ public class ShinseiXmlHelper {
 				ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "物件種別", senyubukken.getBukkenSyubetsu());
 				ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "地番区域情報", senyubukken.getChibanKuikiJyoho());
 				ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "地番家屋番号情報", senyubukken.getChibanKaokubangoJyoho());
-				ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "不動産番号", senyubukken.getFudosanBango());
+				if(senyubukken.getChibanKaokubangoJyoho().isEmpty() || senyubukken.getChibanKaokubangoJyoho() == null) {
+					ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "不動産番号", senyubukken.getFudosanBango());
+				} else {
+					ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "不動産番号", "");
+				}
 				ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "物件区分", senyubukken.getBukkenKubun());
 				ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "物件状態", "既存");
 
@@ -303,7 +311,11 @@ public class ShinseiXmlHelper {
 				ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "物件種別", tochibukken.getBukkenSyubetsu());
 				ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "地番区域情報", tochibukken.getChibanKuikiJyoho());
 				ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "地番家屋番号情報", tochibukken.getChibanKaokubangoJyoho());
-				ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "不動産番号", tochibukken.getFudosanBango());
+				if(tochibukken.getChibanKaokubangoJyoho().isEmpty() || tochibukken.getChibanKaokubangoJyoho() == null) {
+					ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "不動産番号", tochibukken.getFudosanBango());
+				} else {
+					ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "不動産番号", "");
+				}
 				ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "物件区分", tochibukken.getBukkenKubun());
 				ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "物件状態", "既存");
 
@@ -348,7 +360,11 @@ public class ShinseiXmlHelper {
 				ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "物件種別", Tatemonobukken.getBukkenSyubetsu());
 				ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "地番区域情報", Tatemonobukken.getChibanKuikiJyoho());
 				ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "地番家屋番号情報", Tatemonobukken.getChibanKaokubangoJyoho());
-				ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "不動産番号", Tatemonobukken.getFudosanBango());
+				if(Tatemonobukken.getChibanKaokubangoJyoho().isEmpty() || Tatemonobukken.getChibanKaokubangoJyoho() == null) {
+					ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "不動産番号", Tatemonobukken.getFudosanBango());
+				} else {
+					ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "不動産番号", "");
+				}
 				ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "物件区分", Tatemonobukken.getBukkenKubun());
 				ShinseiXmlHelper.elementCreateSet(document, bukkenTokuteiJyohoElement, "物件状態", "既存");
 

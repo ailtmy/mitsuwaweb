@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3c.org/rdf">
+	<DocumentResource about="HM0508200320001.xml" Id="main">
+		<DocumentType>main</DocumentType>
+		<Title>HM0508200320001.xml</Title>
+	</DocumentResource>
+	<PackageResource>
+		<管理情報>
+			<Resource>
+				<手続ID>HM0508200320001</手続ID>
+				<手続名称>書面提出用登記申請書（権利に関する登記）</手続名称>
+				<手続様式名称>[不動産]書面提出用登記申請書（権利に関する登記）(2)所有権の保存（敷地権付区分建物）（代理申請用）</手続様式名称>
+				<申請番号 />
+				<初回申請番号></初回申請番号>
+				<到達時刻>
+					<Resource>
+						<Date.ISO8601 />
+						<Date.JISX0301 />
+					</Resource>
+				</到達時刻>
+				<テンプレートバージョン>1</テンプレートバージョン>
+			</Resource>
+		</管理情報>
+		<申請書属性情報>
+			<Resource>
+				<申請書様式ID>HM0508200320001</申請書様式ID>
+				<申請書様式名称>[不動産]書面提出用登記申請書（権利に関する登記）(2)所有権の保存（敷地権付区分建物）（代理申請用）</申請書様式名称>
+				<申請書ファイル名称>HM0508200320001.xml</申請書ファイル名称>
+				<スタイルシートファイル名称>HM0508200320001.xsl</スタイルシートファイル名称>
+			</Resource>
+		</申請書属性情報>
+		<署名情報 />
+		<手数料情報>
+			<Resource>
+				<納付種別>手数料なし</納付種別>
+				<氏名フリガナ></氏名フリガナ>
+				<納付情報>
+					<Resource>
+						<手数料額>0</手数料額>
+						<申請案件情報>
+							<Resource>
+								<申請案件 ID="">
+									<Resource>
+										<略科目コード />
+										<手数料 />
+									</Resource>
+								</申請案件>
+							</Resource>
+						</申請案件情報>
+					</Resource>
+				</納付情報>
+			</Resource>
+		</手数料情報>
+	</PackageResource>
+</rdf:RDF>
