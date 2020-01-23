@@ -14,7 +14,7 @@
 		<div class="kenrisya_hyouji">
 			<div class="form-group">
 				<label for="customer">権利者</label>
-				<select id="customer" name="customer" class="form-control">
+				<select id="customer" name="customer" class="select2 form-control">
 					<option th:selected="${''}"/>
 					<option th:each="cus : ${customer}" th:value="${cus.id}" th:text="${cus.name}" />
 				</select>

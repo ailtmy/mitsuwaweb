@@ -166,9 +166,9 @@ VALUES
 ('Tatemono', '3234567880323', null, '木造瓦葺平家建', null, '３番地３', null, null, '１２０．０１', null, null, null, '大阪市中央区備後町三丁目', '３番３', '店舗'),
 ('IttouTatemono', null, null, null, '四丁目', '４番地４', '大阪市中央区備後町', '備後町ビル', null, null, null, null, null, null, null),
 ('IttouTatemono', null, null, null, '五丁目', '５番地５', '大阪市中央区備後町', '五番地マンション', null, null, null, null, null, null, null),
-('SenyuTatemono', '987654321098', null, '鉄筋コンクリート造１階建', '四丁目', null, '大阪市中央区備後町', '１０１', '１階部分１００・００', null, null, null, null, '４番４の１０１', '事務所'),
-('SenyuTatemono', '987654321097', null, '鉄筋コンクリート造１階建', '五丁目', null, '大阪市中央区備後町', '２０１', '２階部分６０・００', null, null, null, null, '２番２の２０１', '居宅'),
-('SenyuTatemono', '987654321096', null, '鉄筋コンクリート造１階建', '五丁目', null, '大阪市中央区備後町', '３０１', '３階部分５０・００', null, null, null, null, '２番２の３０１', '居宅');
+('SenyuTatemono', '987654321098', null, '鉄筋コンクリート造１階建', '備後町四丁目', null, '大阪市中央区', '１０１', '１階部分１００・００', null, null, null, null, '４番４の１０１', '事務所'),
+('SenyuTatemono', '987654321097', null, '鉄筋コンクリート造１階建', '備後町五丁目', null, '大阪市中央区', '２０１', '２階部分６０・００', null, null, null, null, '２番２の２０１', '居宅'),
+('SenyuTatemono', '987654321096', null, '鉄筋コンクリート造１階建', '備後町五丁目', null, '大阪市中央区', '３０１', '３階部分５０・００', null, null, null, null, '２番２の３０１', '居宅');
 
 
 INSERT INTO tokisyo(tokisyo_code, tokisyo_name)

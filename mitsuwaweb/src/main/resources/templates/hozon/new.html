@@ -89,7 +89,7 @@
 		<div class="shinseiBukken_hyouji">
 			<div class="form-group">
 				<label for="shinseiBukken">物件</label>
-				<select id="shinseiBukken" name="shinseiBukken" class="form-control">
+				<select id="shinseiBukken" name="shinseiBukken" class="select2 form-control">
 					<option th:selected="${''}"/>
 					<option th:each="bukken : ${shinseiBukken}" th:value="${bukken.id}"
 					th:text="|${bukken.getChibanKuikiJyoho()}${bukken.getChibanKaokubangoJyoho()}(${bukken.getBukkenSyubetsu()})|" />
