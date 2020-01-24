@@ -67,7 +67,7 @@
 	</div>
 	<div class="form-group">
 		<label for="kazeiGoukei">課税価格合計</label>
-		<input type="text" name="kazeiGoukei" class="form-control"/>
+		<input type="number" name="kazeiGoukei" class="form-control"/>
 	</div>
 	<div class="form-group">
 		<label for="kazeiUchiwake">課税価格内訳</label>
@@ -75,7 +75,7 @@
 	</div>
 	<div class="form-group">
 		<label for="toumenGoukei">登録免許税合計</label>
-		<input type="text" name="toumenGoukei" class="form-control"/>
+		<input type="number" name="toumenGoukei" class="form-control"/>
 	</div>
 	<div class="form-group">
 		<label for="toumenUchiwake">登録免許税内訳</label>
@@ -89,7 +89,7 @@
 		<div class="shinseiBukken_hyouji">
 			<div class="form-group">
 				<label for="shinseiBukken">物件</label>
-				<select id="shinseiBukken" name="shinseiBukken" class="select2 form-control">
+				<select id="shinseiBukken" name="shinseiBukken" class="form-control">
 					<option th:selected="${''}"/>
 					<option th:each="bukken : ${shinseiBukken}" th:value="${bukken.id}"
 					th:text="|${bukken.getChibanKuikiJyoho()}${bukken.getChibanKaokubangoJyoho()}(${bukken.getBukkenSyubetsu()})|" />

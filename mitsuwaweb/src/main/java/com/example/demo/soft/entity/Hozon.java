@@ -60,7 +60,7 @@ public class Hozon extends Shinseisyo {
 	/**
 	 * 課税価格
 	 */
-	private long kazeiGoukei;
+	private Long kazeiGoukei;
 
 	/**
 	 * 課税価格内訳
@@ -70,7 +70,7 @@ public class Hozon extends Shinseisyo {
 	/**
 	 * 登録免許税合計
 	 */
-	private long toumenGoukei;
+	private Long toumenGoukei;
 
 	/**
 	 * 登録免許税内訳

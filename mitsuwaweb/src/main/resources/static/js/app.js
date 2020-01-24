@@ -1,9 +1,5 @@
 $(document).ready(function(){
 
-	$(function(){
-		$('.select2').select();
-	});
-
 	//メールアドレス追加
 	$('#mail_new').click(function(){
 		$('.mail_hyouji:last').clone().appendTo('.new_mailwrap');
