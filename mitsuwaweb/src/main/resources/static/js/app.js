@@ -1,5 +1,27 @@
 $(document).ready(function(){
 
+	$('[id^="customer"]').select2({
+        placeholder: "選択して下さい",
+        allowClear: true
+    });
+
+//	$('.select2').select2({
+//		placeholder: '選択してください	',
+//		allowClear: true
+//	}).on('select2:select', function(){
+//		var gid = $(this).val();
+//		var idname = $(this).attr("id");
+//		$.ajax({
+//			type: "GET",
+//			url: "/soft/hozon/addr",
+//			data: {id: gid},
+//			dataType: "text",
+//		})
+//		.done(function(data){
+//			$("#" + idname).next().next().next().html(data);
+//		})
+//	});
+
 	//メールアドレス追加
 	$('#mail_new').click(function(){
 		$('.mail_hyouji:last').clone().appendTo('.new_mailwrap');
@@ -109,6 +131,20 @@ $(document).ready(function(){
 //	});
 
 	//住所追加要素イベント発火
+//	$(document).on("change", '[id^="customer"]', function(){
+//		var idname = $(this).attr("id");
+//		$.ajax({
+//			type: "GET",
+//			url: "/soft/hozon/addr",
+//			data: {id: $("#" + idname).val()},
+//			dataType: "text",
+//			success: function(msg){
+//				$("#" + idname).next().next('select').html(msg);
+//			}
+//		});
+//	});
+
+	//住所追加要素イベント発火
 	$(document).on("change", '[id^="customer"]', function(){
 		var idname = $(this).attr("id");
 		$.ajax({
@@ -116,9 +152,12 @@ $(document).ready(function(){
 			url: "/soft/hozon/addr",
 			data: {id: $("#" + idname).val()},
 			dataType: "text",
-			success: function(msg){
-				$("#" + idname).next().next('select').html(msg);
-			}
+//			success: function(msg){
+//				$("#" + idname).next().next('select').html(msg);
+//			}
+		})
+		.done(function(data){
+			$("#" + idname).next().next().next().html(data);
 		});
 	});
 
@@ -130,27 +169,50 @@ $(document).ready(function(){
 			url: "/soft/hozon/daihyo",
 			data: {id: $("#" + idname).val()},
 			dataType: "text",
-			success: function(msg){
-				$("#" + idname).next().next().next().next('select').html(msg);
-			}
+//			success: function(msg){
+//				$("#" + idname).next().next().next().next('select').html(msg);
+//			}
+		})
+//		console.log($("#" + idname).next().next().next().next().next().prop("tagName"));
+		.done(function(data){
+			$("#" + idname).next().next().next().next().next().html(data);
+
 		});
 	});
 
 
 	//権利者ajax追加
-	$('#kenrisya_ajax_add').click(function(){
+//	$('#kenrisya_ajax_add').click(function(){
+//		var cnt = Math.floor(Math.random() * 100);
+//		var newcid = "customer" + cnt
+//		$('.kenrisya_hyouji:first').clone().appendTo('.kenrisya_wrap').
+//		find("#customer").attr("id", newcid);
+//		$("#" + newcid).next().next("select").attr("id", "addr" + cnt);
+//		$("#" + newcid).next().next().next().next("select").attr("id", "daihyo" + cnt);
+//
+//	});
+
+	$(document).on("click", "#kenrisya_ajax_add", function() {
 		var cnt = Math.floor(Math.random() * 100);
 		var newcid = "customer" + cnt
 		$('.kenrisya_hyouji:first').clone().appendTo('.kenrisya_wrap').
 		find("#customer").attr("id", newcid);
 		$("#" + newcid).next().next("select").attr("id", "addr" + cnt);
 		$("#" + newcid).next().next().next().next("select").attr("id", "daihyo" + cnt);
-	});
+
+		$('[id^="customer"]').select2({
+            placeholder: "選択してください",
+            allowClear: true
+        });
+
+    });
+
 
 	//権利者削除
 	$('#kenrisya_ajax_remove').click(function(){
 		if($('.kenrisya_hyouji').length != 1){
 			$('.kenrisya_hyouji:last-child').remove();
+
 		}
 	});
 });
