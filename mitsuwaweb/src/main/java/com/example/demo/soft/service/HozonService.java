@@ -20,6 +20,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.example.demo.entity.customer.Company;
 import com.example.demo.entity.customer.Person;
 import com.example.demo.soft.ShinseiXmlHelper;
 import com.example.demo.soft.ZipCreate;
@@ -108,6 +109,11 @@ public class HozonService {
 				Element daihyosyashimeiElement = docList.get(0).createElement("代表者氏名");
 				daihyosyashimeiElement.setTextContent(kenrisya.getDaihyo().split("/")[1]);
 				daitoriElement.appendChild(daihyosyashimeiElement);
+
+				Company company = (Company) kenrisya.getCustomer();
+				Element kaisyahoujinnbangoElement = docList.get(0).createElement("会社法人等番号");
+				kaisyahoujinnbangoElement.setTextContent(company.getHoujinbango());
+				meigininElement.appendChild(kaisyahoujinnbangoElement);
 			}
 
 			Element shikibetsuhakkoElement = docList.get(0).createElement("識別情報発行区分");

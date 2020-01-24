@@ -190,7 +190,7 @@ public class HozonController {
 			@ModelAttribute("Hozon") Hozon hozon,
 			@RequestParam(name="mochibun", defaultValue=" ") String[] mochibuns,
 			@RequestParam("customer") Integer[] customers,
-			@RequestParam("shinseiBukken") Integer[] bukkens,
+			@RequestParam(name = "shinseiBukken", required = false) Integer[] bukkens,
 			@RequestParam("tokisyo") Integer tokisyo,
 			@RequestParam("addr") String[] addrs,
 			@RequestParam("daihyo") String[] daihyos,
@@ -232,6 +232,7 @@ public class HozonController {
 			bukkenList.add(bukken);
 		}
 		hozon.setShinseiBukkenList(bukkenList);
+
 		hozonService.saveHozon(hozon);
 
 		return new ModelAndView("redirect:/soft/hozon/{id}");

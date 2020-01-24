@@ -207,7 +207,6 @@ $(document).ready(function(){
 
     });
 
-
 	//権利者削除
 	$('#kenrisya_ajax_remove').click(function(){
 		if($('.kenrisya_hyouji').length != 1){

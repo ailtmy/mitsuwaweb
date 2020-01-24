@@ -34,8 +34,8 @@
 		<td th:text="${hozon.id}"></td>
 		<td><a th:href="@{/soft/hozon/{id}(id=${hozon.id})}" th:text="${hozon.kenmei}"></a></td>
 		<td th:text="${hozon.date}"></td>
-		<td th:text="${hozon.tokisyo.tokisyoName}"></td>
-		<td th:text="${hozon.tokisyo.tokisyoCode}"></td>
+		<td th:text="${hozon.getTokisyo().getTokisyoName()}"></td>
+		<td th:text="${hozon.getTokisyo().getTokisyoCode()}"></td>
 		<td >
 			<ul th:each="bukken : ${hozon.shinseiBukkenList}" class="list-group">
 				<li th:text="|${bukken.getChibanKuikiJyoho()}${bukken.getChibanKaokubangoJyoho()}|" class="list-group-item"></li>
