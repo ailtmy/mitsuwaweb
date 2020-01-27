@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -36,7 +35,7 @@ public class Hozon extends Shinseisyo {
 	 * 所有者
 	 */
 	@OneToMany
-	@JoinColumn(name = "Shinsei_id")
+	@JoinColumn(name = "shinsei_id")
 	private List<Kenrisya> syoyusya;
 
 	/**
@@ -86,7 +85,7 @@ public class Hozon extends Shinseisyo {
 	/**
 	 * 対象物件
 	 */
-	@ManyToMany
-	private List<ShinseiBukken> shinseiBukkenList;
+//	@ManyToMany
+//	private List<ShinseiBukken> shinseiBukkenList;
 
 }

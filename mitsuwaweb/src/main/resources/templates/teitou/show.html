@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="UTF-8">
+<title th:text="|${title}|"></title>
+</head>
+<body >
+<div class="container-fluid" th:fragment="teitou_contents">
+<h4 th:text="${title}"></h4>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light mt-2 mb-4">
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/soft/teitou/{id}/edit(id=${teitou.id})}" th:text="編集"></a>
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/soft/teitou/{id}/saimusyanew(id=${teitou.id})}" th:text="債務者者追加"></a>
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/soft/teitou/{id}/kenrisyanew(id=${teitou.id})}" th:text="抵当権者追加"></a>
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/soft/teitou/{id}/gimusyanew(id=${teitou.id})}" th:text="設定者追加"></a>
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/soft/teitou/{id}/bukkennew(id=${teitou.id})}" th:text="物件追加"></a>
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/soft/teitou/{id}/create(id=${teitou.id})}" th:text="特例申請ファイル作成"></a>
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/soft/teitou/{id}/qrcreate(id=${teitou.id})}" th:text="QR申請ファイル作成"></a>
+	<form th:action="@{/soft/teitou/{id}/delete(id=${teitou.id})}" method="post">
+		<input class="btn btn-sm btn-danger text-white mr-4" type="submit" value="削除"
+		onclick="return confirm('削除します。よろしいですか？')" />
+	</form>
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/soft/teitou}" >戻る</a>
+</nav>
+<div th:if="${createMessage}">
+	<p th:text="${createMessage}" class="bg-info text-light"></p>
+</div>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-10">
+			<table th:object="${teitou}" class="table table-hover">
+				<tr>
+					<th scope="row">ＩＤ</th>
+					<td th:text="*{id}"></td>
+				</tr>
+				<tr>
+					<th scope="row">件名</th>
+					<td th:text="*{kenmei}"></td>
+				</tr>
+				<tr>
+					<th scope="row">登記の目的</th>
+					<td th:text="*{mokuteki}"></td>
+				</tr>
+				<tr>
+					<th scope="row">原因</th>
+					<td th:text="*{genin}"></td>
+				</tr>
+				<tr>
+					<th scope="row">債権額</th>
+					<td th:text="*{saikengaku}"></td>
+				</tr>
+				<tr>
+					<th scope="row">利息</th>
+					<td th:text="*{risoku}"></td>
+				</tr>
+				<tr>
+					<th scope="row">損害金</th>
+					<td th:text="*{songaikin}"></td>
+				</tr>
+				<tr>
+					<th scope="row">債務者</th>
+					<td>
+						<div th:each="saimusya : *{saimusyaList}">
+							<p th:text="${saimusya.getAddr()}"></p>
+							<p th:text="${saimusya.getCustomer().getName()}"></p>
+							<form
+								th:action="@{/soft/teitou/{id}/saimusyadelete/{sid}(id=${teitou.getId()},kid=${saimusya.getId()})}"
+								 method="post" class="col-sm-2 m-2">
+								<input class="btn btn-sm btn-danger text-white mr-2" type="submit" value="債務者削除"
+									onclick="return confirm('削除します。よろしいですか？')"/>
+							</form>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">抵当権者</th>
+					<td>
+						<div th:each="teitoukensya : *{teitoukensyaList}">
+							<p th:text="${teitoukensya.getAddr()}"></p>
+							<p th:text="|${teitoukensya.getMochibun()}　${teitoukensya.getCustomer().getName()}|"></p>
+							<p th:text="${teitoukensya.getDaihyo()}"></p>
+							<form
+								th:action="@{/soft/teitou/{id}/kenrisyadelete/{sid}(id=${teitou.getId()},kid=${teitoukensya.getId()})}"
+								 method="post" class="col-sm-2 m-2">
+								<input class="btn btn-sm btn-danger text-white mr-2" type="submit" value="抵当権者削除"
+									onclick="return confirm('削除します。よろしいですか？')"/>
+							</form>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">設定者</th>
+					<td>
+						<div th:each="setteisya : *{gimusyaList}">
+							<p th:text="${setteisya.getAddr()}"></p>
+							<p th:text="${setteisya.getCustomer().getName()}"></p>
+							<p th:text="${setteisya.getDaihyo()}"></p>
+							<form
+								th:action="@{/soft/teitou/{id}/gimusyadelete/{kid}(id=${teitou.getId()},kid=${setteisya.getId()})}"
+								 method="post" class="col-sm-2 m-2">
+								<input class="btn btn-sm btn-danger text-white mr-2" type="submit" value="設定者削除"
+									onclick="return confirm('削除します。よろしいですか？')"/>
+							</form>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">添付書類</th>
+					<td th:if="*{tempsyoruis}">
+						<div th:each="syorui : *{tempsyoruis.getSyoruis()}">
+							<p th:text="${syorui}"></p>
+						</div>
+					</td>
+				<tr>
+					<th scope="row">申請年月日</th>
+					<td th:text="*{date}"></td>
+				</tr>
+				<tr th:if="*{tokisyo}">
+					<th scope="row">登記所</th>
+					<td th:text="|*{tokisyo.getTokisyoName()}(*{tokisyo.getTokisyoCode()})|"></td>
+				</tr>
+				<tr>
+					<th scope="row">課税価格合計</th>
+					<td th:text="*{kazeiGoukei}"></td>
+				</tr>
+
+				<tr>
+					<th scope="row">登録免許税合計</th>
+					<td th:text="*{toumenGoukei}"></td>
+				</tr>
+
+				<tr>
+					<th scope="row">減税根拠条文</th>
+					<td th:text="*{jyobun}"></td>
+				</tr>
+				<tr>
+					<th scope="row">物件</th>
+					<td  >
+						<ul th:each="bukken : *{getShinseiBukkenList()}"  class="list-group">
+							<li class="list-group-item">
+								<p th:text="|${bukken.fudosanBango}　${bukken.getBukkenSyubetsu()}　
+								${bukken.getChibanKuikiJyoho()}　${bukken.getChibanKaokubangoJyoho()}(${bukken.getBukkenKubun()})|"></p>
+								<form
+								th:action="@{/soft/teitou/{sid}/bukkendelete/{bid}(sid=${teitou.id},bid=${bukken.id})}"
+								 method="post" class="col-sm-2 m-2">
+								<input class="btn btn-sm btn-danger text-white mr-2" type="submit" value="物件削除"
+									onclick="return confirm('削除します。よろしいですか？')"/>
+							</form>
+							</li>
+						</ul>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="co-sm-2">
+
+		</div>
+	</div>
+</div>
+</div>

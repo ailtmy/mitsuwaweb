@@ -47,7 +47,6 @@ public class HozonController {
 	TokisyoService tokisyoService;
 
 	@Autowired
-
 	CustomerService customerService;
 
 	@Autowired
@@ -141,7 +140,7 @@ public class HozonController {
 		hozon.setShinseiBukkenList(bukkenList);
 
 		hozonService.saveHozon(hozon);
-		return new ModelAndView("redirect:/soft/hozon");
+		return new ModelAndView("redirect:/soft/hozon/" + hozon.getId());
 	}
 
 	/**

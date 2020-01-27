@@ -17,7 +17,7 @@ import lombok.Setter;
 @Table
 @Getter
 @Setter
-public class Kenrisya {
+public class Gimusya {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,14 +27,11 @@ public class Kenrisya {
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
 
-	private String mochibun;
-
 	private String addr;
 
 	private String daihyo;
 
-	private String shiten;
+	private String shikibetsuUmu;
 
-
-
+	private String shikibetsuRiyu;
 }

@@ -59,7 +59,7 @@
 				</tr>
 				<tr>
 					<th scope="row">添付書類</th>
-					<td>
+					<td th:if="*{tempsyorui}">
 						<div th:each="syorui : *{tempsyorui.syoruis}">
 							<p th:text="${syorui}"></p>
 						</div>
@@ -68,7 +68,7 @@
 					<th scope="row">申請年月日</th>
 					<td th:text="*{date}"></td>
 				</tr>
-				<tr>
+				<tr th:if="*{tokisyo}">
 					<th scope="row">登記所</th>
 					<td th:text="|*{tokisyo.tokisyoName}(*{tokisyo.tokisyoCode})|"></td>
 				</tr>
