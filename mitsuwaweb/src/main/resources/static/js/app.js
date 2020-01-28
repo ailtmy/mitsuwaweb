@@ -5,6 +5,13 @@ $(document).ready(function(){
         allowClear: true
     });
 
+	$('select[id^="gimusya"]').select2({
+		placeholder: "選択して下さい",
+		allowClear: true
+	});
+
+
+
 //	$('.select2').select2({
 //		placeholder: '選択してください	',
 //		allowClear: true
@@ -144,7 +151,7 @@ $(document).ready(function(){
 //		});
 //	});
 
-	//住所追加要素イベント発火
+	//権利者住所追加要素イベント発火
 	$(document).on("change", '[id^="customer"]', function(){
 		var idname = $(this).attr("id");
 		$.ajax({
@@ -157,12 +164,48 @@ $(document).ready(function(){
 //			}
 		})
 		.done(function(data){
-			$("#" + idname).next().next().next().html(data);
+			$("#" + idname).next().next().next("select").html(data);
 		});
 	});
 
-	//代表者追加要素イベント発火
+	//義務者住所追加要素イベント発火
+	$(document).on("change", '[id^="gimusya"]', function(){
+		var idname = $(this).attr("id");
+		$.ajax({
+			type: "GET",
+			url: "/soft/hozon/addr",
+			data: {id: $("#" + idname).val()},
+			dataType: "text",
+//			success: function(msg){
+//				$("#" + idname).next().next('select').html(msg);
+//			}
+		})
+		.done(function(data){
+			$("#" + idname).next().next().next('select').html(data);
+		});
+	});
+
+	//権利者代表者追加要素イベント発火
 	$(document).on("change", '[id^="customer"]', function(){
+		var idname = $(this).attr("id");
+		$.ajax({
+			type: "GET",
+			url: "/soft/hozon/daihyo",
+			data: {id: $("#" + idname).val()},
+			dataType: "text",
+//			success: function(msg){
+//				$("#" + idname).next().next().next().next('select').html(msg);
+//			}
+		})
+//		console.log($("#" + idname).next().next().next().next().next().prop("tagName"));
+		.done(function(data){
+			$("#" + idname).next().next().next().next().next().html(data);
+
+		});
+	});
+
+	//義務者代表者追加要素イベント発火
+	$(document).on("change", '[id^="gimusya"]', function(){
 		var idname = $(this).attr("id");
 		$.ajax({
 			type: "GET",
@@ -211,6 +254,29 @@ $(document).ready(function(){
 	$('#kenrisya_ajax_remove').click(function(){
 		if($('.kenrisya_hyouji').length != 1){
 			$('.kenrisya_hyouji:last-child').remove();
+
+		}
+	});
+
+	$(document).on("click", "#gimu_ajax_add", function() {
+		var cnt = Math.floor(Math.random() * 100);
+		var newcid = "gimusya" + cnt
+		$('.gimusya_hyouji:first').clone().appendTo('.gimusya_wrap').
+		find("#gimusya").attr("id", newcid);
+		$("#" + newcid).next().next("select").attr("id", "addr" + cnt);
+		$("#" + newcid).next().next().next().next("select").attr("id", "daihyo" + cnt);
+
+		$('[id^="gimusya"]').select2({
+			placeholder: "選択してください",
+			allowClear: true
+		});
+
+	});
+
+	//権利者削除
+	$('#gimu_ajax_remove').click(function(){
+		if($('.gimusya_hyouji').length != 1){
+			$('.gimusya_hyouji:last-child').remove();
 
 		}
 	});
