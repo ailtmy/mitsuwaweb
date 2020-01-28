@@ -5,7 +5,6 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -38,11 +37,11 @@ public class Hozon extends Shinseisyo {
 	@JoinColumn(name = "shinsei_id")
 	private List<Kenrisya> syoyusya;
 
-	/**
-	 * 添付書類
-	 */
-	@OneToOne
-	private Tempsyorui tempsyorui;
+//	/**
+//	 * 添付書類
+//	 */
+//	@OneToOne
+//	private Tempsyorui tempsyorui;
 
 //	/**
 //	 * 申請年月日

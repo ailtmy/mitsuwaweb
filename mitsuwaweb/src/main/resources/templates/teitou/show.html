@@ -66,7 +66,7 @@
 							<p th:text="${saimusya.getAddr()}"></p>
 							<p th:text="${saimusya.getCustomer().getName()}"></p>
 							<form
-								th:action="@{/soft/teitou/{id}/saimusyadelete/{sid}(id=${teitou.getId()},kid=${saimusya.getId()})}"
+								th:action="@{/soft/teitou/{id}/saimusyadelete/{sid}(id=${teitou.getId()},sid=${saimusya.getId()})}"
 								 method="post" class="col-sm-2 m-2">
 								<input class="btn btn-sm btn-danger text-white mr-2" type="submit" value="債務者削除"
 									onclick="return confirm('削除します。よろしいですか？')"/>
@@ -82,7 +82,7 @@
 							<p th:text="|${teitoukensya.getMochibun()}　${teitoukensya.getCustomer().getName()}|"></p>
 							<p th:text="${teitoukensya.getDaihyo()}"></p>
 							<form
-								th:action="@{/soft/teitou/{id}/kenrisyadelete/{sid}(id=${teitou.getId()},kid=${teitoukensya.getId()})}"
+								th:action="@{/soft/teitou/{id}/kenrisyadelete/{sid}(id=${teitou.getId()},sid=${teitoukensya.getId()})}"
 								 method="post" class="col-sm-2 m-2">
 								<input class="btn btn-sm btn-danger text-white mr-2" type="submit" value="抵当権者削除"
 									onclick="return confirm('削除します。よろしいですか？')"/>
@@ -108,8 +108,8 @@
 				</tr>
 				<tr>
 					<th scope="row">添付書類</th>
-					<td th:if="*{tempsyoruis}">
-						<div th:each="syorui : *{tempsyoruis.getSyoruis()}">
+					<td th:if="*{tempsyorui}">
+						<div th:each="syorui : *{tempsyorui.getSyoruis()}">
 							<p th:text="${syorui}"></p>
 						</div>
 					</td>

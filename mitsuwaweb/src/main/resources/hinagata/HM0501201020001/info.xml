@@ -6,11 +6,11 @@
 		<ShutokuKobunshoList />
 		<NofuJohoList />
 		<TempuFileList />
-		<TetsuzukiID>HM0501200320001</TetsuzukiID>
+		<TetsuzukiID>HM0501201020001</TetsuzukiID>
 		<ShinseiBango />
 		<ShokaiShinseiBango />
 		<ShoriJokyoKubun>1</ShoriJokyoKubun>
-		<Kemmei>未失効照会</Kemmei>
+		<Kemmei></Kemmei>
 		<SaishuKoshinNichiji>2019/12/10 11:04:58</SaishuKoshinNichiji>
 		<TempuFileUmuFlag>0</TempuFileUmuFlag>
 		<ShomeiUmuFlag>0</ShomeiUmuFlag>
@@ -22,8 +22,8 @@
 		<HoseiNoOshiraseUmuFlag>0</HoseiNoOshiraseUmuFlag>
 		<KobunshoUmuFlag>0</KobunshoUmuFlag>
 		<NofuJohoUmuFlag>0</NofuJohoUmuFlag>
-		<ShinseisakiTokishoCode>1200</ShinseisakiTokishoCode>
-		<ShinseisakiTokishoMeisho>大阪法務局</ShinseisakiTokishoMeisho>
+		<ShinseisakiTokishoCode></ShinseisakiTokishoCode>
+		<ShinseisakiTokishoMeisho></ShinseisakiTokishoMeisho>
 		<UketsukeTokisho />
 		<SoshinshaID />
 		<SoshinshaMei />

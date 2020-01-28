@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <rdf:RDF xmlns:rdf="http://www.w3c.org/rdf">
-	<DocumentResource about="HM0501201020001.xml" Id="main">
+	<DocumentResource Id="main" about="HM0501201020001.xml">
 		<DocumentType>main</DocumentType>
 		<Title>HM0501201020001.xml</Title>
 	</DocumentResource>
@@ -10,12 +10,12 @@
 				<手続ID>HM0501201020001</手続ID>
 				<手続名称>登記申請書（権利に関する登記）</手続名称>
 				<手続様式名称>[不動産]登記申請書（権利に関する登記）(9)抵当権の設定（双方代理用）</手続様式名称>
-				<申請番号 />
-				<初回申請番号></初回申請番号>
+				<申請番号/>
+				<初回申請番号/>
 				<到達時刻>
 					<Resource>
-						<Date.ISO8601 />
-						<Date.JISX0301 />
+						<Date.ISO8601/>
+						<Date.JISX0301/>
 					</Resource>
 				</到達時刻>
 				<テンプレートバージョン>8</テンプレートバージョン>
@@ -29,20 +29,20 @@
 				<スタイルシートファイル名称>HM0501201020001.xsl</スタイルシートファイル名称>
 			</Resource>
 		</申請書属性情報>
-		<署名情報 />
+		<署名情報/>
 		<手数料情報>
 			<Resource>
 				<納付種別>前納</納付種別>
 				<氏名フリガナ>シホウシヨシホウジンミツワゴウドウジムシヨ</氏名フリガナ>
 				<納付情報>
 					<Resource>
-						<手数料額></手数料額>
+						<手数料額/>
 						<申請案件情報>
 							<Resource>
 								<申請案件 ID="">
 									<Resource>
-										<略科目コード></略科目コード>
-										<手数料></手数料>
+										<略科目コード/>
+										<手数料/>
 									</Resource>
 								</申請案件>
 							</Resource>

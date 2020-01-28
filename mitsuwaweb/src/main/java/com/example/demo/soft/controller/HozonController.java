@@ -223,16 +223,16 @@ public class HozonController {
 				syoyusyaList.add(kenrisya);
 			}
 		}
-		hozon.setSyoyusya(syoyusyaList);
+		edithozon.setSyoyusya(syoyusyaList);
 
 		List<ShinseiBukken> bukkenList = new ArrayList<ShinseiBukken>();
 		for(Integer bukkenid : bukkens) {
 			ShinseiBukken bukken = bukkenService.find(bukkenid);
 			bukkenList.add(bukken);
 		}
-		hozon.setShinseiBukkenList(bukkenList);
+		edithozon.setShinseiBukkenList(bukkenList);
 
-		hozonService.saveHozon(hozon);
+		hozonService.saveHozon(edithozon);
 
 		return new ModelAndView("redirect:/soft/hozon/{id}");
 	}

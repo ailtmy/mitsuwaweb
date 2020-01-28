@@ -32,6 +32,12 @@ public class Shinseisyo extends Audit {
 	private String kenmei;
 
 	/**
+	 * 添付書類
+	 */
+	@OneToOne
+	private Tempsyorui tempsyorui;
+
+	/**
 	 * 申請年月日
 	 */
 	private String date;

@@ -5,7 +5,6 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -64,12 +63,6 @@ public class Teitouken extends Shinseisyo {
 	private List<Gimusya> gimusyaList;
 
 	/**
-	 * 添付書類
-	 */
-	@OneToOne
-	private Tempsyorui tempsyoruis;
-
-	/**
 	 * 課税価格
 	 */
 	private Long kazeiGoukei;
@@ -83,11 +76,6 @@ public class Teitouken extends Shinseisyo {
 	 * 減税根拠条文
 	 */
 	private String jyobun;
-
-	/**
-	 * 対象物件
-	 */
-
 
 
 

@@ -219,7 +219,6 @@ public class TeitoukenController {
 	public ModelAndView edit(
 			@PathVariable Integer id,
 			@ModelAttribute Teitouken teitouken,
-			@RequestParam("tokisyo") Integer tokisyo,
 			ModelAndView mav
 			) {
 
@@ -238,9 +237,79 @@ public class TeitoukenController {
 	public ModelAndView update(
 			@PathVariable Integer id,
 			@ModelAttribute("Teitouken") Teitouken teitouken,
-			@RequestParam("tokisyo") Integer tokisyo,
+			@RequestParam("shinseiBukken") Integer[] bukkens,
+			@RequestParam("saimusya") Integer[] saimusyas,
+			@RequestParam(name = "saimusyaaddr", defaultValue=" ") String[] saimusyaaddrs,
+			@RequestParam("customer") Integer[] customers,
+			@RequestParam(name="mochibun", defaultValue=" ") String[] mochibuns,
+			@RequestParam(name = "addr", defaultValue=" ") String[] addrs,
+			@RequestParam(name = "daihyo", defaultValue=" ") String[] daihyos,
+			@RequestParam(name = "shiten", defaultValue=" ") String[] shitens,
+			@RequestParam("gimusya") Integer[] gimusyas,
+			@RequestParam(name = "gimusyaaddr", defaultValue=" ") String[] gimusyaaddrs,
+			@RequestParam(name = "gimusyadaihyo", defaultValue=" ") String[] gimusyadaihyos,
 			ModelAndView mav
 			) {
+
+		Teitouken eteitou = teitouService.find(id);
+		eteitou.setKenmei(teitouken.getKenmei());
+		eteitou.setMokuteki(teitouken.getMokuteki());
+		eteitou.setGenin(teitouken.getGenin());
+		eteitou.setSaikengaku(teitouken.getSaikengaku());
+		eteitou.setRisoku(teitouken.getRisoku());
+		eteitou.setSongaikin(teitouken.getSongaikin());
+		eteitou.setTempsyorui(teitouken.getTempsyorui());
+		eteitou.setDate(teitouken.getDate());
+		eteitou.setTokisyo(teitouken.getTokisyo());
+		eteitou.setKazeiGoukei(teitouken.getKazeiGoukei());
+		eteitou.setToumenGoukei(teitouken.getToumenGoukei());
+		eteitou.setJyobun(teitouken.getJyobun());
+
+		List<Saimusya> saimusyaList = eteitou.getSaimusyaList();
+		if(!saimusyaList.isEmpty()) {
+			for(int i = 0; i < saimusyas.length; i++) {
+				Saimusya saimusya = saimusyaList.get(i);
+				Customer customer = customerService.find(saimusyas[i]);
+				saimusya.setCustomer(customer);
+				saimusya.setAddr(saimusyaaddrs[i]);
+				saimusyaService.saveSaimusya(saimusya);
+				saimusyaList.add(saimusya);
+			}
+		}
+		eteitou.setSaimusyaList(saimusyaList);
+
+		List<Kenrisya> teitoukensyaList = eteitou.getTeitoukensyaList();
+		if(!teitoukensyaList.isEmpty()) {
+			for(int i = 0; i < customers.length; i++) {
+				Kenrisya teitoukensya = teitoukensyaList.get(i);
+				Customer customer = customerService.find(customers[i]);
+				teitoukensya.setCustomer(customer);
+				teitoukensya.setAddr(addrs[i]);
+				teitoukensya.setDaihyo(daihyos[i]);
+				if(mochibuns[i] != null || !(mochibuns[i].isEmpty())) {
+					teitoukensya.setMochibun(mochibuns[i]);
+				}
+				if(shitens[i] != null || !(shitens[i].isEmpty())) {
+					teitoukensya.setShiten(shitens[i]);
+				}
+				kenrisyaService.saveKenrisya(teitoukensya);
+				teitoukensyaList.add(teitoukensya);
+			}
+		}
+		eteitou.setTeitoukensyaList(teitoukensyaList);
+
+		List<Gimusya> gimusyaList = gimusyaService.setGimusyaList(eteitou.getGimusyaList(),
+				gimusyas, gimusyaaddrs, gimusyadaihyos);
+		eteitou.setGimusyaList(gimusyaList);
+
+		List<ShinseiBukken> bukkenList = new ArrayList<ShinseiBukken>();
+		for(Integer bukkenid : bukkens) {
+			ShinseiBukken bukken = bukkenService.find(bukkenid);
+			bukkenList.add(bukken);
+		}
+		eteitou.setShinseiBukkenList(bukkenList);
+
+		teitouService.saveTeitouken(eteitou);
 
 		return new ModelAndView("redirect:/soft/teitou/{id}");
 	}

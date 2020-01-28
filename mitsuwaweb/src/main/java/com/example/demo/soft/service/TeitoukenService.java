@@ -78,7 +78,11 @@ public class TeitoukenService {
 		ShinseiXmlHelper.elementTextset(teitouElement, "登記の目的", teitouken.getMokuteki(), 0);
 		ShinseiXmlHelper.elementTextset(teitouElement, "原因", teitouken.getGenin(), 0);
 		ShinseiXmlHelper.elementTextset(teitouElement, "債権額", teitouken.getSaikengaku(), 0);
-		ShinseiXmlHelper.elementTextset(teitouElement, "利息", teitouken.getRisoku(), 0);
+		if(teitouken.getRisoku().isEmpty() || teitouken.getRisoku() == null) {
+
+		} else {
+			ShinseiXmlHelper.elementTextset(teitouElement, "利息", teitouken.getRisoku(), 0);
+		}
 		ShinseiXmlHelper.elementTextset(teitouElement, "損害金", teitouken.getSongaikin(), 0);
 
 		NodeList shinseijiko = docList.get(0).getElementsByTagName("申請事項");
@@ -195,19 +199,19 @@ public class TeitoukenService {
 				Element kaisyahoujinnbangoElement = docList.get(0).createElement("会社法人等番号");
 				kaisyahoujinnbangoElement.setTextContent(company.getHoujinbango());
 				meigininElement.appendChild(kaisyahoujinnbangoElement);
-
-				Element shikibetsuUmuElement = docList.get(0).createElement("識別情報提供区分");
-				shikibetsuUmuElement.setTextContent(gimusya.getShikibetsuUmu());
-				meigininElement.appendChild(shikibetsuUmuElement);
-
-				Element shikibetsuRiyuElement = docList.get(0).createElement("識別情報未提供理由");
-				shikibetsuRiyuElement.setTextContent(gimusya.getShikibetsuRiyu());
-				meigininElement.appendChild(shikibetsuRiyuElement);
 			}
+
+			Element shikibetsuUmuElement = docList.get(0).createElement("識別情報提供区分");
+			shikibetsuUmuElement.setTextContent(gimusya.getShikibetsuUmu());
+			meigininElement.appendChild(shikibetsuUmuElement);
+
+			Element shikibetsuRiyuElement = docList.get(0).createElement("識別情報未提供理由");
+			shikibetsuRiyuElement.setTextContent(gimusya.getShikibetsuRiyu());
+			meigininElement.appendChild(shikibetsuRiyuElement);
 		}
 
 		String tempsyorui = "";
-		for(String syorui : teitouken.getTempsyoruis().getSyoruis()) {
+		for(String syorui : teitouken.getTempsyorui().getSyoruis()) {
 			tempsyorui += syorui + "\n";
 		}
 		ShinseiXmlHelper.elementTextset(teitouElement, "添付情報", tempsyorui, 0);
