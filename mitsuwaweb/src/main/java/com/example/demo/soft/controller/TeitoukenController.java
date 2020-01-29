@@ -123,7 +123,9 @@ public class TeitoukenController {
 			@RequestParam(name = "shiten", defaultValue=" ") String[] shitens,
 			@RequestParam("gimusya") Integer[] gimusyas,
 			@RequestParam(name = "gimusyaaddr", defaultValue=" ") String[] gimusyaaddrs,
-			@RequestParam(name = "gimusyadaihyo", defaultValue=" ") String[] gimusyadaihyos
+			@RequestParam(name = "gimusyadaihyo", defaultValue=" ") String[] gimusyadaihyos,
+			@RequestParam(name = "shikibetsuumu", defaultValue=" ") String[] shikibetsuumus,
+			@RequestParam(name = "shikibetsuriyu", defaultValue=" ") String[] shikibetsuriyus
 			) {
 
 		List<Saimusya> saimusyaList = new ArrayList<Saimusya>();
@@ -139,42 +141,13 @@ public class TeitoukenController {
 		}
 		teitouken.setSaimusyaList(saimusyaList);
 
-		List<Kenrisya> kenrisyaList = new ArrayList<Kenrisya>();
-		for(int i = 0; i < customers.length; i++) {
-			Kenrisya kenrisya = new Kenrisya();
-			Customer kenrisyaCustomer = customerService.find(customers[i]);
-			kenrisya.setCustomer(kenrisyaCustomer);
-			if(addrs[i] != null || !(addrs[i].isEmpty())) {
-				kenrisya.setAddr(addrs[i]);
-			}
-			if(daihyos[i] != null || !(daihyos[i].isEmpty())) {
-				kenrisya.setDaihyo(daihyos[i]);
-			}
-			if(mochibuns[i] != null || !(mochibuns[i].isEmpty())) {
-				kenrisya.setMochibun(mochibuns[i]);
-			}
-			if(shitens[i] != null || !(shitens[i].isEmpty())) {
-				kenrisya.setShiten(shitens[i]);
-			}
-			kenrisyaService.saveKenrisya(kenrisya);
-			kenrisyaList.add(kenrisya);
-		}
+
+		List<Kenrisya> kenrisyaList = kenrisyaService.newTeitouKenrisya(new ArrayList<Kenrisya>(), customers, mochibuns, addrs,
+				daihyos, shitens);
 		teitouken.setTeitoukensyaList(kenrisyaList);
 
-		List<Gimusya> gimusyaList = new ArrayList<Gimusya>();
-		for(int i = 0; i < gimusyas.length; i++) {
-			Gimusya gimusya = new Gimusya();
-			Customer gimusyaCustomer = customerService.find(gimusyas[i]);
-			gimusya.setCustomer(gimusyaCustomer);
-			if(gimusyaaddrs[i] != null || !(gimusyaaddrs[i].isEmpty())) {
-				gimusya.setAddr(gimusyaaddrs[i]);
-			}
-			if(gimusyadaihyos[i] != null || !(gimusyadaihyos[i].isEmpty())) {
-				gimusya.setDaihyo(gimusyadaihyos[i]);
-			}
-			gimusyaService.saveGimusya(gimusya);
-			gimusyaList.add(gimusya);
-		}
+		List<Gimusya> gimusyaList = gimusyaService.newMassyoGimusyaList(new ArrayList<Gimusya>(), gimusyas,
+				gimusyaaddrs, gimusyadaihyos, shikibetsuumus, shikibetsuriyus);
 		teitouken.setGimusyaList(gimusyaList);
 
 		List<ShinseiBukken> bukkenList = new ArrayList<ShinseiBukken>();
@@ -480,10 +453,10 @@ public class TeitoukenController {
 	public ModelAndView gimusyacreate(
 			@PathVariable Integer id,
 			@RequestParam(name = "addr", required=false) String addr,
-			@RequestParam(name = "mochibun", required=false, defaultValue=" ") String mochibun,
 			@RequestParam(name = "customer") Customer customer,
-			@RequestParam(name = "shiten", required=false) String shiten,
-			@RequestParam(name = "daihyo", required=false) String daihyo
+			@RequestParam(name = "daihyo", required=false) String daihyo,
+			@RequestParam(name = "shikibetsuumu", defaultValue="有り") String shikibetsuumu,
+			@RequestParam(name = "shikibetsuriyu", defaultValue=" ") String shikibetsuriyu
 			) {
 		Teitouken teitouken = teitouService.find(id);
 		List<Gimusya> gimusyas = teitouken.getGimusyaList();
@@ -491,6 +464,10 @@ public class TeitoukenController {
 		gimusya.setAddr(addr);
 		gimusya.setCustomer(customer);
 		gimusya.setDaihyo(daihyo);
+		gimusya.setShikibetsuUmu(shikibetsuumu);
+		if(shikibetsuumu == "無し") {
+			gimusya.setShikibetsuRiyu(shikibetsuriyu);
+		}
 		gimusyaService.saveGimusya(gimusya);
 		gimusyas.add(gimusya);
 		teitouken.setGimusyaList(gimusyas);
@@ -500,7 +477,7 @@ public class TeitoukenController {
 	}
 
 	/**
-	 * 抵当権者者削除
+	 * 設定者削除
 	 * @param id
 	 * @param sid
 	 * @return
@@ -534,7 +511,7 @@ public class TeitoukenController {
 			ModelAndView mav
 			) {
 		mav.setViewName("layout");
-		mav.addObject("contents", "bukken/bukkennew::bukken_contents");
+		mav.addObject("contents", "teitou/bukkennew::bukken_contents");
 		mav.addObject("title", "物件追加");
 		mav.addObject("teitou", teitouService.find(id));
 		mav.addObject("shinseiBukken", bukkenService.allget());

@@ -94,19 +94,19 @@
 					<option th:each="cus : ${customer}" th:value="${cus.id}" th:text="${cus.name}" />
 				</select>
 				<label for="gimusyaaddr">設定者住所</label>
-				<select id="gimusyaaddr" name="gimusyaaddr" class="form-control">
+				<select id="addr" name="gimusyaaddr" class="form-control">
 					<option th:selected="${gimusya.getAddr()}" th:value="${gimusya.getAddr()}" th:text="${gimusya.getAddr()}"/>
 					<option value=""></option>
 				</select>
 				<label for="gimusyadaihyo">設定者代表者</label>
-				<select id="gimusyadaihyo" name="gimusyadaihyo" class="form-control">
+				<select id="daihyo" name="gimusyadaihyo" class="form-control">
 					<option th:selected="${gimusya.getDaihyo()}" th:value="${gimusya.getDaihyo()}" th:text="${gimusya.getDaihyo()}"/>
 					<option value=""></option>
 				</select>
 			</div>
 		</div>
 	</div>
-	<div class="form-group">
+	<div th:if="*{tempsyorui}" class="form-group">
 		<label for="tempsyorui">添付書類</label>
 		<select id="tempsyorui" name="tempsyorui" class="form-control">
 			<option th:selected="*{tempsyorui.id}" th:value=*{tempsyorui.id} th:text="*{tempsyorui.pattern}"/>
@@ -118,7 +118,7 @@
 		<input type="text" name="date" class="form-control" th:field="*{date}"/>
 		<span class="text-danger" th:if="${#fields.hasErrors('date')}" th:errors="*{date}">申請日エラー</span>
 	</div>
-	<div class="form-group" th:classappend="${#fields.hasErrors('tokisyo')}? 'has-error'">
+	<div th:if="*{tokisyo}" class="form-group" th:classappend="${#fields.hasErrors('tokisyo')}? 'has-error'">
 		<label for="tokisyo">登記所</label>
 		<select id="tokisyo" name="tokisyo" class="form-control">
 		<option th:selected="*{tokisyo.id}" th:value="*{tokisyo.id}" th:text="*{tokisyo.tokisyoName}"/>

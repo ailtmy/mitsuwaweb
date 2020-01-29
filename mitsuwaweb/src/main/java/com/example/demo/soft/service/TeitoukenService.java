@@ -134,8 +134,13 @@ public class TeitoukenService {
 			if(kenrisya.getCustomer() instanceof Person) {
 
 			} else {
-				Element shitenElement = docList.get(0).createElement("取");
-				meigininElement.appendChild(shitenElement);
+				if(kenrisya.getShiten().isEmpty() || kenrisya.getShiten() == null) {
+
+				} else {
+					Element shitenElement = docList.get(0).createElement("取");
+					shitenElement.setTextContent(kenrisya.getShiten());
+					meigininElement.appendChild(shitenElement);
+				}
 
 				Element daitoriElement = docList.get(0).createElement("代");
 				meigininElement.appendChild(daitoriElement);

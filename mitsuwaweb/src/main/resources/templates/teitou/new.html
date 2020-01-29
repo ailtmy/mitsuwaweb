@@ -48,15 +48,15 @@
 					<option th:each="cus : ${customer}" th:value="${cus.id}" th:text="${cus.name}" />
 				</select>
 				<label for="saimusyaaddr">債務者住所</label>
-				<select id="saimusyaaddr" name="saimusyaaddr" class="form-control">
+				<select id="addr" name="saimusyaaddr" class="form-control">
 					<option value=""></option>
 				</select>
 			</div>
 		</div>
 	</div>
 	<div class="mb-2">
-		<button type="button" class="btn btn-primary mr-4 mb-4" id="saimusya_ajax_add">債務者追加</button>
-		<button type="button" class="btn btn-danger mr-4 mb-4" id="saimusya_ajax_remove">債務者削除</button>
+		<button type="button" class="btn btn-primary mr-4 mb-4" id="saimu_ajax_add">債務者追加</button>
+		<button type="button" class="btn btn-danger mr-4 mb-4" id="saimu_ajax_remove">債務者削除</button>
 	</div>
 	<div class="kenrisya_wrap">
 		<div class="kenrisya_hyouji">
@@ -96,18 +96,20 @@
 					<option th:each="cus : ${customer}" th:value="${cus.id}" th:text="${cus.name}" />
 				</select>
 				<label for="gimusyaaddr">設定者住所</label>
-				<select id="gimusyaaddr" name="gimusyaaddr" class="form-control">
+				<select id="addr" name="gimusyaaddr" class="form-control">
 					<option value=""></option>
 				</select>
 				<label for="gimusyadaihyo">設定者代表者</label>
-				<select id="gimusyadaihyo" name="gimusyadaihyo" class="form-control">
+				<select id="daihyo" name="gimusyadaihyo" class="form-control">
 					<option value=""></option>
 				</select>
-				<label for="shikibetsuUmu">登記識別情報提供区分</label>
-				<select id="shikibetsuUmu" name="shikibetsuUmu" class="form-control">
+				<label for="shikibetsuumu">登記識別情報提供区分</label>
+				<select id="shikibetsuUmu" name="shikibetsuumu" class="form-control">
 					<option value="有り">有り</option>
 					<option value="無し">無し</option>
 				</select>
+				<label for="shikibetsuriyu">登記識別情報を提供できない理由</label>
+				<input type="text" name="shikibetsuriyu" class="form-control" />
 			</div>
 		</div>
 	</div>

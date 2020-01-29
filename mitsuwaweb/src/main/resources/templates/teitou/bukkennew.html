@@ -8,7 +8,7 @@
 <body >
 <div th:fragment="bukken_contents">
 <h4 th:text="${title}"></h4>
-<form th:action="@{/soft/shinseibukken/{id}/bukkennew(id=${shinseisyo.id})}" method="post" th:object="${shinseisyo}" >
+<form th:action="@{/soft/teitou/{id}/bukkennew(id=${teitou.id})}" method="post" th:object="${teitou}" >
 
 	<div class="kenrisya_wrap">
 		<div class="form-group">

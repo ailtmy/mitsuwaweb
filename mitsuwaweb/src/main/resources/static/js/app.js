@@ -10,24 +10,11 @@ $(document).ready(function(){
 		allowClear: true
 	});
 
+	$('select[id^="saimusya"]').select2({
+		placeholder: "選択して下さい",
+		allowClear: true
+	});
 
-
-//	$('.select2').select2({
-//		placeholder: '選択してください	',
-//		allowClear: true
-//	}).on('select2:select', function(){
-//		var gid = $(this).val();
-//		var idname = $(this).attr("id");
-//		$.ajax({
-//			type: "GET",
-//			url: "/soft/hozon/addr",
-//			data: {id: gid},
-//			dataType: "text",
-//		})
-//		.done(function(data){
-//			$("#" + idname).next().next().next().html(data);
-//		})
-//	});
 
 	//メールアドレス追加
 	$('#mail_new').click(function(){
@@ -121,36 +108,6 @@ $(document).ready(function(){
 		}
 	});
 
-	//住所セレクトオプション追加
-//	$(function(){
-//		$('[id^="customer"]').change(function(){
-//			var idname = $(this).attr("id");
-//			$.ajax({
-//				type: "GET",
-//				url: "/soft/hozon/addr",
-//				data: {id: $("#" + idname).val()},
-//				dataType: "text",
-//				success: function(msg){
-//					$("#" + idname).next('select').html(msg);
-//				}
-//			});
-//		});
-//	});
-
-	//住所追加要素イベント発火
-//	$(document).on("change", '[id^="customer"]', function(){
-//		var idname = $(this).attr("id");
-//		$.ajax({
-//			type: "GET",
-//			url: "/soft/hozon/addr",
-//			data: {id: $("#" + idname).val()},
-//			dataType: "text",
-//			success: function(msg){
-//				$("#" + idname).next().next('select').html(msg);
-//			}
-//		});
-//	});
-
 	//権利者住所追加要素イベント発火
 	$(document).on("change", '[id^="customer"]', function(){
 		var idname = $(this).attr("id");
@@ -159,9 +116,6 @@ $(document).ready(function(){
 			url: "/soft/hozon/addr",
 			data: {id: $("#" + idname).val()},
 			dataType: "text",
-//			success: function(msg){
-//				$("#" + idname).next().next('select').html(msg);
-//			}
 		})
 		.done(function(data){
 			$("#" + idname).next().next().next("select").html(data);
@@ -176,9 +130,20 @@ $(document).ready(function(){
 			url: "/soft/hozon/addr",
 			data: {id: $("#" + idname).val()},
 			dataType: "text",
-//			success: function(msg){
-//				$("#" + idname).next().next('select').html(msg);
-//			}
+		})
+		.done(function(data){
+			$("#" + idname).next().next().next('select').html(data);
+		});
+	});
+
+	//債務者住所追加要素イベント発火
+	$(document).on("change", '[id^="saimusya"]', function(){
+		var idname = $(this).attr("id");
+		$.ajax({
+			type: "GET",
+			url: "/soft/hozon/addr",
+			data: {id: $("#" + idname).val()},
+			dataType: "text",
 		})
 		.done(function(data){
 			$("#" + idname).next().next().next('select').html(data);
@@ -193,11 +158,7 @@ $(document).ready(function(){
 			url: "/soft/hozon/daihyo",
 			data: {id: $("#" + idname).val()},
 			dataType: "text",
-//			success: function(msg){
-//				$("#" + idname).next().next().next().next('select').html(msg);
-//			}
 		})
-//		console.log($("#" + idname).next().next().next().next().next().prop("tagName"));
 		.done(function(data){
 			$("#" + idname).next().next().next().next().next().html(data);
 
@@ -212,29 +173,14 @@ $(document).ready(function(){
 			url: "/soft/hozon/daihyo",
 			data: {id: $("#" + idname).val()},
 			dataType: "text",
-//			success: function(msg){
-//				$("#" + idname).next().next().next().next('select').html(msg);
-//			}
 		})
-//		console.log($("#" + idname).next().next().next().next().next().prop("tagName"));
 		.done(function(data){
 			$("#" + idname).next().next().next().next().next().html(data);
 
 		});
 	});
 
-
-	//権利者ajax追加
-//	$('#kenrisya_ajax_add').click(function(){
-//		var cnt = Math.floor(Math.random() * 100);
-//		var newcid = "customer" + cnt
-//		$('.kenrisya_hyouji:first').clone().appendTo('.kenrisya_wrap').
-//		find("#customer").attr("id", newcid);
-//		$("#" + newcid).next().next("select").attr("id", "addr" + cnt);
-//		$("#" + newcid).next().next().next().next("select").attr("id", "daihyo" + cnt);
-//
-//	});
-
+	//権利者追加
 	$(document).on("click", "#kenrisya_ajax_add", function() {
 		var cnt = Math.floor(Math.random() * 100);
 		var newcid = "customer" + cnt
@@ -258,6 +204,7 @@ $(document).ready(function(){
 		}
 	});
 
+	//義務者追加
 	$(document).on("click", "#gimu_ajax_add", function() {
 		var cnt = Math.floor(Math.random() * 100);
 		var newcid = "gimusya" + cnt
@@ -273,10 +220,33 @@ $(document).ready(function(){
 
 	});
 
-	//権利者削除
+	//義務者削除
 	$('#gimu_ajax_remove').click(function(){
 		if($('.gimusya_hyouji').length != 1){
 			$('.gimusya_hyouji:last-child').remove();
+
+		}
+	});
+
+	//債務者追加
+	$(document).on("click", "#saimu_ajax_add", function() {
+		var cnt = Math.floor(Math.random() * 100);
+		var newcid = "saimusya" + cnt
+		$('.saimusya_hyouji:first').clone().appendTo('.saimusya_wrap').
+		find("#saimusya").attr("id", newcid);
+		$("#" + newcid).next().next("select").attr("id", "addr" + cnt);
+
+		$('[id^="saimusya"]').select2({
+			placeholder: "選択してください",
+			allowClear: true
+		});
+
+	});
+
+	//債務者削除
+	$('#saimu_ajax_remove').click(function(){
+		if($('.saimusya_hyouji').length != 1){
+			$('.saimusya_hyouji:last-child').remove();
 
 		}
 	});
