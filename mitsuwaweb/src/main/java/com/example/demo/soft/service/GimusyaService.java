@@ -48,9 +48,9 @@ public class GimusyaService {
 				}
 			}
 			gimusya.setShikibetsuUmu(shikibetsuumus[i]);
-			if(shikibetsuumus[i] == "無し") {
-				gimusya.setShikibetsuRiyu(shikibetsuriyus[i]);
-			}
+
+			gimusya.setShikibetsuRiyu(shikibetsuriyus[i]);
+
 
 			saveGimusya(gimusya);
 			gimusyaList.add(gimusya);
@@ -59,17 +59,56 @@ public class GimusyaService {
 		return gimusyaList;
 	}
 
-	public List<Gimusya> setGimusyaList(List<Gimusya> gimusyaList, Integer[] gimusyas,
-			String[] gimusyaaddrs, String[] gimusyadaihyos ) {
+	public List<Gimusya> editMassyoGimusyaList(List<Gimusya> gimusyaList, Integer[] gimusyas, String[] gimusyaaddrs,
+			String[] gimusyadaihyos, String[] shikibetsuumus, String[] shikibetsuriyus){
+
 		if(!gimusyaList.isEmpty()) {
 			for(int i = 0; i < gimusyas.length; i++) {
 				Gimusya gimusya = gimusyaList.get(i);
 				Customer customer = customerService.find(gimusyas[i]);
 				gimusya.setCustomer(customer);
-				gimusya.setAddr(gimusyaaddrs[i]);
-				gimusya.setDaihyo(gimusyadaihyos[i]);
+				if(gimusyaaddrs[i] != null || (!gimusyaaddrs[i].isEmpty())) {
+					gimusya.setAddr(gimusyaaddrs[i]);
+				}
+				if(gimusyadaihyos[i] != null || (!gimusyadaihyos[i].isEmpty())) {
+					gimusya.setDaihyo(gimusyadaihyos[i]);
+				}
+				if(shikibetsuumus[i] != null || (!shikibetsuumus[i].isEmpty())) {
+					gimusya.setShikibetsuUmu(shikibetsuumus[i]);
+				}
+				if(shikibetsuriyus[i] != null || (!shikibetsuriyus[i].isEmpty())) {
+					gimusya.setShikibetsuRiyu(shikibetsuriyus[i]);
+				}
 				saveGimusya(gimusya);
 				gimusyaList.add(gimusya);
+			}
+		}
+
+		return gimusyaList;
+	}
+
+	public List<Gimusya> setGimusyaList(List<Gimusya> gimusyaList, Integer[] gimusyas,
+			String[] gimusyaaddrs, String[] gimusyadaihyos, String[] shikibetsuumus, String[] shikibetsuriyus ) {
+		if(!gimusyaList.isEmpty()) {
+			for(int i = 0; i < gimusyas.length; i++) {
+				Gimusya gimusya = gimusyaList.get(i);
+				Customer customer = customerService.find(gimusyas[i]);
+				gimusya.setCustomer(customer);
+				if(gimusyaaddrs[i] != null || !(gimusyaaddrs[i].isEmpty())) {
+					gimusya.setAddr(gimusyaaddrs[i]);
+				}
+				if(customer instanceof Company) {
+					if(gimusyadaihyos[i] != null || !(gimusyadaihyos[i].isEmpty())) {
+							gimusya.setDaihyo(gimusyadaihyos[i]);
+					}
+				}
+				gimusya.setShikibetsuUmu(shikibetsuumus[i]);
+
+				gimusya.setShikibetsuRiyu(shikibetsuriyus[i]);
+
+				saveGimusya(gimusya);
+				gimusyaList.add(gimusya);
+
 			}
 
 		}

@@ -74,6 +74,14 @@
 							<p th:text="${setteisya.getAddr()}"></p>
 							<p th:text="${setteisya.getCustomer().getName()}"></p>
 							<p th:text="${setteisya.getDaihyo()}"></p>
+							<p>
+								<span>登記識別情報の有無：</span>
+								<span th:text="${setteisya.getShikibetsuUmu()}"></span>
+								<span>－</span>
+								<span>登記識別情報を提供できない理由：</span>
+								<span th:text="${setteisya.getShikibetsuRiyu()}"></span>
+
+							</p>
 							<form
 								th:action="@{/soft/massyo/{id}/gimusyadelete/{kid}(id=${massyo.getId()},kid=${setteisya.getId()})}"
 								 method="post" class="col-sm-2 m-2">

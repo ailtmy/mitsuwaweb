@@ -221,6 +221,8 @@ public class TeitoukenController {
 			@RequestParam("gimusya") Integer[] gimusyas,
 			@RequestParam(name = "gimusyaaddr", defaultValue=" ") String[] gimusyaaddrs,
 			@RequestParam(name = "gimusyadaihyo", defaultValue=" ") String[] gimusyadaihyos,
+			@RequestParam(name = "shikibetsuumu", defaultValue=" ") String[] shikibetsuumus,
+			@RequestParam(name = "shikibetsuriyu", defaultValue=" ") String[] shikibetsuriyus,
 			ModelAndView mav
 			) {
 
@@ -272,7 +274,7 @@ public class TeitoukenController {
 		eteitou.setTeitoukensyaList(teitoukensyaList);
 
 		List<Gimusya> gimusyaList = gimusyaService.setGimusyaList(eteitou.getGimusyaList(),
-				gimusyas, gimusyaaddrs, gimusyadaihyos);
+				gimusyas, gimusyaaddrs, gimusyadaihyos, shikibetsuumus, shikibetsuriyus);
 		eteitou.setGimusyaList(gimusyaList);
 
 		List<ShinseiBukken> bukkenList = new ArrayList<ShinseiBukken>();
@@ -465,9 +467,9 @@ public class TeitoukenController {
 		gimusya.setCustomer(customer);
 		gimusya.setDaihyo(daihyo);
 		gimusya.setShikibetsuUmu(shikibetsuumu);
-		if(shikibetsuumu == "無し") {
-			gimusya.setShikibetsuRiyu(shikibetsuriyu);
-		}
+
+		gimusya.setShikibetsuRiyu(shikibetsuriyu);
+
 		gimusyaService.saveGimusya(gimusya);
 		gimusyas.add(gimusya);
 		teitouken.setGimusyaList(gimusyas);
