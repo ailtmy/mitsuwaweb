@@ -76,6 +76,58 @@ public class KenrisyaService {
 		return kenrisyaList;
 	}
 
+	public List<Kenrisya> newSyoyuKenrisya(List<Kenrisya> kenrisyaList, Integer[] customers,
+			String[] mochibuns, String[] addrs,  String[] daihyos){
+
+		for(int i = 0; i < customers.length; i++) {
+			Kenrisya kenrisya = new Kenrisya();
+			Customer customer = customerService.find(customers[i]);
+			kenrisya.setCustomer(customer);
+			if(addrs[i] != null || !(addrs[i].isEmpty())) {
+				kenrisya.setAddr(addrs[i]);
+			}
+			if(customer instanceof Company && daihyos.length != 0) {
+				if(daihyos[i] != null || !(daihyos[i].isEmpty())) {
+					kenrisya.setDaihyo(daihyos[i]);
+				}
+			}
+			if(mochibuns[i] != null || !(mochibuns[i].isEmpty())) {
+				kenrisya.setMochibun(mochibuns[i]);
+			}
+
+			saveKenrisya(kenrisya);
+			kenrisyaList.add(kenrisya);
+		}
+
+		return kenrisyaList;
+	}
+
+	public List<Kenrisya> editSyoyuKenrisya(List<Kenrisya> kenrisyaList, Integer[] customers,
+			String[] mochibuns, String[] addrs,  String[] daihyos){
+
+		for(int i = 0; i < customers.length; i++) {
+			Kenrisya kenrisya = kenrisyaList.get(i);
+			Customer customer = customerService.find(customers[i]);
+			kenrisya.setCustomer(customer);
+			if(addrs[i] != null || !(addrs[i].isEmpty())) {
+				kenrisya.setAddr(addrs[i]);
+			}
+			if(customer instanceof Company && daihyos.length != 0) {
+				if(daihyos[i] != null || !(daihyos[i].isEmpty())) {
+					kenrisya.setDaihyo(daihyos[i]);
+				}
+			}
+			if(mochibuns[i] != null || !(mochibuns[i].isEmpty())) {
+				kenrisya.setMochibun(mochibuns[i]);
+			}
+
+			saveKenrisya(kenrisya);
+			kenrisyaList.add(kenrisya);
+		}
+
+		return kenrisyaList;
+	}
+
 	public List<Kenrisya> newTeitouKenrisya(List<Kenrisya> kenrisyaList, Integer[] customers,
 			String[] mochibuns, String[] addrs,  String[] daihyos, String[] shitens){
 

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+</head>
+<body >
+<div th:fragment="gimusya_contents">
+<h4 th:text="${title}"></h4>
+<form th:action="@{/soft/syoiten/{id}/gimusyanew(id=${syoiten.id})}" method="post" th:object="${gimusya}" >
+
+	<div class="gimusya_wrap">
+		<div class="gimusya_hyouji">
+			<div class="form-group">
+				<label for="customer">義務者</label>
+				<select th:id="customer" name="customer" class="form-control">
+					<option th:selected="${''}"/>
+					<option th:each="cus : ${customer}" th:value="${cus.id}" th:text="${cus.name}" />
+				</select>
+				<label for="addr">義務者住所</label>
+				<select id="addr" name="addr" class="form-control">
+					<option value=""></option>
+				</select>
+				<label for="daihyo">代表者</label>
+				<select id="daihyo" name="daihyo" class="form-control">
+					<option value=""></option>
+				</select>
+				<label for="shikibetsuumu">登記識別情報有無</label>
+				<select id="shikibetsuumu" name="shikibetsuumu" class="form-control">
+					<option value="有り">有り</option>
+					<option value="無し">無し</option>
+				</select>
+				<label for="shikibetsuriyu">登記識別情報を提供できない理由</label>
+				<input type="text" name="shikibetsuriyu" class="form-control" />
+			</div>
+		</div>
+	</div>
+	<div>
+		<button type="submit" class="btn btn-primary mr-4">登録</button>
+		<button type="button" onclick="history.back()" class="btn btn-primary ml-4">戻る</button>
+	</div>
+</form>
+</div>
+</body>

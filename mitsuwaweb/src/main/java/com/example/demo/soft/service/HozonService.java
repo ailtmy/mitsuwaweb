@@ -88,7 +88,7 @@ public class HozonService {
 				Element mochiElement = docList.get(0).createElement("持");
 				mochiElement.setTextContent(kenrisya.getMochibun());
 				meigininElement.appendChild(mochiElement);
-				}
+			}
 			Element nameElement = docList.get(0).createElement("氏");
 			nameElement.setTextContent(kenrisya.getCustomer().getName());
 			meigininElement.appendChild(nameElement);

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+</head>
+<body >
+<div th:fragment="kenrisya_contents">
+<h4 th:text="${title}"></h4>
+<form th:action="@{/soft/syoiten/{id}/kenrisyanew(id=${syoiten.id})}" method="post" th:object="${syoiten}" >
+
+	<div class="kenrisya_wrap">
+		<div class="kenrisya_hyouji">
+			<div class="form-group">
+				<label for="mochibun">持分</label>
+				<input type="text" name="mochibun" class="form-control"/>
+			</div>
+			<div class="form-group">
+				<label for="customer">権利者</label>
+				<select th:id="customer" name="customer" class="form-control">
+					<option th:selected="${''}"/>
+					<option th:each="cus : ${customer}" th:value="${cus.id}" th:text="${cus.name}" />
+				</select>
+				<label for="addr">権利者住所</label>
+				<select id="addr" name="addr" class="form-control">
+					<option value=""></option>
+				</select>
+				<label for="daihyo">代表者</label>
+				<select id="daihyo" name="daihyo" class="form-control">
+					<option value=""></option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<div>
+		<button type="submit" class="btn btn-primary mr-4">登録</button>
+		<button type="button" onclick="history.back()" class="btn btn-primary ml-4">戻る</button>
+	</div>
+</form>
+</div>
+</body>
