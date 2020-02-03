@@ -14,7 +14,12 @@ import lombok.Setter;
 @Table
 @Getter
 @Setter
-public class Hozon extends Shinseisyo {
+public class Meihen extends Shinseisyo {
+
+	/**
+	 * 登記の目的
+	 */
+	private String mokuteki;
 
 	/**
 	 * 原因
@@ -22,21 +27,16 @@ public class Hozon extends Shinseisyo {
 	private String genin;
 
 	/**
-	 * 所有者
+	 * 変更後の事項
+	 */
+	private String henkojiko;
+
+	/**
+	 * 申請人
 	 */
 	@OneToMany
 	@JoinColumn(name = "shinsei_id")
-	private List<Kenrisya> syoyusya;
-
-	/**
-	 * 課税価格
-	 */
-	private Long kazeiGoukei;
-
-	/**
-	 * 課税価格内訳
-	 */
-	private String kazeiUchiwake;
+	private List<Gimusya> shinseininList;
 
 	/**
 	 * 登録免許税合計
@@ -44,14 +44,8 @@ public class Hozon extends Shinseisyo {
 	private Long toumenGoukei;
 
 	/**
-	 * 登録免許税内訳
-	 */
-	private String toumenUchiwake;
-
-	/**
 	 * 減税根拠条文
 	 */
-
 	private String jyobun;
 
 }

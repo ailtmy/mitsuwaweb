@@ -114,4 +114,48 @@ public class GimusyaService {
 		}
 		return gimusyaList;
 	}
+
+	public List<Gimusya> newMeihenShinseininList(List<Gimusya> gimusyaList, Integer[] gimusyas,
+			String[] gimusyaaddrs, String[] gimusyadaihyos){
+
+		for(int i = 0; i < gimusyas.length; i++) {
+			Gimusya gimusya = new Gimusya();
+			Customer customer = customerService.find(gimusyas[i]);
+			gimusya.setCustomer(customer);
+			if(gimusyaaddrs[i] != null || !(gimusyaaddrs[i].isEmpty())) {
+				gimusya.setAddr(gimusyaaddrs[i]);
+			}
+			if(customer instanceof Company) {
+				if(gimusyadaihyos[i] != null || !(gimusyadaihyos[i].isEmpty())) {
+					gimusya.setDaihyo(gimusyadaihyos[i]);
+				}
+			}
+			saveGimusya(gimusya);
+			gimusyaList.add(gimusya);
+		}
+
+		return gimusyaList;
+	}
+
+	public List<Gimusya> editMeihenShinseininList(List<Gimusya> gimusyaList, Integer[] gimusyas,
+			String[] gimusyaaddrs, String[] gimusyadaihyos){
+
+		for(int i = 0; i < gimusyas.length; i++) {
+			Gimusya gimusya = gimusyaList.get(i);
+			Customer customer = customerService.find(gimusyas[i]);
+			gimusya.setCustomer(customer);
+			if(gimusyaaddrs[i] != null || !(gimusyaaddrs[i].isEmpty())) {
+				gimusya.setAddr(gimusyaaddrs[i]);
+			}
+			if(customer instanceof Company) {
+				if(gimusyadaihyos[i] != null || !(gimusyadaihyos[i].isEmpty())) {
+					gimusya.setDaihyo(gimusyadaihyos[i]);
+				}
+			}
+			saveGimusya(gimusya);
+			gimusyaList.add(gimusya);
+		}
+
+		return gimusyaList;
+	}
 }

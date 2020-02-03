@@ -62,7 +62,7 @@ public class HozonController {
 	KenrisyaService kenrisyaService;
 
 	/**
-	 * ２項保存一覧
+	 * 保存一覧
 	 * @param pageable
 	 * @param mav
 	 * @return
@@ -82,7 +82,7 @@ public class HozonController {
 	}
 
 	/**
-	 * ２項保存新規作成
+	 * 保存新規作成
 	 * @param hozon
 	 * @param mav
 	 * @return
@@ -93,7 +93,7 @@ public class HozonController {
 			ModelAndView mav) {
 		mav.setViewName("layout");
 		mav.addObject("contents", "hozon/new::hozon_contents");
-		mav.addObject("title", "２項保存データ新規作成");
+		mav.addObject("title", "保存データ新規作成");
 		mav.addObject("tokisyo", tokisyoService.findAll());
 		mav.addObject("customer", customerService.allget());
 		mav.addObject("shinseiBukken", bukkenService.allget());
@@ -144,7 +144,7 @@ public class HozonController {
 	}
 
 	/**
-	 * ２項保存詳細
+	 * 保存詳細
 	 * @param id
 	 * @param mav
 	 * @return
@@ -156,13 +156,13 @@ public class HozonController {
 			) {
 		mav.setViewName("layout");
 		mav.addObject("contents", "hozon/show::hozon_contents");
-		mav.addObject("title", "２項保存詳細");
+		mav.addObject("title", "保存詳細");
 		mav.addObject("hozon", hozonService.find(id));
 		return mav;
 	}
 
 	/**
-	 * ２項保存編集
+	 * 保存編集
 	 * @param id
 	 * @param mav
 	 * @return
@@ -174,7 +174,7 @@ public class HozonController {
 			) {
 		mav.setViewName("layout");
 		mav.addObject("contents", "hozon/edit::hozon_contents");
-		mav.addObject("title", "２項保存編集");
+		mav.addObject("title", "保存編集");
 		mav.addObject("hozon", hozonService.find(id));
 		mav.addObject("tokisyo", tokisyoService.findAll());
 		mav.addObject("customer", customerService.allget());
@@ -238,7 +238,7 @@ public class HozonController {
 	}
 
 	/**
-	 * ２項保存削除
+	 * 保存削除
 	 * @param id
 	 * @param mav
 	 * @return
@@ -374,7 +374,7 @@ public class HozonController {
 
 
 	/**
-	 * オンライン特例申請ファイル作成
+	 * ２項保存オンライン特例申請ファイル作成
 	 * @param id
 	 * @param mav
 	 * @return
@@ -398,6 +398,16 @@ public class HozonController {
 		return mav;
 	}
 
+	/**
+	 * ２項保存QR申請作成
+	 * @param id
+	 * @param mav
+	 * @return
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws TransformerException
+	 */
 	@GetMapping("/soft/hozon/{id}/qrcreate")
 	public ModelAndView qrhozon(
 			@PathVariable Integer id,

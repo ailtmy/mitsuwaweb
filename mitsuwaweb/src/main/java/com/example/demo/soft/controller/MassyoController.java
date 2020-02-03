@@ -190,7 +190,6 @@ public class MassyoController {
 		@RequestParam(name="mochibun", defaultValue=" ") String[] mochibuns,
 		@RequestParam(name = "addr", defaultValue=" ") String[] addrs,
 		@RequestParam(name = "daihyo", defaultValue=" ") String[] daihyos,
-		@RequestParam(name = "shiten", defaultValue=" ") String[] shitens,
 		@RequestParam("gimusya") Integer[] gimusyas,
 		@RequestParam(name = "gimusyaaddr", defaultValue=" ") String[] gimusyaaddrs,
 		@RequestParam(name = "gimusyadaihyo", defaultValue=" ") String[] gimusyadaihyos,

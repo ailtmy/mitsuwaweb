@@ -69,7 +69,11 @@ public class HozonService {
 		//export.xml element取得
 		Element hozonExportElement = ShinseiXmlHelper.exportElement(docList);
 
-		ShinseiXmlHelper.elementTextset(hozonElement, "原因", hozon.getGenin(),0);
+		if(hozon.getGenin() == null || hozon.getGenin().isEmpty()) {
+
+		} else {
+			ShinseiXmlHelper.elementTextset(hozonElement, "原因", hozon.getGenin(),0);
+		}
 		//所有者セット
 		Element syoyusyaElement = docList.get(0).createElement("所有者");
 		NodeList shinseijiko = docList.get(0).getElementsByTagName("申請事項");
@@ -169,7 +173,7 @@ public class HozonService {
      	// 圧縮実行
      	ZipCreate.compressDirectory(destination2, dir);
 
-		return "２項保存外部ファイルを作成しました。";
+		return "保存外部ファイルを作成しました。";
 	}
 
 
