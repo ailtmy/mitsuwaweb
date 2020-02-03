@@ -76,7 +76,7 @@ public class HozonController {
 		Page<Hozon> list = hozonService.getAll(pageable);
 		mav.setViewName("layout");
 		mav.addObject("contents", "hozon/index::hozon_contents");
-		mav.addObject("title", "２項保存一覧");
+		mav.addObject("title", "保存一覧");
 		mav.addObject("list", list);
 		return mav;
 	}
@@ -419,6 +419,56 @@ public class HozonController {
 		String message = hozonService.xmlFileGet("HM0508200320001", hozon);
 		mav.addObject("createMessage", message);
 		mav.addObject("title", "２項保存QR作成");
+		mav.addObject("hozon", hozon);
+		return mav;
+	}
+
+	/**
+	 * １項保存オンライン特例申請作成
+	 * @param id
+	 * @param mav
+	 * @return
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws TransformerException
+	 */
+	@GetMapping("/soft/hozon/{id}/hozoncreate")
+	public ModelAndView hozonone(
+			@PathVariable Integer id,
+			ModelAndView mav
+			) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+		Hozon hozon = hozonService.find(id);
+		mav.setViewName("layout");
+		mav.addObject("contents", "hozon/show::hozon_contents");
+		String message = hozonService.hozonxmlFileGet("HM0501200220001", hozon);
+		mav.addObject("createMessage", message);
+		mav.addObject("title", "１項保存作成");
+		mav.addObject("hozon", hozon);
+		return mav;
+	}
+
+	/**
+	 * １項保存QR申請作成
+	 * @param id
+	 * @param mav
+	 * @return
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws TransformerException
+	 */
+	@GetMapping("/soft/hozon/{id}/hozonqrcreate")
+	public ModelAndView qrhozonone(
+			@PathVariable Integer id,
+			ModelAndView mav
+			) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+		Hozon hozon = hozonService.find(id);
+		mav.setViewName("layout");
+		mav.addObject("contents", "hozon/show::hozon_contents");
+		String message = hozonService.hozonxmlFileGet("HM0508200220001", hozon);
+		mav.addObject("createMessage", message);
+		mav.addObject("title", "１項保存QR作成");
 		mav.addObject("hozon", hozon);
 		return mav;
 	}

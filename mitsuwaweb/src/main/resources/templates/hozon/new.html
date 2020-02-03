@@ -22,11 +22,11 @@
 	<div class="kenrisya_wrap">
 		<div class="kenrisya_hyouji">
 			<div class="form-group">
-				<label for="mochibun">権利者持分</label>
+				<label for="mochibun">所有者持分</label>
 				<input type="text" name="mochibun" class="form-control" value=" "/>
 			</div>
 			<div class="form-group">
-				<label for="customer">権利者</label>
+				<label for="customer">所有者</label>
 				<select id="customer" name="customer" class="form-control">
 					<option th:selected="${''}"/>
 					<option th:each="cus : ${customer}" th:value="${cus.id}" th:text="${cus.name}" />
@@ -43,8 +43,8 @@
 		</div>
 	</div>
 	<div class="mb-2">
-		<button type="button" class="btn btn-primary mr-4" id="kenrisya_ajax_add">権利者追加</button>
-		<button type="button" class="btn btn-danger mr-4" id="kenrisya_ajax_remove">権利者削除</button>
+		<button type="button" class="btn btn-primary mr-4" id="kenrisya_ajax_add">所有者追加</button>
+		<button type="button" class="btn btn-danger mr-4" id="kenrisya_ajax_remove">所有者削除</button>
 	</div>
 	<div class="form-group">
 		<label for="tempsyorui">添付書類</label>

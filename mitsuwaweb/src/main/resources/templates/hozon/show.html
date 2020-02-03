@@ -14,8 +14,10 @@
 	<a class="btn btn-sm btn-primary mr-4" th:href="@{/soft/hozon/{id}/edit(id=${hozon.id})}" th:text="編集"></a>
 	<a class="btn btn-sm btn-primary mr-4" th:href="@{/soft/shinseisyo/{id}/kenrisyanew(id=${hozon.id})}" th:text="所有者追加"></a>
 	<a class="btn btn-sm btn-primary mr-4" th:href="@{/soft/shinseibukken/{id}/bukkennew(id=${hozon.id})}" th:text="物件追加"></a>
-	<a class="btn btn-sm btn-primary mr-4" th:href="@{/soft/hozon/{id}/create(id=${hozon.id})}" th:text="特例申請ファイル作成"></a>
-	<a class="btn btn-sm btn-primary mr-4" th:href="@{/soft/hozon/{id}/qrcreate(id=${hozon.id})}" th:text="QR申請ファイル作成"></a>
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/soft/hozon/{id}/hozoncreate(id=${hozon.id})}" th:text="特例１項保存作成"></a>
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/soft/hozon/{id}/hozonqrcreate(id=${hozon.id})}" th:text="ＱＲ１項保存作成"></a>
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/soft/hozon/{id}/create(id=${hozon.id})}" th:text="特例２項保存作成"></a>
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/soft/hozon/{id}/qrcreate(id=${hozon.id})}" th:text="ＱＲ２項保存作成"></a>
 	<form th:action="@{/soft/hozon/{id}/delete(id=${hozon.id})}" method="post">
 		<input class="btn btn-sm btn-danger text-white mr-4" type="submit" value="削除"
 		onclick="return confirm('削除します。よろしいですか？')" />
