@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+</head>
+<body >
+<div th:fragment="souzoku_contents">
+<h4 th:text="${title}"></h4>
+
+<p th:text="|${list.getTotalElements()}件のデータが存在します。|"></p>
+<table class="table table-bordered table-sm table-hover text-center">
+	<tr>
+		<th>
+			<a class="btn btn-info btn-sm text-white ml-1 p-1" th:href="@{/soft/souzoku/new}" th:text="データ作成"></a>
+		</th>
+		<th>ID</th>
+		<th>件名</th>
+		<th>申請年月日</th>
+		<th>登記所</th>
+		<th>登記所コード</th>
+		<th>物件</th>
+	</tr>
+	<tr th:each="souzoku : ${list}">
+		<td>
+			<form th:action="@{/soft/souzoku/{id}/delete(id=${souzoku.id})}" method="post">
+				<a th:href="@{/soft/souzoku/{id}/edit(id=${souzoku.id})}" th:text="編集"
+				class="btn btn-primary btn-sm text-white ml-1 p-1"></a>
+				<input class="btn btn-danger btn-sm text-white m-1 p-1" type="submit" value="削除"
+				onclick="return confirm('削除します。よろしいですか？')"/>
+			</form>
+		</td>
+		<td th:text="${souzoku.id}"></td>
+		<td><a th:href="@{/soft/souzoku/{id}(id=${souzoku.id})}" th:text="${souzoku.kenmei}"></a></td>
+		<td th:text="${souzoku.date}"></td>
+		<td th:if="${souzoku.getTokisyo()}" th:text="${souzoku.getTokisyo().getTokisyoName()}"></td>
+		<td th:if="${souzoku.getTokisyo()}" th:text="${souzoku.getTokisyo().getTokisyoCode()}"></td>
+		<td >
+			<ul th:each="bukken : ${souzoku.shinseiBukkenList}" class="list-group">
+				<li th:text="|${bukken.getChibanKuikiJyoho()}${bukken.getChibanKaokubangoJyoho()}|" class="list-group-item"></li>
+			</ul>
+		</td>
+	</tr>
+
+</table>
+</div>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+</head>
+<body >
+<div th:fragment="souzoku_contents">
+<h4 th:text="${title}"></h4>
+<form th:action="@{/soft/souzoku/new}" method="post" th:object="${souzoku}">
+	<div class="form-group" th:classappend="${#fields.hasErrors('kenmei')}? 'has-error'">
+		<label for="kenmei">件名</label>
+		<input type="text" name="kenmei" class="form-control" th:field="*{kenmei}" />
+		<span class="text-danger" th:if="${#fields.hasErrors('kenmei')}" th:errors="*{kenmei}">件名エラー</span>
+	</div>
+	<div class="form-group" th:classappend="${#fields.hasErrors('mokuteki')}? 'has-error'" >
+		<label for="mokuteki">登記の目的</label>
+		<input type="text" name="mokuteki" class="form-control" th:field="*{mokuteki}" />
+		<span class="text-danger" th:if="${#fields.hasErrors('mokuteki')}" th:errors="*{mokuteki}">登記の目的エラー</span>
+	</div>
+	<div class="form-group" th:classappend="${#fields.hasErrors('genin')}? 'has-error'" >
+		<label for="genin">原因</label>
+		<input type="text" name="genin" class="form-control" th:field="*{genin}" />
+		<span class="text-danger" th:if="${#fields.hasErrors('genin')}" th:errors="*{genin}">原因エラー</span>
+	</div>
+	<div class="form-group" th:classappend="${#fields.hasErrors('hisouzokunin')}? 'has-error'" >
+		<label for="hisouzokunin">被相続人</label>
+		<input type="text" name="hisouzokunin" class="form-control" th:field="*{hisouzokunin}" />
+		<span class="text-danger" th:if="${#fields.hasErrors('hisouzokunin')}" th:errors="*{hisouzokunin}">被相続人エラー</span>
+	</div>
+	<div class="kenrisya_wrap">
+		<div class="kenrisya_hyouji">
+			<div class="form-group">
+				<label for="mochibun">相続人持分</label>
+				<input type="text" name="mochibun" class="form-control" value=" "/>
+			</div>
+			<div class="form-group">
+				<label for="customer">相続人</label>
+				<select id="customer" name="customer" class="form-control">
+					<option th:selected="${''}"/>
+					<option th:each="cus : ${customer}" th:value="${cus.id}" th:text="${cus.name}" />
+				</select>
+				<label for="addr">住所</label>
+				<select id="addr" name="addr" class="form-control">
+					<option value=""></option>
+				</select>
+				<label for="daihyo">代表者</label>
+				<select id="daihyo" name="daihyo" class="form-control">
+					<option value=""></option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="mb-2">
+		<button type="button" class="btn btn-primary mr-4" id="kenrisya_ajax_add">相続人追加</button>
+		<button type="button" class="btn btn-danger mr-4" id="kenrisya_ajax_remove">相続人削除</button>
+	</div>
+	<div class="form-group">
+		<label for="tempsyorui">添付書類</label>
+		<select id="tempsyorui" name="tempsyorui" class="form-control">
+			<option th:selected="${''}"/>
+			<option th:each="temp : ${tempsyorui}" th:value="${temp.id}" th:text="${temp.pattern}" />
+		</select>
+	</div>
+	<div class="form-group" th:classappend="${#fields.hasErrors('date')}? 'has-error'">
+		<label for="date">申請年月日</label>
+		<input type="text" name="date" class="form-control" th:field="*{date}"/>
+		<span class="text-danger" th:if="${#fields.hasErrors('date')}" th:errors="*{date}">申請日エラー</span>
+	</div>
+	<div class="form-group" th:classappend="${#fields.hasErrors('tokisyo')}? 'has-error'">
+		<label for="tokisyo">登記所</label>
+		<select id="tokisyo" name="tokisyo" class="form-control">
+			<option th:selected="${''}"/>
+			<option th:each="tks : ${tokisyo}" th:value="${tks.id}" th:text="${tks.tokisyoName}"/>
+		</select>
+	</div>
+	<div class="form-group">
+		<label for="kazeiGoukei">課税価格合計</label>
+		<input type="number" name="kazeiGoukei" class="form-control"/>
+	</div>
+	<div class="form-group">
+		<label for="kazeiUchiwake">課税価格内訳</label>
+		<textarea name="kazeiUchiwake" rows="5" cols="30" class="form-control"></textarea>
+	</div>
+	<div class="form-group">
+		<label for="toumenGoukei">登録免許税合計</label>
+		<input type="number" name="toumenGoukei" class="form-control"/>
+	</div>
+	<div class="form-group">
+		<label for="toumenUchiwake">登録免許税内訳</label>
+		<textarea name="toumenUchiwake" rows="5" cols="30" class="form-control"></textarea>
+	</div>
+	<div class="form-group">
+		<label for="jyobun">減税根拠条文</label>
+		<textarea name="jyobun" rows="5" cols="30" class="form-control"></textarea>
+	</div>
+	<div class="shinseiBukken_wrap">
+		<div class="shinseiBukken_hyouji">
+			<div class="form-group">
+				<label for="shinseiBukken">物件</label>
+				<select id="shinseiBukken" name="shinseiBukken" class="form-control">
+					<option th:selected="${''}"/>
+					<option th:each="bukken : ${shinseiBukken}" th:value="${bukken.id}"
+					th:text="|${bukken.getChibanKuikiJyoho()}${bukken.getChibanKaokubangoJyoho()}(${bukken.getBukkenSyubetsu()})|" />
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="mb-2">
+		<button type="button" class="btn btn-primary mr-4" id="bukken_add">物件追加</button>
+		<button type="button" class="btn btn-danger mr-4" id="bukken_remove">物件削除</button>
+	</div>
+	<div>
+		<button type="submit" class="btn btn-primary mr-4">登録</button>
+		<button type="button" onclick="history.back()" class="btn btn-primary ml-4">戻る</button>
+	</div>
+</form>
+</div>
+</body>
