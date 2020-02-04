@@ -1,7 +1,11 @@
 package com.example.demo.soft.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.xml.sax.SAXException;
 
 import com.example.demo.entity.customer.Customer;
 import com.example.demo.service.customer.CompanyService;
@@ -254,23 +259,23 @@ public class NeteitouController {
 		List<Kenrisya> neteitoukensyaList = eneteitou.getNeteitoukensyaList();
 		if(!neteitoukensyaList.isEmpty()) {
 			for(int i = 0; i < customers.length; i++) {
-				Kenrisya neteitoukensya = neteitoukensyaList.get(i);
+				Kenrisya neteitousya = neteitoukensyaList.get(i);
 				Customer customer = customerService.find(customers[i]);
-				neteitoukensya.setCustomer(customer);
+				neteitousya.setCustomer(customer);
 				if(addrs[i] != null || !(addrs[i].isEmpty())) {
-					neteitoukensya.setAddr(addrs[i]);
+					neteitousya.setAddr(addrs[i]);
 				}
 				if(daihyos[i] != null || !(daihyos[i].isEmpty())){
-					neteitoukensya.setDaihyo(daihyos[i]);
+					neteitousya.setDaihyo(daihyos[i]);
 				}
 				if(mochibuns[i] != null || !(mochibuns[i].isEmpty())) {
-					neteitoukensya.setMochibun(mochibuns[i]);
+					neteitousya.setMochibun(mochibuns[i]);
 				}
 				if(shitens[i] != null || !(shitens[i].isEmpty())) {
-					neteitoukensya.setShiten(shitens[i]);
+					neteitousya.setShiten(shitens[i]);
 				}
-				kenrisyaService.saveKenrisya(neteitoukensya);
-				neteitoukensyaList.add(neteitoukensya);
+				kenrisyaService.saveKenrisya(neteitousya);
+				neteitoukensyaList.add(neteitousya);
 			}
 		}
 		eneteitou.setNeteitoukensyaList(neteitoukensyaList);
@@ -289,6 +294,327 @@ public class NeteitouController {
 		neteitouService.saveNeteitou(eneteitou);
 
 		return new ModelAndView("redirect:/soft/neteitou/{id}");
+	}
+
+	/**
+	 * 根抵当権　削除
+	 * @param id
+	 * @param mav
+	 * @return
+	 */
+	@PostMapping("/soft/neteitou/{id}/delete")
+	public ModelAndView delete(
+			@PathVariable Integer id,
+			ModelAndView mav
+			) {
+		neteitouService.delete(id);
+		return new ModelAndView("redirect:/soft/neteitou");
+	}
+
+	/**
+	 * 債務者追加
+	 * @param id
+	 * @param mav
+	 * @return
+	 */
+	@GetMapping("/soft/neteitou/{id}/saimusyanew")
+	public ModelAndView saimusyaNew(
+			@PathVariable Integer id,
+			ModelAndView mav
+			) {
+		mav.setViewName("layout");
+		mav.addObject("contents", "neteitou/saimusyanew::saimusya_contents");
+		mav.addObject("title", "債務者追加");
+		mav.addObject("neteitou", neteitouService.find(id));
+		mav.addObject("customer", customerService.allget());
+		return mav;
+	}
+
+	@PostMapping("/soft/neteitou/{id}/saimusyanew")
+	public ModelAndView saimusaycreate(
+			@PathVariable Integer id,
+			@RequestParam(name = "addr", required=false) String addr,
+			@RequestParam(name = "customer") Customer customer
+			) {
+		Neteitou neteitou = neteitouService.find(id);
+		List<Saimusya> saimusyas = neteitou.getSaimusyaList();
+		Saimusya saimusya = new Saimusya();
+		saimusya.setAddr(addr);
+		saimusya.setCustomer(customer);
+		saimusyaService.saveSaimusya(saimusya);
+		saimusyas.add(saimusya);
+		neteitou.setSaimusyaList(saimusyas);
+		neteitouService.saveNeteitou(neteitou);
+
+		return new ModelAndView("redirect:/soft/neteitou/{id}");
+	}
+
+	/**
+	 * 債務者削除
+	 * @param id
+	 * @param sid
+	 * @return
+	 */
+	@PostMapping("/soft/neteitou/{id}/saimusyadelete/{sid}")
+	public ModelAndView saimusyadelete(
+			@PathVariable Integer id,
+			@PathVariable Integer sid
+			) {
+		Neteitou neteitou = neteitouService.find(id);
+		List<Saimusya> saimusyas = neteitou.getSaimusyaList();
+		Saimusya saimusya = saimusyaService.find(sid);
+		saimusyas.remove(saimusya);
+		neteitou.setSaimusyaList(saimusyas);
+		neteitouService.saveNeteitou(neteitou);
+		saimusyaService.delete(sid);
+
+		return new ModelAndView("redirect:/soft/neteitou/{id}");
+
+	}
+
+	/**
+	 * 根抵当権設定　根抵当権者追加
+	 * @param id
+	 * @param mav
+	 * @return
+	 */
+	@GetMapping("/soft/neteitou/{id}/kenrisyanew")
+	public ModelAndView kenrisyaNew(
+			@PathVariable Integer id,
+			ModelAndView mav
+			) {
+		mav.setViewName("layout");
+		mav.addObject("contents", "neteitou/kenrisyanew::kenrisya_contents");
+		mav.addObject("title", "根抵当権者追加");
+		mav.addObject("neteitou", neteitouService.find(id));
+		mav.addObject("customer", customerService.allget());
+		return mav;
+	}
+
+	@PostMapping("/soft/neteitou/{id}/kenrisyanew")
+	public ModelAndView kenrisyacreate(
+			@PathVariable Integer id,
+			@RequestParam(name = "addr", required=false) String addr,
+			@RequestParam(name = "mochibun", required=false, defaultValue=" ") String mochibun,
+			@RequestParam(name = "customer") Customer customer,
+			@RequestParam(name = "shiten", required=false) String shiten,
+			@RequestParam(name = "daihyo", required=false) String daihyo
+			) {
+		Neteitou neteitou = neteitouService.find(id);
+		List<Kenrisya> kenrisyas = neteitou.getNeteitoukensyaList();
+		Kenrisya kenrisya = new Kenrisya();
+		kenrisya.setAddr(addr);
+		kenrisya.setMochibun(mochibun);
+		kenrisya.setCustomer(customer);
+		kenrisya.setShiten(shiten);
+		kenrisya.setDaihyo(daihyo);
+		kenrisyaService.saveKenrisya(kenrisya);
+		kenrisyas.add(kenrisya);
+		neteitou.setNeteitoukensyaList(kenrisyas);
+		neteitouService.saveNeteitou(neteitou);
+
+		return new ModelAndView("redirect:/soft/neteitou/{id}");
+	}
+
+	/**
+	 * 根抵当権者削除
+	 * @param id
+	 * @param sid
+	 * @return
+	 */
+	@PostMapping("/soft/neteitou/{id}/kenrisyadelete/{sid}")
+	public ModelAndView kenrisyadelete(
+			@PathVariable Integer id,
+			@PathVariable Integer sid
+			) {
+		Neteitou neteitou = neteitouService.find(id);
+		List<Kenrisya> kenrisyas = neteitou.getNeteitoukensyaList();
+		Kenrisya kenrisya = kenrisyaService.find(sid);
+		kenrisyas.remove(kenrisya);
+		neteitou.setNeteitoukensyaList(kenrisyas);
+		neteitouService.saveNeteitou(neteitou);
+		kenrisyaService.delete(sid);
+
+		return new ModelAndView("redirect:/soft/neteitou/{id}");
+
+	}
+
+	/**
+	 * 根抵当権設定　義務者追加
+	 * @param id
+	 * @param mav
+	 * @return
+	 */
+	@GetMapping("/soft/neteitou/{id}/gimusyanew")
+	public ModelAndView gimusyaNew(
+			@PathVariable Integer id,
+			ModelAndView mav
+			) {
+		mav.setViewName("layout");
+		mav.addObject("contents", "neteitou/gimusyanew::gimusya_contents");
+		mav.addObject("title", "義務者追加");
+		mav.addObject("neteitou", neteitouService.find(id));
+		mav.addObject("customer", customerService.allget());
+		return mav;
+	}
+
+	@PostMapping("/soft/neteitou/{id}/gimusyanew")
+	public ModelAndView gimusyacreate(
+			@PathVariable Integer id,
+			@RequestParam(name = "addr", required=false) String addr,
+			@RequestParam(name = "customer") Customer customer,
+			@RequestParam(name = "daihyo", required=false) String daihyo,
+			@RequestParam(name = "shikibetsuumu", defaultValue="有り") String shikibetsuumu,
+			@RequestParam(name = "shikibetsuriyu", defaultValue=" ") String shikibetsuriyu
+			) {
+		Neteitou neteitou = neteitouService.find(id);
+		List<Gimusya> gimusyas = neteitou.getGimusyaList();
+		Gimusya gimusya = new Gimusya();
+		gimusya.setAddr(addr);
+		gimusya.setCustomer(customer);
+		gimusya.setDaihyo(daihyo);
+		gimusya.setShikibetsuUmu(shikibetsuumu);
+
+		gimusya.setShikibetsuRiyu(shikibetsuriyu);
+
+		gimusyaService.saveGimusya(gimusya);
+		gimusyas.add(gimusya);
+		neteitou.setGimusyaList(gimusyas);
+		neteitouService.saveNeteitou(neteitou);
+
+		return new ModelAndView("redirect:/soft/neteitou/{id}");
+	}
+
+	/**
+	 * 設定者削除
+	 * @param id
+	 * @param sid
+	 * @return
+	 */
+	@PostMapping("/soft/neteitou/{id}/gimusyadelete/{sid}")
+	public ModelAndView gimusyadelete(
+			@PathVariable Integer id,
+			@PathVariable Integer sid
+			) {
+		Neteitou neteitou = neteitouService.find(id);
+		List<Gimusya> gimusyas = neteitou.getGimusyaList();
+		Gimusya gimusya = gimusyaService.find(sid);
+		gimusyas.remove(gimusya);
+		neteitou.setGimusyaList(gimusyas);
+		neteitouService.saveNeteitou(neteitou);
+		gimusyaService.delete(sid);
+
+		return new ModelAndView("redirect:/soft/neteitou/{id}");
+
+	}
+
+	/**
+	 * 物件追加
+	 * @param id
+	 * @param mav
+	 * @return
+	 */
+	@GetMapping("/soft/neteitou/{id}/bukkennew")
+	public ModelAndView bukkennew(
+			@PathVariable Integer id,
+			ModelAndView mav
+			) {
+		mav.setViewName("layout");
+		mav.addObject("contents", "neteitou/bukkennew::bukken_contents");
+		mav.addObject("title", "物件追加");
+		mav.addObject("neteitou", neteitouService.find(id));
+		mav.addObject("shinseiBukken", bukkenService.allget());
+		return mav;
+	}
+
+	@PostMapping("/soft/neteitou/{id}/bukkennew")
+	public ModelAndView bukkencreate(
+			@PathVariable Integer id,
+			@RequestParam(name = "bukken") Integer bid,
+			ModelAndView mav
+			) {
+		Neteitou neteitou = neteitouService.find(id);
+		List<ShinseiBukken> bukkens = neteitou.getShinseiBukkenList();
+		ShinseiBukken bukken = bukkenService.find(bid);
+		bukkens.add(bukken);
+		neteitou.setShinseiBukkenList(bukkens);
+		neteitouService.saveNeteitou(neteitou);
+
+		return new ModelAndView("redirect:/soft/neteitou/{id}");
+	}
+
+	/**
+	 * 申請書物件削除
+	 * @param sid
+	 * @param bid
+	 * @param mav
+	 * @return
+	 */
+	@PostMapping("/soft/neteitou/{sid}/bukkendelete/{bid}")
+	public ModelAndView bukkendelete(
+			@PathVariable Integer sid,
+			@PathVariable Integer bid,
+			ModelAndView mav
+			) {
+		Neteitou neteitou = neteitouService.find(sid);
+		List<ShinseiBukken> bukkens = neteitou.getShinseiBukkenList();
+		ShinseiBukken bukken = bukkenService.find(bid);
+		bukkens.remove(bukken);
+		neteitou.setShinseiBukkenList(bukkens);
+		neteitouService.saveNeteitou(neteitou);
+		bukkenService.delete(bid);
+
+		return new ModelAndView("redirect:/soft/neteitou/{sid}");
+	}
+
+	/**
+	 * オンライン特例申請ファイル作成
+	 * @param id
+	 * @param mav
+	 * @return
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws TransformerException
+	 */
+	@GetMapping("/soft/neteitou/{id}/create")
+	public ModelAndView neteitou(
+			@PathVariable Integer id,
+			ModelAndView mav
+			) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+		Neteitou neteitou = neteitouService.find(id);
+		mav.setViewName("layout");
+		mav.addObject("contents", "neteitou/show::neteitou_contents");
+		String message = neteitouService.xmlFileGet("HM0501201320001",neteitou);
+		mav.addObject("createMessage", message);
+		mav.addObject("title", "根抵当権設定作成");
+		mav.addObject("neteitou", neteitou);
+		return mav;
+	}
+
+	/**
+	 * QRコード申請書作成
+	 * @param id
+	 * @param mav
+	 * @return
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws TransformerException
+	 */
+	@GetMapping("/soft/neteitou/{id}/qrcreate")
+	public ModelAndView qrteitou(
+			@PathVariable Integer id,
+			ModelAndView mav
+			) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+		Neteitou neteitou = neteitouService.find(id);
+		mav.setViewName("layout");
+		mav.addObject("contents", "neteitou/show::neteitou_contents");
+		String message = neteitouService.xmlFileGet("HM0508201320001", neteitou);
+		mav.addObject("createMessage", message);
+		mav.addObject("title", "根抵当権設定QR作成");
+		mav.addObject("neteitou", neteitou);
+		return mav;
 	}
 
 }

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+</head>
+<body >
+<div th:fragment="neteitou_contents">
+<h4 th:text="${title}"></h4>
+
+<p th:text="|${list.getTotalElements()}件のデータが存在します。|"></p>
+<table class="table table-bordered table-sm table-hover text-center">
+	<tr>
+		<th>
+			<a class="btn btn-info btn-sm text-white ml-1 p-1" th:href="@{/soft/neteitou/new}" th:text="データ作成"></a>
+		</th>
+		<th>ID</th>
+		<th>件名</th>
+		<th>申請年月日</th>
+		<th>登記所</th>
+		<th>登記所コード</th>
+		<th>物件</th>
+	</tr>
+	<tr th:each="neteitou : ${list}">
+		<td>
+			<form th:action="@{/soft/neteitou/{id}/delete(id=${neteitou.id})}" method="post">
+				<a th:href="@{/soft/neteitou/{id}/edit(id=${neteitou.id})}" th:text="編集"
+				class="btn btn-primary btn-sm text-white ml-1 p-1"></a>
+				<input class="btn btn-danger btn-sm text-white m-1 p-1" type="submit" value="削除"
+				onclick="return confirm('削除します。よろしいですか？')"/>
+			</form>
+		</td>
+		<td th:text="${neteitou.id}"></td>
+		<td><a th:href="@{/soft/neteitou/{id}(id=${neteitou.id})}" th:text="${neteitou.kenmei}"></a></td>
+		<td th:text="${neteitou.date}"></td>
+		<td th:if="${neteitou.getTokisyo()}" th:text="${neteitou.getTokisyo().getTokisyoName()}"></td>
+		<td th:if="${neteitou.getTokisyo()}" th:text="${neteitou.getTokisyo().getTokisyoCode()}"></td>
+		<td >
+			<ul th:each="bukken : ${neteitou.shinseiBukkenList}" class="list-group">
+				<li th:text="|${bukken.getChibanKuikiJyoho()}${bukken.getChibanKaokubangoJyoho()}|" class="list-group-item"></li>
+			</ul>
+		</td>
+	</tr>
+
+</table>
+</div>

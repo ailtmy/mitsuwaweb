@@ -610,13 +610,4 @@ public class TeitoukenController {
 		return mav;
 	}
 
-
-
-
-
-
-
-
-
-
 }
