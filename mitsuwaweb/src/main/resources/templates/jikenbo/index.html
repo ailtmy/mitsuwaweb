@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+</head>
+<body >
+
+<div th:fragment="jikenbo_contents">
+<h4 th:text="${title}"></h4>
+<form th:action="@{/jikenbos/search}" method="get">
+<div th:fragment="search_contents">
+	<div class="form-group form-row">
+		<label for="name" class="col-sm-2 text-center">キーワード</label>
+		<input type="text" name="name" class="form-control col-sm-6">
+		<input type="submit" value="検索" class="btn btn-secondary ml-2">
+	</div>
+</div>
+</form>
+<a class="btn btn-info btn-sm text-white ml-1 p-1" th:href="@{/jikenbos/new}">新規作成</a>
+<p th:text="|${list.getTotalElements()}件のデータが存在します。|"></p>
+<table class="table table-bordered text-center table-hover table-sm">
+<tr>
+	<th></th>
+	<th>ID</th>
+	<th>
+		受任番号<br>
+		受任年月日
+	</th>
+	<th>事件名・件名</th>
+	<th>依頼者の住所氏名</th>
+	<th>事件番号</th>
+	<th>件数</th>
+	<th>事件種別</th>
+	<th colspan="2"></th>
+</tr>
+
+<tr th:each="jikenbo, jikenbostat : ${list}">
+	<td class="m-1 p-1">
+	<form th:action="@{/jikenbos/{id}/delete(id=${jikenbo.id})}" method="post">
+		<a class="btn btn-primary btn-sm text-white ml-1 p-1" th:href="@{/jikenbos/{id}/edit(id=${jikenbo.id})}">編集</a>
+		<input class="btn btn-danger btn-sm text-white m-1 p-1" type="submit" value="削除"
+		onclick="return confirm('削除します。よろしいですか？')" sec:authorize="hasRole('ADMIN')"/>
+	</form>
+	</td>
+	<td th:text="${jikenbo.id}"></td>
+	<td>
+		<p th:text="|第${jikenbostat.count + (list.getNumber() * 9 )}号|"></p>
+		<p th:text="${#temporals.format(jikenbo.jyuninDate, 'yyyy年MM月dd日')}"></p>
+	</td>
+	<td><a th:href="@{/jikenbos/{id}(id=${jikenbo.id})}" th:text="${jikenbo.jikenName}"></a></td>
+	<td>
+		<div th:each="iraisya : ${jikenbo.iraisyaList}">
+			<p th:text="${iraisya.getAddr()}" class="m-0"></p>
+			<p th:text="${iraisya.getCustomer().getName()}" class="m-0"></p>
+		</div>
+	</td>
+	<td th:text="${jikenbo.jikenNumber}"></td>
+	<td th:text="${jikenbo.kensu}"></td>
+	<td th:text="${jikenbo.syubetsu}"></td>
+<!--
+	<td>
+		<a class="btn btn-info btn-sm text-white m-1 p-1" th:href="@{/jikenbos/{id}/mailnew(id=${jikenbo.id})}">メール新規</a><br>
+		<a class="btn btn-info btn-sm text-white m-1 p-1" th:href="@{/jikenbos/{id}/telnew(id=${jikenbo.id})}">電 話 新 規</a>
+	</td>
+ -->
+</tr>
+</table>
+<nav aria-label="Page navigation">
+<ul class="pagination">
+
+   <li class="page-item">
+      <a class="page-link" th:href="@{?page={num}&name={param}(num=0, param=${param.name})}" aria-label="Previous">
+        <span aria-hidden="true">先頭</span>
+        <span class="sr-only">Previous</span>
+      </a>
+    </li>
+
+    <li th:if="${list.getNumber() != 0}"class="page-item">
+    	<a class="page-link" th:href="${param.name}? @{?page={num}&name={param}(num=${list.getNumber()} - 1, param=${param.name})}
+    	 : @{?page={num}(num=${list.getNumber()} - 1)}" th:text="${list.getNumber()}"></a>
+    </li>
+
+    <li class="page-item">
+    	<a class="page-link" href="#" th:text="${list.getNumber()} + 1"></a>
+    </li>
+
+    <li th:if="${list.getNumber() + 1} != ${list.getTotalPages()}" class="page-item">
+    	<a class="page-link" th:href="${param.name}? @{?page={num}&name={param}(num=${list.getNumber()} + 1, param=${param.name})}
+    	 : @{?page={num}(num=${list.getNumber()} + 1)}" th:text="${list.getNumber()} + 2"></a>
+    </li>
+
+    <li class="page-item">
+      <a class="page-link" th:href="${param.name}? @{?page={num}&name={param}(num=${list.getTotalPages()} - 1, param=${param.name})}
+      : @{?page={num}(num=${list.getTotalPages()} - 1)}" aria-label="Next">
+        <span aria-hidden="true">最後</span>
+        <span class="sr-only">Next</span>
+      </a>
+    </li>
+
+  </ul>
+</nav>
+</div>
+</body>
+</html>

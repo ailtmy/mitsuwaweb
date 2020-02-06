@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="UTF-8">
+<title th:text="|${title}|"></title>
+</head>
+<body >
+<div class="container-fluid" th:fragment="jikenbo_contents">
+<h4 th:text="${title}"></h4>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light mt-2 mb-4">
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/jikenbos/{id}/edit(id=${jikenbo.id})}" th:text="編集"></a>
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/jikenbos/{id}/kenrisyanew(id=${jikenbo.id})}" th:text="依頼者追加"></a>
+	<form th:action="@{/jikenbo/{id}/delete(id=${jikenbo.id})}" method="post">
+		<input class="btn btn-sm btn-danger text-white mr-4" type="submit" value="削除"
+		onclick="return confirm('削除します。よろしいですか？')" />
+	</form>
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/jikenbos}" >戻る</a>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-10">
+			<table th:object="${jikenbo}" class="table table-hover">
+				<tr>
+					<th scope="row">ＩＤ</th>
+					<td th:text="*{id}"></td>
+				</tr>
+				<tr>
+					<th scope="row">受任年月日</th>
+					<td th:text="*{jyuninDate}"></td>
+				</tr>
+				<tr>
+					<th scope="row">事件名・件名</th>
+					<td th:text="*{jikenName}"></td>
+				</tr>
+				<tr>
+					<th scope="row">依頼者</th>
+					<td>
+						<div th:each="iraisya : *{iraisyaList}">
+							<p th:text="${iraisya.getAddr()}"></p>
+							<p th:text="${iraisya.customer.name}"></p>
+							<form
+								th:action="@{/jikenbos/{sid}/kenrisyadelete/{kid}(sid=${jikenbo.id},kid=${iraisya.id})}"
+								 method="post" class="col-sm-2 m-2">
+								<input class="btn btn-sm btn-danger text-white mr-2" type="submit" value="依頼者削除"
+									onclick="return confirm('削除します。よろしいですか？')"/>
+							</form>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">事件番号</th>
+					<td th:text="*{jikenNumber}"></td>
+				<tr>
+					<th scope="row">件数</th>
+					<td th:text="*{kensu}"></td>
+				</tr>
+				<tr>
+					<th scope="row">事件種類</th>
+					<td th:text="*{syubetsu}"></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
+</div>
+</div>

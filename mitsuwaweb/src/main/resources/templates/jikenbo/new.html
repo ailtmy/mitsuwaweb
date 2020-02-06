@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+</head>
+<body >
+<div th:fragment="jikenbo_contents">
+<h4 th:text="${title}"></h4>
+<form th:action="@{/jikenbos/new}" method="post" th:object="${jikenbo}">
+	<div class="form-group" th:classappend="${#fields.hasErrors('jyuninDate')}? 'has-error'" >
+		<label for="jyuninDate">受任年月日（委任状日付）</label>
+		<input type="date" name="jyuninDate" class="form-control" th:value="${today}"/>
+		<span class="text-danger" th:if="${#fields.hasErrors('jyuninDate')}" th:errors="*{jyuninDate}">受任年月日エラー</span>
+	</div>
+	<div class="form-group" th:classappend="${#fields.hasErrors('jikenName')}? 'has-error'">
+		<label for="jikenName">事件名・件名（登記の目的ごと）</label>
+		<input type="text" name="jikenName" class="form-control" th:field="*{jikenName}" />
+		<span class="text-danger" th:if="${#fields.hasErrors('jikenName')}" th:errors="*{jikenName}">事件名・件名エラー</span>
+	</div>
+	<div class="kenrisya_wrap">
+		<div class="kenrisya_hyouji">
+			<div class="form-group">
+				<label for="customer">依頼者</label>
+				<select id="customer" name="customer" class="form-control">
+					<option th:selected="${''}"/>
+					<option th:each="cus : ${customer}" th:value="${cus.id}" th:text="${cus.name}" />
+				</select>
+				<label for="addr">住所</label>
+				<select id="addr" name="addr" class="form-control">
+					<option value=""></option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="mb-2">
+		<button type="button" class="btn btn-primary mr-4" id="kenrisya_ajax_add">依頼者追加</button>
+		<button type="button" class="btn btn-danger mr-4" id="kenrisya_ajax_remove">依頼者削除</button>
+	</div>
+	<div class="form-group" th:classappend="${#fields.hasErrors('jikenNumber')}? 'has-error'">
+		<label for="jikenNumber">事件番号（裁判所事件番号等）</label>
+		<input type="text" name="jikenNumber" class="form-control" th:field="*{jikenNumber}" />
+		<span class="text-danger" th:if="${#fields.hasErrors('jikenNumber')}" th:errors="*{jikenNumber}">事件番号エラー</span>
+	</div>
+	<div class="form-group" th:classappend="${#fields.hasErrors('kensu')}? 'has-error'">
+		<label for="kensu">件数（業務報告書記載要領による）</label>
+		<input type="number" name="kensu" class="form-control" th:field="*{kensu}" />
+		<span class="text-danger" th:if="${#fields.hasErrors('kensu')}" th:errors="*{kensu}">件数エラー</span>
+	</div>
+	<div class="form-group">
+		<label for="syubetsu">事件種別</label>
+		<select name="syubetsu" class="form-control" th:field="*{syubetsu}">
+			<option th:each="syubetsu : ${T(com.example.demo.entity.jikenbo.Jikenbo.Syubetsu).values()}"
+			th:value="${syubetsu}" th:text="${syubetsu}" />
+		</select>
+	</div>
+	<div>
+		<button type="submit" class="btn btn-primary mr-4">登録</button>
+		<button type="button" onclick="history.back()" class="btn btn-primary ml-4">戻る</button>
+	</div>
+</form>
+</div>
+</body>

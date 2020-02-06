@@ -23,7 +23,6 @@ public class Shinchiku extends Project {
 	@ManyToMany
 	private List<Customer> hanbaidairi;
 
-	@ManyToMany
-	private List<Customer> kainushi;
+	
 
 }
