@@ -22,7 +22,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.example.demo.entity.MailAudit;
 import com.example.demo.entity.TelAudit;
 import com.example.demo.entity.customer.Company;
-import com.example.demo.entity.customer.Customer;
 import com.example.demo.entity.customer.CustomerFile;
 import com.example.demo.entity.customer.Daihyo;
 import com.example.demo.entity.customer.Person;
@@ -93,7 +92,7 @@ public class CompanyController {
 
 	@PostMapping("/companies/new")
 	public ModelAndView create(
-			@RequestParam("file") MultipartFile[] files,
+			@RequestParam(name = "file", required=false) MultipartFile[] files,
 			@RequestParam("mailKind") String[] mailKinds,
 			@RequestParam("mailAddr") String[] mailAddrs,
 			@RequestParam("phoneKind") String[] telKinds,
@@ -110,18 +109,20 @@ public class CompanyController {
 		if(!result.hasErrors()) {
 			companyService.saveCompany(company);
 
+			if(files == null || files.length == 0) {
 
-			List<CustomerFile> customerFiles = new ArrayList<CustomerFile>();
-			for(MultipartFile file : files) {
-				CustomerFile customerFile = new CustomerFile();
-				customerFile.setFileName(file.getOriginalFilename());
-				customerFile.setFile(file.getBytes());
-				customerFile.setCustomer((Customer) company);
-				fileService.saveCustomerFile(customerFile);
-				customerFiles.add(customerFile);
+			} else {
+				List<CustomerFile> customerFiles = new ArrayList<CustomerFile>();
+				for(MultipartFile file : files) {
+					CustomerFile customerFile = new CustomerFile();
+					customerFile.setFileName(file.getOriginalFilename());
+					customerFile.setFile(file.getBytes());
+//					customerFile.setCustomer((Customer) company);
+					fileService.saveCustomerFile(customerFile);
+					customerFiles.add(customerFile);
+				}
+				company.setCustomerFileList(customerFiles);
 			}
-			company.setCustomerFileList(customerFiles);
-
 //			if(daihyosya != 0) {
 //				List<Daihyo> daihyos = new ArrayList<Daihyo>();
 //				Daihyo daihyo = new Daihyo();
@@ -229,7 +230,7 @@ public class CompanyController {
 
 			if(!editcompany.getDaihyosya().isEmpty()) {
 				List<Daihyo> daihyos = editcompany.getDaihyosya();
-				for(int i = 0; i < daihyos.size(); i++) {
+				for(int i = 0; i < persons.length; i++) {
 					daihyos.get(i).setKatagaki(katagakis[i]);
 					daihyos.get(i).setDaitori(persons[i]);
 				}

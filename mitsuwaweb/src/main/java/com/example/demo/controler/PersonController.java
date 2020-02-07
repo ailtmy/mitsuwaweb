@@ -21,7 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.entity.MailAudit;
 import com.example.demo.entity.TelAudit;
-import com.example.demo.entity.customer.Customer;
 import com.example.demo.entity.customer.CustomerFile;
 import com.example.demo.entity.customer.Person;
 import com.example.demo.service.MailAuditService;
@@ -83,7 +82,7 @@ public class PersonController {
 
 	@PostMapping("/people/new")
 	public ModelAndView create(
-			@RequestParam("file") MultipartFile[] files,
+			@RequestParam(name = "file", required=false) MultipartFile[] files,
 			@RequestParam("mailKind") String[] mailKinds,
 			@RequestParam("mailAddr") String[] mailAddrs,
 			@RequestParam("phoneKind") String[] telKinds,
@@ -97,18 +96,20 @@ public class PersonController {
 
 		if(!result.hasErrors()) {
 
-			personService.savePerson(person);
+//			personService.savePerson(person);
+
 
 			List<CustomerFile> customerFiles = new ArrayList<CustomerFile>();
 			for(MultipartFile file : files) {
 				CustomerFile customerFile = new CustomerFile();
 				customerFile.setFileName(file.getOriginalFilename());
 				customerFile.setFile(file.getBytes());
-				customerFile.setCustomer((Customer) person);
+//				customerFile.setCustomer((Customer) person);
 				fileService.saveCustomerFile(customerFile);
 				customerFiles.add(customerFile);
 			}
 			person.setCustomerFileList(customerFiles);
+
 
 			List<MailAudit> mails = new ArrayList<MailAudit>();
 			for(int i = 0; i < mailAddrs.length; i++) {

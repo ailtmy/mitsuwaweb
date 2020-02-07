@@ -63,7 +63,7 @@ public class Customer extends Audit {
 	/**
 	 * ファイル
 	 */
-	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<CustomerFile> customerFileList;
 
 	/**

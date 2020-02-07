@@ -31,11 +31,12 @@
 				</tr>
 				<tr>
 					<th scope="row">確認者</th>
-					<td th:text="*{user.name}"></td>
+					<td th:text="*{user.getName()}"></td>
 				</tr>
 				<tr>
 					<th scope="row">顧客氏名</th>
-					<td><a th:href="@{/customers/{cid}(cid=*{customer.id})}" th:text="*{customer.name}"></a></td>
+					<td><a th:if="*{customer instanceof T(com.example.demo.entity.customer.Person)}" th:href="@{/people/{cid}(cid=*{customer.id})}" th:text="*{customer.name}"></a>
+					<a th:if="*{customer instanceof T(com.example.demo.entity.customer.Company)}" th:href="@{/companies/{cid}(cid=*{customer.id})}" th:text="*{customer.name}"></a></td>
 				</tr>
 				<tr>
 					<th scope="row">生年月日</th>

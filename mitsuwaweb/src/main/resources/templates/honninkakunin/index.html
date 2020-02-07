@@ -41,7 +41,7 @@
 	</form>
 	</td>
 	<td><a th:href="@{/customers/{cid}/idents/{hid}(cid=${customer.id}, hid=${kakunin.id})}" th:text="${kakunin.id}"></a></td>
-	<td th:text="${kakunin.user.name}"></td>
+	<td th:if="${kakunin.getUser()}" th:text="${kakunin.user.name}"></td>
 	<td th:each="addr : ${kakunin.addressList}">
 		<p th:text="${addr.addr}"></p>
 	</td>

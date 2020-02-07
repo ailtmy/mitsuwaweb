@@ -263,7 +263,7 @@ public class CustomerController {
 			CustomerFile customerFile = new CustomerFile();
 			customerFile.setFileName(file.getOriginalFilename());
 			customerFile.setFile(file.getBytes());
-			customerFile.setCustomer(customer);
+//			customerFile.setCustomer(customer);
 			fileService.saveCustomerFile(customerFile);
 			customerFiles.add(customerFile);
 		}
