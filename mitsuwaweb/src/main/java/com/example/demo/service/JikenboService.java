@@ -26,5 +26,9 @@ public class JikenboService {
 		return repository.findById(id).orElse(new Jikenbo());
 	}
 
+	public void delete(Integer id) {
+		repository.deleteById(id);
+	}
+
 
 }

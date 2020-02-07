@@ -12,8 +12,8 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light mt-2 mb-4">
 	<a class="btn btn-sm btn-primary mr-4" th:href="@{/jikenbos/{id}/edit(id=${jikenbo.id})}" th:text="編集"></a>
-	<a class="btn btn-sm btn-primary mr-4" th:href="@{/jikenbos/{id}/kenrisyanew(id=${jikenbo.id})}" th:text="依頼者追加"></a>
-	<form th:action="@{/jikenbo/{id}/delete(id=${jikenbo.id})}" method="post">
+	<a class="btn btn-sm btn-primary mr-4" th:href="@{/jikenbos/{id}/iraisyanew(id=${jikenbo.id})}" th:text="依頼者追加"></a>
+	<form th:action="@{/jikenbos/{id}/delete(id=${jikenbo.id})}" method="post">
 		<input class="btn btn-sm btn-danger text-white mr-4" type="submit" value="削除"
 		onclick="return confirm('削除します。よろしいですか？')" />
 	</form>
@@ -42,7 +42,7 @@
 							<p th:text="${iraisya.getAddr()}"></p>
 							<p th:text="${iraisya.customer.name}"></p>
 							<form
-								th:action="@{/jikenbos/{sid}/kenrisyadelete/{kid}(sid=${jikenbo.id},kid=${iraisya.id})}"
+								th:action="@{/jikenbos/{sid}/iraisyadelete/{kid}(sid=${jikenbo.id},kid=${iraisya.id})}"
 								 method="post" class="col-sm-2 m-2">
 								<input class="btn btn-sm btn-danger text-white mr-2" type="submit" value="依頼者削除"
 									onclick="return confirm('削除します。よろしいですか？')"/>

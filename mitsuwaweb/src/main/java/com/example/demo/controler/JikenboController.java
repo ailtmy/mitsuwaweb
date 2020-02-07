@@ -136,4 +136,99 @@ public class JikenboController {
 		return mav;
 	}
 
+	@PostMapping("/jikenbos/{id}/edit")
+	public ModelAndView update(
+			@PathVariable Integer id,
+			@ModelAttribute Jikenbo jikenbo,
+			@RequestParam("customer") Integer[] customers,
+			@RequestParam(name = "addr", defaultValue=" ") String[] addrs
+			){
+
+		Jikenbo ejikenbo = jikenboService.find(id);
+		ejikenbo.setJikenName(jikenbo.getJikenName());
+		if(jikenbo.getJikenNumber() != null || !(jikenbo.getJikenNumber().isEmpty())) {
+			ejikenbo.setJikenNumber(jikenbo.getJikenNumber());
+		}
+		ejikenbo.setJyuninDate(jikenbo.getJyuninDate());
+		ejikenbo.setKensu(jikenbo.getKensu());
+		ejikenbo.setSyubetsu(jikenbo.getSyubetsu());
+		List<Iraisya> iraisyaList = iraisyaService.iraisyaset(ejikenbo.getIraisyaList(), customers, addrs);
+		ejikenbo.setIraisyaList(iraisyaList);
+		jikenboService.saveJikenbo(ejikenbo);
+		return new ModelAndView("redirect:/jikenbos/{id}");
+	}
+
+
+	/**
+	 * 事件簿削除
+	 * @param id
+	 * @return
+	 */
+	 @PostMapping("/jikenbos/{id}/delete")
+	 public ModelAndView delete(
+			 @PathVariable Integer id
+			 ) {
+		 jikenboService.delete(id);
+		 return new ModelAndView("redirect:/jikenbos");
+	 }
+
+	 /**
+	  * 依頼者追加
+	  * @param id
+	  * @param mav
+	  * @return
+	  */
+	 @GetMapping("/jikenbos/{id}/iraisyanew")
+	 public ModelAndView iraisyaNew(
+			 @PathVariable Integer id,
+			 ModelAndView mav
+			 ) {
+		 mav.setViewName("layout");
+		 mav.addObject("contents", "jikenbo/iraisyanew::jikenbo_contents");
+		 mav.addObject("title", "依頼者追加");
+		 mav.addObject("jikenbo", jikenboService.find(id));
+		 mav.addObject("customer", customerService.allget());
+		 return mav;
+	 }
+
+	 @PostMapping("/jikenbos/{id}/iraisyanew")
+	 public ModelAndView iraisyacreate(
+			@PathVariable Integer id,
+			@RequestParam("customer") Customer customer,
+			@RequestParam(name="addr", required=false) String addr
+			) {
+		 Jikenbo jikenbo = jikenboService.find(id);
+		 List<Iraisya> iraisyaList = jikenbo.getIraisyaList();
+		 Iraisya iraisya = new Iraisya();
+		 iraisya.setCustomer(customer);
+		 iraisya.setAddr(addr);
+		 iraisyaService.saveIraisya(iraisya);
+		 iraisyaList.add(iraisya);
+		 jikenbo.setIraisyaList(iraisyaList);
+		 jikenboService.saveJikenbo(jikenbo);
+		 return new ModelAndView("redirect:/jikenbos/{id}");
+	 }
+
+	 /**
+	  * 依頼者削除
+	  * @param id
+	  * @param iid
+	  * @return
+	  */
+	 @PostMapping("/jikenbos/{id}/iraisyadelete/{iid}")
+	 public ModelAndView iraisyaDelete(
+			 @PathVariable Integer id,
+			 @PathVariable Integer iid
+			 ) {
+		 Jikenbo jikenbo = jikenboService.find(id);
+		 List<Iraisya> iraisyaList = jikenbo.getIraisyaList();
+		 Iraisya iraisya = iraisyaService.find(iid);
+		 iraisyaList.remove(iraisya);
+		 jikenbo.setIraisyaList(iraisyaList);
+		 jikenboService.saveJikenbo(jikenbo);
+		 iraisyaService.delete(iid);
+
+		 return new ModelAndView("redirect:/jikenbos/{id}");
+
+	 }
 }
