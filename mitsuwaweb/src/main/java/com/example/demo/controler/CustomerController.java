@@ -13,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -64,18 +63,18 @@ public class CustomerController {
 		return mav;
 	}
 
-	/**
-	 * 顧客新規作成画面
-	 */
-	@GetMapping("/customers/new")
-	public ModelAndView customernew(
-			@ModelAttribute Customer customer,
-			ModelAndView mav) {
-		mav.setViewName("layout");
-		mav.addObject("contents", "customer/new::customer_contents");
-		mav.addObject("title", "顧客新規作成");
-		return mav;
-	}
+//	/**
+//	 * 顧客新規作成画面
+//	 */
+//	@GetMapping("/customers/new")
+//	public ModelAndView customernew(
+//			@ModelAttribute Customer customer,
+//			ModelAndView mav) {
+//		mav.setViewName("layout");
+//		mav.addObject("contents", "customer/new::customer_contents");
+//		mav.addObject("title", "顧客新規作成");
+//		return mav;
+//	}
 
 //	/**
 //	 * 顧客新規作成
